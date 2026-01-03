@@ -124,7 +124,7 @@
   </li>
   <li>
     <p align="justify">
-        Ottieni l'indirizzo IP della macchina eseguendo <code>hostname</code> nel terminale
+        Ottieni l'indirizzo IP della macchina eseguendo <code>ip a s</code> nel terminale
     </p>
     <div align="center">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/21_romeo_installation.png">
