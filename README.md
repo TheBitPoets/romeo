@@ -26,6 +26,9 @@
     <p>
       Fare clic sul collegamento <a href="https://www.raspberrypi.com/software/">"Raspberry Pi Imager"</a> e seguire le istruzioni per scaricare e installare il software Imager
     </p>
+    <div align="center">
+      <img width="70%" src="https://github.com/TheBitPoets/romeo/blob/main/images/2_raspberry_pi_imager.png">
+    </div>
   </li>
   <li>
     
