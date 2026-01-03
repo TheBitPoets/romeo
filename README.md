@@ -124,6 +124,11 @@
   </li>
   <li>
     <p align="justify">
+      Ora riavvia il Pi affinché le modifiche abbiano effetto
+    </p>
+  </li>
+  <li>
+    <p align="justify">
         Ottieni l'indirizzo IP della macchina eseguendo <code>ip a s</code> nel terminale
     </p>
     <div align="center">
