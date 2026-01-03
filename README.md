@@ -101,6 +101,12 @@
     <div align="center">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/17_romeo_installation.png">
     </div>
+       <p align="justify">
+    Avrai bisogno anche di un adattatore HDMI <-> Micro HDMI ed ovviamente di un cavo HDMI per collegare uno schermo alla Rasperri Pi 4
+    </p>
+       <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/18_romeo_installation.png">
+    </div>
   </li>
   <li>
     
