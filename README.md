@@ -36,7 +36,7 @@
     </p>
   </li>
   <li>
-    <p align="justify">>
+    <p align="justify">
       Utilizzare il software Imager per preparare il supporto di installazione con l'immagine scaricata (scheda microSD/unità flash USB).
     </p>
   </li>
