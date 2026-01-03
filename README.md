@@ -16,10 +16,10 @@
   </li>
   <li>
     <p align="justify">
-      Clicca sul link Raspberry Pi OS e scarica l'immagine "Raspberry Pi OS with desktop". Verrà scaricata l'ultima versione. L'immagine desktop include un ambiente desktop, che sarà utile quando creeremo applicazioni grafiche per i progetti robotici.
+      Clicca sul link Raspberry Pi OS e scarica l'immagine "Raspberry Pi OS (64 bit)". Verrà scaricata l'ultima versione. L'immagine desktop include un ambiente desktop, che sarà utile quando creeremo applicazioni grafiche per i progetti robotici.
     </p>
-    <div>
-      <img src="">
+    <div align="center">
+      <img width="70%" src="https://github.com/TheBitPoets/romeo/blob/main/images/1_os_installation.png">
     </div>
   </li>
   <li>
