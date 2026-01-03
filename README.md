@@ -39,6 +39,22 @@
     <p align="justify">
       Utilizzare il software Imager per preparare il supporto di installazione con l'immagine scaricata (scheda microSD/unità flash USB).
     </p>
+   <div>
+    <div align="center">
+      <img width="40%" src="https://github.com/TheBitPoets/romeo/blob/main/images/3_raspberry_pi_imager.png">
+    </div>
+    <div align="center">
+      <img width="40%" src="https://github.com/TheBitPoets/romeo/blob/main/images/4_raspberry_pi_imager.png">
+      <p align="justify">Nella schermata di sopra <b>fai attenzione ad accettare i termini della licenza</b> altrimenti il processo d'installazione non può proseguire</p>
+    </div>
+    <div align="center">
+      <img width="40%" src="https://github.com/TheBitPoets/romeo/blob/main/images/5_raspberry_pi_imager.png">
+    </div>
+    <div align="center">
+      <img width="40%" src="https://github.com/TheBitPoets/romeo/blob/main/images/6_raspberry_pi_imager.png">
+      <p align="justify">Al termine del processo d'installazione <b>clicca su Fine</b></p>
+    </div>
+  </div>
   </li>
   <li>
     
