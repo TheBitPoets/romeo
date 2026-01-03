@@ -57,10 +57,42 @@
   </div>
   </li>
   <li>
-    
+    <p align="justify">
+      Una volta avviato il Raspberry Pi con il programma di installazione, selezionare il modello della tua raspberry (nel nostro caso <b>Raspberry Pi 4</b>) e fare clic su Avanti nella schermata di benvenuto.
+    </p>
+     <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/7_raspberry_pi_imager.png">
+    </div>
   </li>
   <li>
-    
+    <p align="justify">
+      Scegli il sistema operativo da installare
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/8_raspberry_pi_imager.png">
+    </div>
+    <p align="justify">
+      Seleziona il dispositivo rimovibile su cui installare il sistema operativo (nel nostro caso una penna usb che devi aver precedentemente collegato al PC)
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/9_raspberry_pi_imager.png">
+    </div>
+    <p align="justify">
+      Continua la configurazione scegliendo hostname, nome utente e password etc. I passi principali sono mostrati nelle immagini di sotto
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/10_raspberry_pi_imager.png">
+       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/11_raspberry_pi_imager.png">
+       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/13_raspberry_pi_imager.png">
+       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/14_raspberry_pi_imager.png">
+    </div>
+    <p align="justify">
+      Al termine del processo clicca su Scrivi per scrivere l'immagine del sistema operativo sulla penna USB. Non scollegare la penna prima che il processo sia terminato.
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/15_raspberry_pi_imager.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/16_raspberry_pi_imager.png">
+    </div>
   </li>
   <li>
     
