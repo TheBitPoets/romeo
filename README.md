@@ -115,7 +115,12 @@
     </div>
   </li>
   <li>
-    
+    <p align="justify">
+        Utilizziamo lo strumento di configurazione per abilitare le interfacce SSH, VNC e I2C. La Figura B.2 mostra come apparirà la schermata delle interfacce una volta abilitate
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/20_romeo_installation.png">
+    </div>
   </li>
   <li>
     
