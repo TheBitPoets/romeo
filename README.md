@@ -96,7 +96,7 @@
   </li>
   <li>
     <p align="justify">
-     Alimenta la Rasperry, noi useremo un powerbank per ragione di mobilità (per fare questo hai bisogno di un cavo USB <-> 2.1 DC Power)
+     Alimenta la Rasperry, noi useremo un powerbank per ragione di mobilità (per fare questo hai bisogno di un cavo Type-C)
     </p>
     <div align="center">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/17_romeo_installation.png">
@@ -104,8 +104,14 @@
        <p align="justify">
     Avrai bisogno anche di un adattatore HDMI <-> Micro HDMI ed ovviamente di un cavo HDMI per collegare uno schermo alla Rasperri Pi 4
     </p>
-       <div align="center">
+    <div align="center">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/18_romeo_installation.png">
+    </div>
+    <p align="justify">
+    Guarda l'immagine di sotto per controllare i tuoi collegamenti. (Ovviamente devi collegare alla Rasperry Pi 4 anche un muose ed una tastiera attraverso le porte USB)
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/19_romeo_installation.png">
     </div>
   </li>
   <li>
