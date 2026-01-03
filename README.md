@@ -99,7 +99,7 @@
      Alimenta la Rasperry, noi useremo un powerbank per ragione di mobilità (per fare questo hai bisogno di un cavo USB <-> 2.1 DC Power)
     </p>
     <div align="center">
-      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/17_raspberry_pi_imager.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/17_romeo_installation.png">
     </div>
   </li>
   <li>
