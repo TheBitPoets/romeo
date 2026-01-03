@@ -31,7 +31,9 @@
     </div>
   </li>
   <li>
-    
+    <p align="justify">
+      Il Raspberry Pi 4 può essere installato e avviato sia da una scheda microSD che da una chiavetta USB. Le chiavette USB offrono prestazioni migliori e sono l'opzione consigliata.
+    </p>
   </li>
   <li>
     
