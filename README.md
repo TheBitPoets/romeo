@@ -171,4 +171,31 @@
       Prima di utilizzare il CRICKIT HAT per la prima volta, è consigliabile aggiornarne il firmware. Nella guida di apprendimento di Adafruit, seguire i passaggi nella sezione "Aggiorna il tuo CRICKIT" ( https://learn.adafruit.com/adafruit-crickit-hat-for-raspberry-pi-linux-computers/update-your-crickit )
     </p>
   </li>
+  <li>
+    <p align="justify">
+      Spegnere il Raspberry Pi. Per collegare il CRICKIT HAT al Raspberry Pi, collegare prima il distanziatore fornito con il CRICKIT al connettore GPIO del Raspberry Pi. Quindi collegare il CRICKIT HAT
+    </p>
+  </li>
+  <li>
+    <p align="justify">
+      Collegare il cavo di alimentazione al jack CC del CRICKIT e accendere l'interruttore di alimentazione del CRICKIT. Verificare che il LED del CRICKIT sia verde, a indicare che l'alimentazione è funzionante
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/26_crickit_installation.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/27_crickit_installation.png">
+    </div>
+  </li>
+  <li>
+    <p align="justify">
+      Accendi il Raspberry Pi e apri un terminale o una connessione SSH.
+    </p>
+  </li>
+  <li>
+    <p align="justify">
+      Esegui il comando <code>i2cdetect</code> e verifica che l'indirizzo I2C <code>0x49</code> appaia nell'output. L'indirizzo apparirà come testo, 49 come mostrato di seguito:
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/25_crickit_installation.png">
+    </div>
+  </li>
 </ol>
