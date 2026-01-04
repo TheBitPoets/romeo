@@ -209,4 +209,36 @@ sudo apt autoremove
     </code>
     </pre>
   </li>
+  <li>
+    <p align="justify">
+Eseguire il seguente comando per riavviare la macchina
+    </p>
+    <pre><code>sudo reboot</code></pre>
+  </li>
+  <li>
+    <p align="justify">
+Dopo il riavvio, riconnettetevi alla macchina ed eseguite le seguenti righe per creare un ambiente virtuale Python e installare la libreria Adafruit CRICKIT in tale ambiente virtuale:
+    </p>
+    <pre><code>python3 -m venv ~/pyenv</code></pre>
+    <pre><code>~/pyenv/bin/pip install adafruit-circuitpython-crickit</code></pre>
+  </li>
+  <li>
+    <p align="justify">
+Esegui la riga successiva per aggiungere l'alias bash <code>activate</code> che può essere utilizzato per attivare l'ambiente virtuale Python ogni volta che è necessario. Dopo aver eseguito il comando, apri un nuovo terminale affinché il nuovo alias abbia effetto:
+    </p>
+    <pre><code>echo "alias activate='source ~/pyenv/bin/activate'" >> ~/.bashrc</code></pre>
+  </li>
+  <li>
+  <p align="justify">
+Il comando successivo avvierà una sessione di ciclo di lettura-valutazione-stampa (REPL) Python nell'ambiente virtuale:    </p>
+    <pre><code>~/pyenv/bin/python</code></pre>
+  </li>
+  <li>
+    <p align="justify">
+Eseguire il seguente codice Python nel REPL e verificare che il Neopixel integrato diventi rosso per configurare l'Adafruit CRICKIT HAT:    </p>
+    <pre><code>
+from adafruit_crickit import crickit
+crickit.onboard_pixel.fill(0xFF0000)
+    </code></pre>
+  </li>
 </ol>
