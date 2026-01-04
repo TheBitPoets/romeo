@@ -240,5 +240,8 @@ Eseguire il seguente codice Python nel REPL e verificare che il Neopixel integra
 from adafruit_crickit import crickit
 crickit.onboard_pixel.fill(0xFF0000)
     </code></pre>
+     <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/28_crickit_installation.png">
+    </div>
   </li>
 </ol>
