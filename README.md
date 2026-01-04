@@ -256,9 +256,14 @@ Il sito web di Adafruit offre un'eccellente guida sul CRICKIT HAT ( https://lear
   </li>
   <li>
     <p align="justify">
-Quindi segui la guida Pibow ( https://learn.pimoroni.com/article/building-your-pibow ) per assemblare e posizionare il Raspberry Pi 4 nel case Pibow    <p>
+Quindi segui la guida Pibow ( https://learn.pimoroni.com/article/building-your-pibow ) per assemblare e posizionare il Raspberry Pi 4 nel case Pibow    
+    <p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/29_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/30_build_robot.png">
+    </div>
   </li>
    <li>
     <p align="justify">
-Collegare i cavi di prolunga ai collegamenti del motore 1 e 2.  </li>
+Collegare il crickit-hat al pi e successivamente collegare anche i cavi di prolunga ai collegamenti del motore 1 e 2.  </li>
 </ol>
