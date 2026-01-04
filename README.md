@@ -198,4 +198,15 @@
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/25_crickit_installation.png">
     </div>
   </li>
+  <li>
+    <p align="justify">
+Eseguire i seguenti comandi per aggiornare i pacchetti software
+    </p>
+    <pre><code>
+sudo apt update
+sudo apt upgrade
+sudo apt autoremove
+    </code>
+    </pre>
+  </li>
 </ol>
