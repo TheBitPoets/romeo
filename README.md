@@ -112,6 +112,7 @@
     </p>
     <div align="center">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/19_romeo_installation.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/19_romeo_installation2.png">
     </div>
   </li>
   <li>
@@ -136,7 +137,13 @@
     </div>
   </li>
   <li>
-    
+    <p align="justify">
+      Da un altro computer in rete, verifica di poter accedere tramite SSH al Raspberry Pi utilizzando il suo indirizzo IP. Su windows puoi usare <a href="https://putty.org/index.html">Putty</a> come client ssh. Ora puoi usare SSH per eseguire comandi ed eseguire script Python sul Pi da qualsiasi computer in rete
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/22_romeo_installation.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/23_romeo_installation.png">
+    </div>
   </li>
   <li>
     
