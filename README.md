@@ -245,3 +245,20 @@ crickit.onboard_pixel.fill(0xFF0000)
     </div>
   </li>
 </ol>
+
+<h4>Costruzione robot mobile</h4>
+
+<ol>
+  <li>
+    <p align="justify">
+Il sito web di Adafruit offre un'eccellente guida sul CRICKIT HAT ( https://learn.adafruit.com/adafruit-crickit-hat-for-raspberry-pi-linux-computers ). Seguite le istruzioni nella guida per collegare il CRICKIT HAT al Raspberry Pi.
+    <p>
+  </li>
+  <li>
+    <p align="justify">
+Quindi segui la guida Pibow ( https://learn.pimoroni.com/article/building-your-pibow ) per assemblare e posizionare il Raspberry Pi 4 nel case Pibow    <p>
+  </li>
+   <li>
+    <p align="justify">
+Collegare i cavi di prolunga ai collegamenti del motore 1 e 2.  </li>
+</ol>
