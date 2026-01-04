@@ -1,6 +1,6 @@
-# romeo
+<h1>Romeo</h1>
 
-<h4>Installare Raspberry Pi Os</h4> 
+<h2>Installare Raspberry Pi Os e Configurazione del sistema</h4> 
 
 <p align="justify">
   La pagina della documentazione ufficiale di Raspberry Pi ( https://raspberrypi.com/documentation/ ) è un'ottima fonte per chi lavora con il Raspberry Pi.
@@ -146,18 +146,8 @@
     </div>
   </li>
   <li>
-    
-  </li>
-  <li>
-    
-  </li>
-  <li>
-    
-  </li>
-  <li>
-    
-  </li>
-  <li>
-    
+    La configurazione del Pi è terminata Possiamo passare alla configurazione dell'Adafruit CRICKIT HAT
   </li>
 </ol>
+
+<h2>Configurazione dell'Adafruit CRICKIT HAT</h4> 
