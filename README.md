@@ -151,3 +151,24 @@
 </ol>
 
 <h2>Configurazione dell'Adafruit CRICKIT HAT</h4> 
+
+<p align="justify">
+  Per completare la configurazione hardware e software dell'Adafruit CRICKIT HAT, seguire questi passaggi:
+</p>
+
+<div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/24_crickit_installation.png">
+</div>
+
+<ol>
+  <li>
+    <p align="justify">
+      Sul sito web di Adafruit è disponibile una guida molto completa per configurare il CRICKIT HAT e risolvere eventuali problemi. Faremo riferimento a sezioni specifiche nei passaggi successivi ( https://learn.adafruit.com/adafruit-crickit-hat-for-raspberry-pi-linux-computers ).
+    </p>
+  </li>
+  <li>
+    <p align="justify">
+      Prima di utilizzare il CRICKIT HAT per la prima volta, è consigliabile aggiornarne il firmware. Nella guida di apprendimento di Adafruit, seguire i passaggi nella sezione "Aggiorna il tuo CRICKIT" ( https://learn.adafruit.com/adafruit-crickit-hat-for-raspberry-pi-linux-computers/update-your-crickit )
+    </p>
+  </li>
+</ol>
