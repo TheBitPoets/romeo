@@ -297,6 +297,9 @@ Girare di nuovo il piatto. Prendi le ruote assemblate e inseriscile nello strato
       </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/43_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/44_build_robot.png">
+      <p align="justify">
+Avvitare l'ultimo strato del telaio. CE L'HAI FATTA! Ora è il momento di aggiungere la Pi con il crickit-hat sopra l'ultimo strato.
+      </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/45_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/46_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/47_build_robot.png">
