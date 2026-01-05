@@ -272,4 +272,26 @@ Collegare il crickit-hat al pi e successivamente collegare anche i cavi di prolu
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/32_build_robot.png">
     </div>
    </li>
+  <li>
+    <p align="justify">
+Ora possiamo assemblare il telaio del robot e collegare il power bank
+    <p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/33_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/34_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/36_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/37_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/38_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/39_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/40_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/41_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/42_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/43_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/44_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/45_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/46_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/47_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/48_build_robot.png">
+    </div>
+  </li>
 </ol>
