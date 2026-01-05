@@ -310,6 +310,7 @@ Fissare il Raspberry Pi con il suo case allo strato superiore del telaio. Le por
 Inserite il powerbank nel ripiano intermedio e collegate i fili di collegamento ai motori CC. Assicuratevi di collegare il motore CC destro al connettore 1 e il motore CC sinistro al connettore 2.
       </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/48_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/49_build_robot.png">
     </div>
   </li>
 </ol>
