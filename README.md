@@ -292,6 +292,9 @@ Girare il piatto. Fissare la ruota libera bianca nei fori esterni più vicini al
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/40_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/41_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/42_build_robot.png">
+      <p align="justify">
+Girare di nuovo il piatto. Prendi le ruote assemblate e inseriscile nello strato del telaio. Ci sono 2 slot sui pannelli neri che hai attaccato al motore che dovrebbero adattarsi perfettamente allo strato del telaio. La parte anteriore metallica del motore sarà rivolta verso il lato del telaio in cui hai posizionato la ruota libera bianca. Posiziona il livello successivo del telaio sopra i motori. Le due fessure sui pannelli neri che hai attaccato ai motori dovrebbero adattarsi perfettamente al livello successivo del telaio. Questo mantiene i motori in posizione in modo che non possano scivolare. Avvitare lo strato del telaio fissandolo ai distanziatori in ottone. Avvitare i restanti 2 o 4 distanziatori nel secondo strato del telaio. Puoi posizionarli praticamente ovunque, purché siano entrambi i lati.
+      </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/43_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/44_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/45_build_robot.png">
