@@ -302,6 +302,9 @@ Avvitare l'ultimo strato del telaio. CE L'HAI FATTA! Ora è il momento di aggiun
       </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/45_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/46_build_robot.png">
+      <p align="justify">
+Fissare il Raspberry Pi con il suo case allo strato superiore del telaio. Le porte USB del Raspberry Pi devono essere rivolte verso il retro del robot. In questo modo, i connettori di alimentazione del CRICKIT HAT e del Raspberry Pi rimangono più vicini alcavi di alimentazione per power bank.
+      </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/47_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/48_build_robot.png">
     </div>
