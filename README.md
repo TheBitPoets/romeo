@@ -265,5 +265,11 @@ Quindi segui la guida Pibow ( https://learn.pimoroni.com/article/building-your-p
   </li>
    <li>
     <p align="justify">
-Collegare il crickit-hat al pi e successivamente collegare anche i cavi di prolunga ai collegamenti del motore 1 e 2.  </li>
+Collegare il crickit-hat al pi e successivamente collegare anche i cavi di prolunga ai collegamenti del motore 1 e 2.  
+    </p>
+    <div align="center">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/31_build_robot.png">
+      <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/32_build_robot.png">
+    </div>
+   </li>
 </ol>
