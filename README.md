@@ -282,6 +282,9 @@ Ora possiamo assemblare il telaio del robot e collegare il power bank
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/36_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/37_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/38_build_robot.png">
+      <p align="justify">
+Prendiamo uno degli strati neri del telaio. Tutti e tre gli strati sono identici. Allinealo sul tavolo come mostrato a sinistra. Nota che il pannello non è simmetrico : guarda a sinistra per vedere il rettangolo ritagliato. Assicurati che sia allineato come vedi qui! Fissare due dei distanziatori in ottone allo strato nero del telaio. I distanziatori devono essere avvitati nel secondo set di fori dal bordo esterno, ovvero nei due fori interni.
+      </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/39_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/40_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/41_build_robot.png">
