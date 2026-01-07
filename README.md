@@ -323,13 +323,14 @@ Inserite il powerbank nel ripiano intermedio e collegate i fili di collegamento 
 
 <ul>
   <li>
-    <p align="justify>
-      Il kit Adafruit Mini Pan-Tilt viene fornito completamente assemblato. Il kit supporta il montaggio di moduli telecamera di diverse dimensioni e stili. Questa guida all'assemblaggio del robot Adafruit ( http://mng.bz/5oOB ) utilizza il kit Pan-Tilt e fornisce una spiegazione esaustiva su come rimuovere le linguette laterali necessarie per il passaggio successivo.
-    </p>
+  <p align="justify">
+Il kit Adafruit Mini Pan-Tilt viene fornito completamente assemblato. Il kit supporta il montaggio di moduli telecamera di diverse dimensioni e stili. Questa guida all'assemblaggio del robot Adafruit ( https://learn.adafruit.com/pixy-pet-robot-color-vision-follower-using-pixycam?embeds=allow ) utilizza il kit Pan-Tilt e fornisce una spiegazione esaustiva su come rimuovere le linguette laterali necessarie per il passaggio successivo.
+  </p>
   </li>
+    
   <li>
-    <p align="justify">
+  <p align="justify">
 Il kit è dotato di due linguette laterali in nylon morbido che possono essere rimosse. È possibile rimuovere una delle linguette laterali ruotandola o utilizzando un tronchese. Ne basta una sola per tenerla in posizione.
-    </p>
+  </p>
   </li>
 </ul>
