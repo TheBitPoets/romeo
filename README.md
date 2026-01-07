@@ -4,6 +4,10 @@
 
 <ul>
   <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit">Libreria python per Crickit-Hat</a></li>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_dc_motor_simpletest.py">Esempio movimento motore ruota</a></li>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_servo_simpletest.py">Esempio movimento motore telecamera</a></li>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_neopixel_simpletest.py">Esempio uso LED</a></li>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_touch_simpletest.py">Esempio uso tasti</a></li>
 </ul>
 
 <h2>Installare Raspberry Pi Os e Configurazione del sistema</h4> 
