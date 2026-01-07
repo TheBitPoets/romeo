@@ -1,5 +1,11 @@
 <h1>Romeo</h1>
 
+<h2>Documentazione</h2>
+
+<ul>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit">Libreria python per Crickit-Hat</a></li>
+</ul>
+
 <h2>Installare Raspberry Pi Os e Configurazione del sistema</h4> 
 
 <p align="justify">
