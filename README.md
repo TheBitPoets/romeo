@@ -3,7 +3,7 @@
 <h2>Documentazione</h2>
 
 <ul>
-  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit">Libreria python per Crickit-Hat</a></li>
+  <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit">Libreria python per Crickit-Hat</a> e <a href="https://docs.circuitpython.org/projects/crickit/en/latest/">Documentazione completa</a></li>
   <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_dc_motor_simpletest.py">Esempio movimento motore ruota</a></li>
   <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_servo_simpletest.py">Esempio movimento motore telecamera</a></li>
   <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_neopixel_simpletest.py">Esempio uso LED</a></li>
