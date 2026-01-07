@@ -327,10 +327,51 @@ Inserite il powerbank nel ripiano intermedio e collegate i fili di collegamento 
 Il kit Adafruit Mini Pan-Tilt viene fornito completamente assemblato. Il kit supporta il montaggio di moduli telecamera di diverse dimensioni e stili. Questa guida all'assemblaggio del robot Adafruit ( https://learn.adafruit.com/pixy-pet-robot-color-vision-follower-using-pixycam?embeds=allow ) utilizza il kit Pan-Tilt e fornisce una spiegazione esaustiva su come rimuovere le linguette laterali necessarie per il passaggio successivo.
   </p>
   </li>
-    
   <li>
   <p align="justify">
 Il kit è dotato di due linguette laterali in nylon morbido che possono essere rimosse. È possibile rimuovere una delle linguette laterali ruotandola o utilizzando un tronchese. Ne basta una sola per tenerla in posizione.
   </p>
+  </li>
+  <li>
+  <p align="justify">
+Il passaggio successivo dell'assemblaggio consiste nel collegare il Pan-Tilt Kit al Raspberry Pi. La documentazione ufficiale sul modulo fotocamera Raspberry Pi ( http://mng.bz/6nYo ) offre informazioni eccellenti su come collegare il cavo della fotocamera al Raspberry Pi.
+  </p>
+  </li>
+  <li>
+  <p align="justify">
+Il passaggio successivo dell'assemblaggio consiste nel collegare il Pan-Tilt Kit al Raspberry Pi. La documentazione ufficiale sul modulo fotocamera Raspberry Pi ( http://mng.bz/6nYo ) offre informazioni eccellenti su come collegare il cavo della fotocamera al Raspberry Pi.
+  </p>
+  </li>
+    <li>
+  <p align="justify">
+Il CRICKIT HAT ha un'apertura per il cavo della fotocamera. Fai passare il cavo della fotocamera attraverso il CRICKIT HAT e collegalo al Raspberry Pi. Quindi collega il CRICKIT HAT al Raspberry Pi
+  </p>
+  <div align="center">
+    <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/50_build_robot.png">
+    <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/51_build_robot.png">
+  </div>
+  </li>
+    <li>
+  <p align="justify">
+La guida Adafruit sul CRICKIT HAT, a cui si fa riferimento nella sezione precedente, è un'ottima risorsa per il collegamento del kit Pan-Tilt al CRICKIT HAT. In particolare, la sezione "Servocomandi" di CircuitPython fornisce dettagli approfonditi su come collegare i servomotori del kit Pan-Tilt al CRICKIT HAT.
+La guida spiega l'orientamento in cui collegare i connettori del servo al CRICKIT HAT.
+  </p>
+  </li>
+    <li>
+  <p align="justify">
+Collegare il connettore del servo inferiore alla connessione del servo 1 e il connettore del servo superiore alla connessione del servo 4.
+  </p>
+  </li>
+      <li>
+  <p align="justify">
+Ora collega i cavi di alimentazione del CRICKIT HAT e del Raspberry Pi come abbiamo fatto nella sezione precedente.  </p>
+  </li>
+      <li>
+  <p align="justify">
+La Figura di sotto mostra l'aspetto del robot completamente assemblato. Questo robot può muovere la telecamera collegata sia in orizzontale che in verticale utilizzando i servomotori
+  </p>
+  <div align="center">
+    <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/52_build_robot.png">
+  </div>
   </li>
 </ul>
