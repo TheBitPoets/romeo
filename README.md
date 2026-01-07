@@ -314,3 +314,22 @@ Inserite il powerbank nel ripiano intermedio e collegate i fili di collegamento 
     </div>
   </li>
 </ol>
+
+<h4>Aggiunta telecamera anteriore servoassistita</h4>
+
+<p align="justify">
+  La configurazione del robot con telecamera servoassistita prevede un robot con una telecamera collegata a due servomotori. Un servomotore ci permetterà di muovere la telecamera in orizzontale, mentre l'altro applicherà un movimento di inclinazione. Seguite questi passaggi per costruire il robot:
+</p>
+
+<ul>
+  <li>
+    <p align="justify>
+      Il kit Adafruit Mini Pan-Tilt viene fornito completamente assemblato. Il kit supporta il montaggio di moduli telecamera di diverse dimensioni e stili. Questa guida all'assemblaggio del robot Adafruit ( http://mng.bz/5oOB ) utilizza il kit Pan-Tilt e fornisce una spiegazione esaustiva su come rimuovere le linguette laterali necessarie per il passaggio successivo.
+    </p>
+  </li>
+  <li>
+    <p align="justify">
+Il kit è dotato di due linguette laterali in nylon morbido che possono essere rimosse. È possibile rimuovere una delle linguette laterali ruotandola o utilizzando un tronchese. Ne basta una sola per tenerla in posizione.
+    </p>
+  </li>
+</ul>
