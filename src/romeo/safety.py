@@ -101,8 +101,25 @@ class SafetyBackend:
 
     def set_camera_angles(self, pan: float, tilt: float) -> None:
         with self._lock:
+            if self._active_controller is not None:
+                raise ControllerAccessError("robot is owned by a remote controller")
             self._ensure_open()
-            self.backend.set_camera_angles(pan, tilt)
+            try:
+                self.backend.set_camera_angles(pan, tilt)
+            except Exception:
+                self._best_effort_stop()
+                raise
+
+    def set_camera_angles_for(self, controller_id: str, pan: float, tilt: float) -> None:
+        """Move the camera through an active remote-control lease."""
+
+        with self._lock:
+            self._require_controller(controller_id)
+            try:
+                self.backend.set_camera_angles(pan, tilt)
+            except Exception:
+                self._best_effort_stop()
+                raise
 
     def stop(self) -> None:
         with self._lock:

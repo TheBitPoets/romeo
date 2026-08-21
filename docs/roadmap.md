@@ -10,7 +10,7 @@ hardware non bloccano lo sviluppo delle parti verificabili in CI.
 | M2 — Safety | Completata | Stop, limiti, timeout, watchdog e shutdown fail-safe con test. |
 | M3 — Simulator core | Completata | Differential drive 2D, mondo, collisioni, scenari, clock e grading deterministici. |
 | M4 — Simulator web | Completata | Viewer 2D, protocollo stato/eventi, start/reset e traiettoria. |
-| M5 — TCP | Pianificata | Protocollo testuale, server/client e tastiera leggibile. |
+| M5 — TCP | Completata | Protocollo testuale, server/client e tastiera leggibile. |
 | M6 — HTTP/REST/WebSocket | Pianificata | FastAPI, status, controllo e telemetria real-time. |
 | M7 — Camera | Pianificata | CameraService, Picamera2, foto, pan/tilt e MJPEG. |
 | M8 — Gamepad | Pianificata | Client pygame, mapping configurabile e stop su disconnessione. |

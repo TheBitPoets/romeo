@@ -11,6 +11,10 @@ requires-python = ">=3.10"
 authors = [{ name = "TheBitLab" }]
 dependencies = []
 
+[project.scripts]
+romeo-keyboard = "romeo.network.keyboard:main"
+romeo-tcp-server = "romeo.network.server:main"
+
 [project.optional-dependencies]
 hardware = ["adafruit-circuitpython-crickit>=2.3"]
 web = [

@@ -71,12 +71,16 @@ def test_only_one_controller_can_drive_and_disconnect_stops() -> None:
         safety.claim_controller("gamepad")
     with pytest.raises(ControllerAccessError):
         safety.set_motor_speeds(0.3, 0.3)
+    with pytest.raises(ControllerAccessError):
+        safety.set_camera_angles(20.0, 30.0)
 
     safety.set_motor_speeds_for("keyboard", 0.3, 0.3)
+    safety.set_camera_angles_for("keyboard", 20.0, 30.0)
     safety.release_controller("keyboard")
 
     assert safety.active_controller is None
     assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
+    assert (backend.pan_angle, backend.tilt_angle) == (20.0, 30.0)
 
 
 def test_close_is_idempotent_and_leaves_motors_zero() -> None:
