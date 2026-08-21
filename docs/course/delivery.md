@@ -4,9 +4,11 @@ Romeo applica il **Course Delivery Standard v1** riusando il portale e i manuali
 
 ## Punti di ingresso
 
-- [Dashboard completo nel repository](../../course/delivery/README.md)
-- [Indice slide docente](../../slides/romeo/README.md)
-- [Delivery Change Log](../../course/delivery/DELIVERY_CHANGELOG.md)
+I materiali del delivery layer che vivono fuori dal source tree Sphinx sono collegati come sorgenti GitHub; i manuali sotto `docs/` restano pagine native del portale.
+
+- [Dashboard completo nel repository](https://github.com/TheBitPoets/romeo/blob/main/course/delivery/README.md)
+- [Indice slide docente](https://github.com/TheBitPoets/romeo/blob/main/slides/romeo/README.md)
+- [Delivery Change Log](https://github.com/TheBitPoets/romeo/blob/main/course/delivery/DELIVERY_CHANGELOG.md)
 - [Manuale studente](../student/index.md)
 - [Manuale docente](../teacher/index.md)
 - [Operations](../operations/index.md)
