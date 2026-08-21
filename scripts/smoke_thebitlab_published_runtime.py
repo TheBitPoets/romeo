@@ -1,5 +1,6 @@
 """Exercise the published Romeo image through the real TheBitLab Docker broker."""
 
+# ruff: noqa: I001 -- TheBitLab is deliberately imported only after sys.path injection below.
 from __future__ import annotations
 
 import argparse
