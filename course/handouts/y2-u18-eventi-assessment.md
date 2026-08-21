@@ -1,6 +1,10 @@
 # Exit ticket — Programmazione a eventi
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: reagire a eventi senza polling fragile.
+
+1. So definire evento, handler e dispatcher?
+2. Posso testare l'handler senza dispositivo?
+3. Un evento ignoto lascia Romeo fermo?
+
+4. Allega un'evidenza dell'esercizio base: Gestisci due eventi di tasto mantenendo l'ordine.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

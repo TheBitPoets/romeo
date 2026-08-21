@@ -18,11 +18,9 @@ Lo scaffold contiene `serve_once` e il thread. Tu completi il client.
 
 ```python
 with socket.create_connection(("127.0.0.1", porta), timeout=2) as client:
-    client.sendall(b"HELLO
-")
+    client.sendall(b"HELLO\n")
     risposta = client.recv(32)
-    assert risposta == b"WELCOME
-"
+    assert risposta == b"WELCOME\n"
 ```
 
 Il timeout impedisce un'attesa infinita; non garantisce che la rete risponda in tempo.

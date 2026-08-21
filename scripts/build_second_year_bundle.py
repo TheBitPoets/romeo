@@ -548,8 +548,8 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
         "instructions": unit.task,
         "consegna": unit.task,
         "student_support_mode": "hint-progressivi",
-        "grading_policy": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
-        "correzione": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
+        "grading_policy": {"compila": True, "test": False, "sandbox": False, "ai_feedback": False},
+        "correzione": {"compila": True, "test": False, "sandbox": False, "ai_feedback": False},
         "metriche": {
             "tempo_stimato_minuti": unit.minutes,
             "traccia_tempo_dichiarato": True,
@@ -558,8 +558,8 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
             "traccia_errori_compilazione": True,
         },
         "rubrica": [
-            {"criterio": "Comportamento di rete verificato", "punti": 5},
-            {"criterio": "Protocollo e validazione", "punti": 2},
+            {"criterio": f"Dimostrazione osservabile: {unit.objective}", "punti": 5},
+            {"criterio": f"Uso e validazione di {unit.concepts}", "punti": 2},
             {"criterio": "Cleanup e safety", "punti": 2},
             {"criterio": "Spiegazione", "punti": 1},
         ],
@@ -766,7 +766,10 @@ def build() -> None:
         )
         write(
             COURSE / assessment,
-            f"# Exit ticket — {unit.title}\n\n1. Motiva la tecnologia scelta.\n2. Scrivi un'invariante del protocollo.\n3. Indica come hai verificato errore, cleanup e safety.\n4. Allega il marker e una seconda evidenza osservabile.\n",
+            f"# Exit ticket — {unit.title}\n\nObiettivo: {unit.objective}.\n\n"
+            + numbered(lesson.self_check)
+            + f"\n\n4. Allega un'evidenza dell'esercizio base: {lesson.base_exercise}\n"
+            + "5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.\n",
         )
         bundle["content"]["units"].append(
             {

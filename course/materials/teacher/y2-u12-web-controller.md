@@ -5,9 +5,9 @@ tradurre input UI in messaggi validi e giustifica protocollo, validazione e clea
 
 ## Prerequisiti e modello mentale
 
-Conosci eventi semplici, payload JSON e conversazione WebSocket ready/comando/ack.
+Sai associare un'azione a un valore, costruire payload JSON e seguire una conversazione WebSocket ready/comando/ack.
 
-Il controller web ha due responsabilità separate: un evento dell'interfaccia sceglie un comando; il trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una funzione pura che traduce azione in payload, così puoi testarla senza clic reali.
+Il controller web ha due responsabilità separate: un'azione su un pulsante sceglie un comando; il trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una funzione pura che traduce azione in payload, così puoi testarla senza clic reali.
 
 ## Conduzione
 

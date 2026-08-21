@@ -1,6 +1,10 @@
 # Exit ticket — Camera come servizio
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: usare una camera sostituibile.
+
+1. Il mio codice funziona con un mock?
+2. La camera viene sempre chiusa?
+3. So spiegare perché l'hardware è isolato?
+
+4. Allega un'evidenza dell'esercizio base: Acquisisci e valida una foto dal mock senza importare Picamera2.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

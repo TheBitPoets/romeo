@@ -5,7 +5,7 @@ separare la mappa dei tasti dal trasporto e garantire lo stop finale e giustific
 
 ## Prerequisiti e modello mentale
 
-Sai gestire un evento con una funzione e conosci il protocollo testuale e lo STOP WebSocket.
+Sai trasformare un valore con una funzione e conosci il protocollo testuale e lo STOP WebSocket.
 
 La tastiera produce tasti, ma il robot accetta comandi. Una funzione pura converte W/A/S/D/SPACE; un client separato trasporta il comando. Lo scaffold gestisce le differenze del terminale e la connessione: lo studente non deve leggere direttamente caratteri grezzi dal sistema operativo.
 

@@ -30,13 +30,13 @@
   "student_support_mode": "hint-progressivi",
   "grading_policy": {
     "compila": true,
-    "test": true,
+    "test": false,
     "sandbox": false,
     "ai_feedback": false
   },
   "correzione": {
     "compila": true,
-    "test": true,
+    "test": false,
     "sandbox": false,
     "ai_feedback": false
   },
@@ -49,11 +49,11 @@
   },
   "rubrica": [
     {
-      "criterio": "Comportamento di rete verificato",
+      "criterio": "Dimostrazione osservabile: integrare video, controllo, telemetria e safety",
       "punti": 5
     },
     {
-      "criterio": "Protocollo e validazione",
+      "criterio": "Uso e validazione di architettura, camera, realtime, fail-safe",
       "punti": 2
     },
     {

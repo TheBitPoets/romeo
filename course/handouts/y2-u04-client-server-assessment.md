@@ -1,6 +1,10 @@
 # Exit ticket — Client e server
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: scambiare byte tra due endpoint.
+
+1. So indicare chi avvia ogni messaggio?
+2. So distinguere stringhe e byte?
+3. So chiudere entrambe le estremità?
+
+4. Allega un'evidenza dell'esercizio base: Completa uno scambio PING/PONG sulla coppia locale.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

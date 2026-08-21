@@ -1,6 +1,10 @@
 # Exit ticket — Il protocollo Romeo/1
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: analizzare comandi testuali con una whitelist.
+
+1. So scrivere la grammatica dei due comandi?
+2. So spiegare perché serve una whitelist?
+3. Il mio codice rifiuta dati invalidi prima dell'azione?
+
+4. Allega un'evidenza dell'esercizio base: Analizza `FORWARD 0.4` e `STOP` verificando nome e argomenti.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

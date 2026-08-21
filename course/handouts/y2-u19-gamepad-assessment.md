@@ -1,6 +1,10 @@
 # Exit ticket — Controller analogico
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: convertire assi in velocità ruote.
+
+1. So spiegare la dead-zone?
+2. Le velocità rispettano sempre i limiti?
+3. Posso testare tutto senza controller fisico?
+
+4. Allega un'evidenza dell'esercizio base: Calcola le ruote per centro e avanti rispettando velocità massima.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

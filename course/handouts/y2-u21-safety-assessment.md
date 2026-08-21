@@ -1,6 +1,10 @@
 # Exit ticket — Safety di rete
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: applicare ownership, timeout e stop.
+
+1. Un secondo controller viene rifiutato?
+2. Timeout, disconnect ed errore portano a zero?
+3. I test non dipendono da attese reali fragili?
+
+4. Allega un'evidenza dell'esercizio base: Dimostra che release azzera entrambi i motori.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

@@ -1,6 +1,10 @@
 # Exit ticket — Una richiesta HTTP
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: riconoscere metodo, status e body.
+
+1. So scomporre una request?
+2. So scomporre una response?
+3. So verificare status e media type prima del body?
+
+4. Allega un'evidenza dell'esercizio base: Esegui GET sul server locale fornito e valida status 200 e body JSON.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

@@ -1,6 +1,10 @@
 # Exit ticket — Tastiera remota sicura
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: separare la mappa dei tasti dal trasporto e garantire lo stop finale.
+
+1. So separare mapping e trasporto?
+2. Ogni uscita dal programma invia STOP?
+3. Esiste un'alternativa ai tasti per chi non può usarli?
+
+4. Allega un'evidenza dell'esercizio base: Trasforma W e SPACE in FORWARD e STOP.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

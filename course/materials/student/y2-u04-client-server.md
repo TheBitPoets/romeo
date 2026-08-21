@@ -19,11 +19,9 @@ import socket
 
 client, server = socket.socketpair()  # coppia locale già collegata
 with client, server:
-    client.sendall(b"PING
-")
+    client.sendall(b"PING\n")
     ricevuto = server.recv(16)
-    print(ricevuto)                    # b'PING
-'
+    print(ricevuto)                    # b'PING\n'
 ```
 
 `recv(16)` può ricevere fino a 16 byte; una rete reale non promette un messaggio intero per ogni `recv`.

@@ -2,6 +2,15 @@
 
 Audit finale eseguito il 21 agosto 2026 sul branch `feat/platform-foundation`.
 
+## Stato pre-merge
+
+La baseline tecnica è verificata, ma la PR non è ancora pronta al merge. Due
+decisioni di progetto restano aperte: boundary sandbox per runtime plugin e
+contratto didattico osservabile degli esercizi di secondo anno. I marker stdout
+sono stati declassati a feedback formativo (`test: false`); starter e solution Y2
+devono essere riallineati dopo la scelta. Anche i grader Y1 che misurano soltanto
+il risultato geometrico vanno distinti dalle evidenze sui costrutti Python.
+
 ## Evidenze automatiche
 
 - API `romeo.easy` e `Robot` esercitate con mock, simulatore e backend override;

@@ -133,9 +133,9 @@ import socket
 
 client, server = socket.socketpair()  # coppia locale già collegata
 with client, server:
-    client.sendall(b"PING\n")
+    client.sendall(b"PING\\n")
     ricevuto = server.recv(16)
-    print(ricevuto)                    # b'PING\n'
+    print(ricevuto)                    # b'PING\\n'
 ```
 
 `recv(16)` può ricevere fino a 16 byte; una rete reale non promette un messaggio intero per ogni `recv`.""",
@@ -165,9 +165,9 @@ with client, server:
 
 ```python
 with socket.create_connection(("127.0.0.1", porta), timeout=2) as client:
-    client.sendall(b"HELLO\n")
+    client.sendall(b"HELLO\\n")
     risposta = client.recv(32)
-    assert risposta == b"WELCOME\n"
+    assert risposta == b"WELCOME\\n"
 ```
 
 Il timeout impedisce un'attesa infinita; non garantisce che la rete risponda in tempo.""",
@@ -350,9 +350,9 @@ L'ordine fa parte del protocollo; la chiusura del `with` termina la connessione.
         glossary=(("WebSocket", "canale persistente e bidirezionale"), ("frame", "unità trasmessa sul WebSocket"), ("ack", "risposta che conferma la gestione del messaggio")),
     ),
     "web-controller": LessonContent(
-        prerequisites="Conosci eventi semplici, payload JSON e conversazione WebSocket ready/comando/ack.",
+        prerequisites="Sai associare un'azione a un valore, costruire payload JSON e seguire una conversazione WebSocket ready/comando/ack.",
         mental_model=(
-            "Il controller web ha due responsabilità separate: un evento dell'interfaccia sceglie un comando; il "
+            "Il controller web ha due responsabilità separate: un'azione su un pulsante sceglie un comando; il "
             "trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una "
             "funzione pura che traduce azione in payload, così puoi testarla senza clic reali."
         ),
@@ -373,10 +373,10 @@ Il pulsante e la tastiera possono chiamare la stessa funzione; il feedback mostr
         common_errors=("Mescolare selezione del comando e dettagli del WebSocket in ogni pulsante.", "Inviare stringhe diverse dal protocollo documentato.", "Mostrare stato soltanto tramite colore senza testo."),
         self_check=("So testare il mapping senza browser?", "Tutti i controlli producono payload validi?", "L'interfaccia mostra connessione e ack in testo?"),
         accessibility="Ogni pulsante ha etichetta, focus da tastiera e stato testuale; non usare soltanto colore, hover o posizione per comunicare il comando.",
-        glossary=(("evento UI", "azione prodotta da pulsante o tastiera"), ("payload", "dati contenuti nel messaggio"), ("feedback", "informazione visibile sul risultato del comando")),
+        glossary=(("azione UI", "scelta prodotta da pulsante o tastiera; il modello generale di evento arriverà in U18"), ("payload", "dati contenuti nel messaggio"), ("feedback", "informazione visibile sul risultato del comando")),
     ),
     "tastiera-remota": LessonContent(
-        prerequisites="Sai gestire un evento con una funzione e conosci il protocollo testuale e lo STOP WebSocket.",
+        prerequisites="Sai trasformare un valore con una funzione e conosci il protocollo testuale e lo STOP WebSocket.",
         mental_model=(
             "La tastiera produce tasti, ma il robot accetta comandi. Una funzione pura converte W/A/S/D/SPACE; un "
             "client separato trasporta il comando. Lo scaffold gestisce le differenze del terminale e la connessione: "
@@ -397,7 +397,7 @@ Lo STOP va inviato anche in `finally`, perché un errore o la chiusura non devon
         common_errors=("Inviare il tasto grezzo invece del comando di protocollo.", "Dimenticare SPACE o lo STOP finale.", "Dipendere da una API terminal-specific non presente sul computer dello studente."),
         self_check=("So separare mapping e trasporto?", "Ogni uscita dal programma invia STOP?", "Esiste un'alternativa ai tasti per chi non può usarli?"),
         accessibility="Mantieni anche pulsanti cliccabili e rimappabili; stampa il comando riconosciuto e non richiedere pressioni simultanee.",
-        glossary=(("mapping", "corrispondenza fra tasto e comando"), ("timeout", "tempo massimo senza un nuovo evento"), ("finally", "blocco eseguito anche quando avviene un errore")),
+        glossary=(("mapping", "corrispondenza fra tasto e comando"), ("timeout", "tempo massimo senza un nuovo tasto"), ("finally", "blocco eseguito anche quando avviene un errore")),
     ),
     "camera": LessonContent(
         prerequisites="Sai usare oggetti, chiamare metodi e chiudere risorse con `try/finally`.",
@@ -410,7 +410,7 @@ Lo STOP va inviato anche in `finally`, perché un errore o la chiusura non devon
 camera = MockCameraService()
 try:
     foto = camera.capture_photo()
-    assert foto.startswith(b"\xff\xd8")
+    assert foto.startswith(b"\\xff\\xd8")
 finally:
     camera.close()
 ```
@@ -495,7 +495,7 @@ Content-Type: image/jpeg
 
 ```python
 primo = next(camera.frames(frames_per_second=10))
-assert primo.startswith(b"\xff\xd8")
+assert primo.startswith(b"\\xff\\xd8")
 ```
 
 Il secondo frammento controlla il JPEG; il boundary appartiene al livello HTTP multipart.""",
@@ -513,7 +513,8 @@ Il secondo frammento controlla il JPEG; il boundary appartiene al livello HTTP m
         mental_model=(
             "Un evento descrive qualcosa che è accaduto; un handler è una funzione che decide come reagire. Il dispatcher "
             "consegna ogni evento all'handler. Lo scaffold contiene il ciclo della coda: oggi scriviamo reazioni semplici, "
-            "non callback, async o event loop complessi. Questa unità va studiata prima dei controller interattivi."
+            "non callback, async o event loop complessi. U12 e U13 hanno usato azioni e tasti singoli; qui costruiamo "
+            "per la prima volta il modello generale che permette di trattarli allo stesso modo."
         ),
         example="""```python
 def handle_event(evento):

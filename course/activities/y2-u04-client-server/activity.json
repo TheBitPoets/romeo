@@ -30,13 +30,13 @@
   "student_support_mode": "hint-progressivi",
   "grading_policy": {
     "compila": true,
-    "test": true,
+    "test": false,
     "sandbox": false,
     "ai_feedback": false
   },
   "correzione": {
     "compila": true,
-    "test": true,
+    "test": false,
     "sandbox": false,
     "ai_feedback": false
   },
@@ -49,11 +49,11 @@
   },
   "rubrica": [
     {
-      "criterio": "Comportamento di rete verificato",
+      "criterio": "Dimostrazione osservabile: scambiare byte tra due endpoint",
       "punti": 5
     },
     {
-      "criterio": "Protocollo e validazione",
+      "criterio": "Uso e validazione di client, server, send, recv",
       "punti": 2
     },
     {

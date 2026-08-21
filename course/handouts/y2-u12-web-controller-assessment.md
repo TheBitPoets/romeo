@@ -1,6 +1,10 @@
 # Exit ticket — Controller web
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: tradurre input UI in messaggi validi.
+
+1. So testare il mapping senza browser?
+2. Tutti i controlli producono payload validi?
+3. L'interfaccia mostra connessione e ack in testo?
+
+4. Allega un'evidenza dell'esercizio base: Traduci pulsanti avanti e stop in payload validi.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

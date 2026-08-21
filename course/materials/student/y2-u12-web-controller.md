@@ -6,11 +6,11 @@ In questa unità imparerai a tradurre input UI in messaggi validi.
 
 ## Che cosa sai già
 
-Conosci eventi semplici, payload JSON e conversazione WebSocket ready/comando/ack.
+Sai associare un'azione a un valore, costruire payload JSON e seguire una conversazione WebSocket ready/comando/ack.
 
 ## Modello mentale
 
-Il controller web ha due responsabilità separate: un evento dell'interfaccia sceglie un comando; il trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una funzione pura che traduce azione in payload, così puoi testarla senza clic reali.
+Il controller web ha due responsabilità separate: un'azione su un pulsante sceglie un comando; il trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una funzione pura che traduce azione in payload, così puoi testarla senza clic reali.
 
 ## Esempio minimo commentato
 
@@ -69,6 +69,6 @@ Ogni pulsante ha etichetta, focus da tastiera e stato testuale; non usare soltan
 
 | Termine | Significato in questa lezione |
 | --- | --- |
-| `evento UI` | azione prodotta da pulsante o tastiera |
+| `azione UI` | scelta prodotta da pulsante o tastiera; il modello generale di evento arriverà in U18 |
 | `payload` | dati contenuti nel messaggio |
 | `feedback` | informazione visibile sul risultato del comando |

@@ -1,4 +1,5 @@
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -67,6 +68,20 @@ def test_course_does_not_claim_a_submission_sandbox() -> None:
         activity = json.loads(path.read_text(encoding="utf-8"))
         assert activity["grading_policy"]["sandbox"] is False
         assert activity["correzione"]["sandbox"] is False
+        if path.parent.name.startswith("y2-"):
+            assert activity["grading_policy"]["test"] is False
+            assert activity["correzione"]["test"] is False
+
+
+def test_all_python_examples_in_student_lessons_compile() -> None:
+    lessons = sorted((COURSE / "materials" / "student").glob("y*-*.md"))
+    examples = []
+    for lesson in lessons:
+        body = lesson.read_text(encoding="utf-8")
+        for index, example in enumerate(re.findall(r"```python\n(.*?)```", body, re.DOTALL), 1):
+            compile(example, f"{lesson.name}:example-{index}", "exec")
+            examples.append(example)
+    assert len(examples) >= 35
 
 
 @pytest.mark.parametrize(

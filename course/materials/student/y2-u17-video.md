@@ -27,7 +27,7 @@ Content-Type: image/jpeg
 
 ```python
 primo = next(camera.frames(frames_per_second=10))
-assert primo.startswith(b"ÿØ")
+assert primo.startswith(b"\xff\xd8")
 ```
 
 Il secondo frammento controlla il JPEG; il boundary appartiene al livello HTTP multipart.

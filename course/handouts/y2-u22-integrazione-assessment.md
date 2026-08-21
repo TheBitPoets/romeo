@@ -1,6 +1,10 @@
 # Exit ticket — Integra controllo e stato
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: collegare comando realtime e telemetria.
+
+1. So distinguere i due canali?
+2. Verifico sia ack sia stato?
+3. La perdita del control porta a motori zero?
+
+4. Allega un'evidenza dell'esercizio base: Collega un comando a un aggiornamento di stato osservabile.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.

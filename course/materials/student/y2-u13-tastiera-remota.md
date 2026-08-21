@@ -6,7 +6,7 @@ In questa unità imparerai a separare la mappa dei tasti dal trasporto e garanti
 
 ## Che cosa sai già
 
-Sai gestire un evento con una funzione e conosci il protocollo testuale e lo STOP WebSocket.
+Sai trasformare un valore con una funzione e conosci il protocollo testuale e lo STOP WebSocket.
 
 ## Modello mentale
 
@@ -68,5 +68,5 @@ Mantieni anche pulsanti cliccabili e rimappabili; stampa il comando riconosciuto
 | Termine | Significato in questa lezione |
 | --- | --- |
 | `mapping` | corrispondenza fra tasto e comando |
-| `timeout` | tempo massimo senza un nuovo evento |
+| `timeout` | tempo massimo senza un nuovo tasto |
 | `finally` | blocco eseguito anche quando avviene un errore |

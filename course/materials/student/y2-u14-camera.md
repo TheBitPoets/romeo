@@ -18,7 +18,7 @@ CameraService è una presa comune: il codice chiede una foto senza sapere se die
 camera = MockCameraService()
 try:
     foto = camera.capture_photo()
-    assert foto.startswith(b"ÿØ")
+    assert foto.startswith(b"\xff\xd8")
 finally:
     camera.close()
 ```

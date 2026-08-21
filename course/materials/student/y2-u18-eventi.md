@@ -10,7 +10,7 @@ Sai definire funzioni, usare condizioni, liste e cicli brevi.
 
 ## Modello mentale
 
-Un evento descrive qualcosa che è accaduto; un handler è una funzione che decide come reagire. Il dispatcher consegna ogni evento all'handler. Lo scaffold contiene il ciclo della coda: oggi scriviamo reazioni semplici, non callback, async o event loop complessi. Questa unità va studiata prima dei controller interattivi.
+Un evento descrive qualcosa che è accaduto; un handler è una funzione che decide come reagire. Il dispatcher consegna ogni evento all'handler. Lo scaffold contiene il ciclo della coda: oggi scriviamo reazioni semplici, non callback, async o event loop complessi. U12 e U13 hanno usato azioni e tasti singoli; qui costruiamo per la prima volta il modello generale che permette di trattarli allo stesso modo.
 
 ## Esempio minimo commentato
 

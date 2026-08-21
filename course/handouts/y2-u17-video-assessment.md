@@ -1,6 +1,10 @@
 # Exit ticket — Stream MJPEG
 
-1. Motiva la tecnologia scelta.
-2. Scrivi un'invariante del protocollo.
-3. Indica come hai verificato errore, cleanup e safety.
-4. Allega il marker e una seconda evidenza osservabile.
+Obiettivo: riconoscere frame e boundary.
+
+1. So spiegare perché MJPEG contiene più JPEG?
+2. So trovare il boundary?
+3. Il mio lettore può terminare in modo pulito?
+
+4. Allega un'evidenza dell'esercizio base: Leggi e valida due frame consecutivi dal mock.
+5. Descrivi un errore osservato e il cleanup eseguito. Il marker da solo non vale come evidenza.
