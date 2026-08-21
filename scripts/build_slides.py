@@ -7,11 +7,11 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SLIDES_ROOT = ROOT / "slides" / "romeo"
@@ -44,9 +44,13 @@ def validate_sources() -> None:
         errors.append(f"expected Romeo decks 00..09, found {numbers}")
 
     curriculum = json.loads(CURRICULUM.read_text(encoding="utf-8"))
-    year_counts = {int(year["year"]): len(year["units"]) for year in curriculum["years"]}
+    year_counts = {
+        int(year["year"]): len(year["units"]) for year in curriculum["years"]
+    }
     if year_counts != {1: 20, 2: 23}:
-        errors.append(f"expected curriculum unit counts {{1: 20, 2: 23}}, found {year_counts}")
+        errors.append(
+            f"expected curriculum unit counts {{1: 20, 2: 23}}, found {year_counts}"
+        )
 
     slide_index = INDEX.read_text(encoding="utf-8") if INDEX.exists() else ""
     delivery = DELIVERY.read_text(encoding="utf-8") if DELIVERY.exists() else ""
@@ -77,8 +81,13 @@ def validate_sources() -> None:
         if not (ROOT / target).exists():
             errors.append(f"missing authoritative delivery target {target}")
 
-    if "romeo-doctor" not in (ROOT / "docs" / "hardware" / "preflight.md").read_text(encoding="utf-8"):
-        errors.append("preflight documentation no longer records the romeo-doctor boundary")
+    preflight_text = (ROOT / "docs" / "hardware" / "preflight.md").read_text(
+        encoding="utf-8"
+    )
+    if "romeo-doctor" not in preflight_text:
+        errors.append(
+            "preflight documentation no longer records the romeo-doctor boundary"
+        )
 
     if errors:
         raise SystemExit("Romeo delivery validation failed:\n- " + "\n- ".join(errors))
@@ -99,7 +108,15 @@ def run_marp(output_dir: Path, fmt: str, browser: str) -> None:
         path.unlink(missing_ok=True)
 
     parallel = "1" if fmt == "pptx" else "4"
-    cmd = [npx, "--yes", MARP_PACKAGE, "--html", "--allow-local-files", "--parallel", parallel]
+    cmd = [
+        npx,
+        "--yes",
+        MARP_PACKAGE,
+        "--html",
+        "--allow-local-files",
+        "--parallel",
+        parallel,
+    ]
     if fmt == "pdf":
         cmd.extend(["--pdf", "--pdf-outlines", "--browser", browser])
     elif fmt == "pptx":
@@ -110,7 +127,7 @@ def run_marp(output_dir: Path, fmt: str, browser: str) -> None:
 
     try:
         subprocess.run(cmd, cwd=ROOT, check=True)
-        for source, built in zip(sources, generated):
+        for source, built in zip(sources, generated, strict=True):
             if not built.exists():
                 raise SystemExit(f"missing generated artifact {built}")
             target = output_dir / source.relative_to(SLIDES_ROOT).with_suffix(f".{fmt}")
@@ -133,8 +150,17 @@ def write_manifest(output: Path, formats: list[str]) -> None:
     artifacts = []
     for path in sorted(output.rglob("*")):
         if path.is_file() and path.name not in {"MANIFEST.json", "SHA256SUMS.txt"}:
-            artifacts.append({"path": path.relative_to(output).as_posix(), "sha256": sha256(path), "bytes": path.stat().st_size})
-    sources = [{"path": p.relative_to(ROOT).as_posix(), "sha256": sha256(p)} for p in decks()]
+            artifacts.append(
+                {
+                    "path": path.relative_to(output).as_posix(),
+                    "sha256": sha256(path),
+                    "bytes": path.stat().st_size,
+                }
+            )
+    sources = [
+        {"path": path.relative_to(ROOT).as_posix(), "sha256": sha256(path)}
+        for path in decks()
+    ]
     manifest = {
         "schema": "thebitpoets.course-slides-artifact.v1",
         "course": "romeo-python-robotics",
@@ -146,8 +172,12 @@ def write_manifest(output: Path, formats: list[str]) -> None:
         "source_decks": sources,
         "artifacts": artifacts,
     }
-    (output / "MANIFEST.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (output / "SHA256SUMS.txt").write_text("".join(f"{item['sha256']}  {item['path']}\n" for item in artifacts), encoding="utf-8")
+    manifest_text = json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+    (output / "MANIFEST.json").write_text(manifest_text, encoding="utf-8")
+    checksums = "".join(
+        f"{item['sha256']}  {item['path']}\n" for item in artifacts
+    )
+    (output / "SHA256SUMS.txt").write_text(checksums, encoding="utf-8")
 
 
 def main() -> int:
@@ -160,7 +190,9 @@ def main() -> int:
 
     validate_sources()
     if args.check_only:
-        print(f"OK: 10 macro decks cover curriculum 20+23 units; Marp {MARP_CLI_VERSION}")
+        print(
+            f"OK: 10 macro decks cover curriculum 20+23 units; Marp {MARP_CLI_VERSION}"
+        )
         return 0
 
     formats = [part.strip() for part in args.formats.split(",") if part.strip()]
