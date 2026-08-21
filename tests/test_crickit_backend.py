@@ -41,6 +41,31 @@ def test_crickit_wiring_and_calibration() -> None:
     assert board.onboard_pixel.color == 0x0A141E
 
 
+def test_crickit_applies_proportional_trim_without_moving_a_stopped_motor() -> None:
+    board = fake_board()
+    backend = CrickitBackend(board, CrickitConfig(left_trim=-0.25, right_trim=0.5))
+
+    backend.set_motor_speeds(0.4, 0.0)
+
+    assert board.dc_motor_2.throttle == pytest.approx(0.3)
+    assert board.dc_motor_1.throttle == 0.0
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), 1.1, -1.1])
+def test_crickit_rejects_invalid_trim(value: float) -> None:
+    with pytest.raises(ValueError, match="trim"):
+        CrickitConfig(left_trim=value)
+
+
+def test_trim_never_exceeds_backend_safety_limit() -> None:
+    hardware = fake_board()
+    backend = CrickitBackend(hardware, CrickitConfig(right_trim=1.0, max_speed=0.2))
+
+    backend.set_motor_speeds(0.0, 0.2)
+
+    assert hardware.dc_motor_1.throttle == 0.2
+
+
 def test_crickit_stops_after_motor_write_error() -> None:
     class BrokenMotor:
         @property

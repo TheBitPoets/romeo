@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/TheBitPoets/romeo/schemas/romeo.hardware_diagnostic.v1",
+  "title": "Romeo hardware diagnostic report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "ready", "checks", "calibration", "hardware"],
+  "properties": {
+    "schema_version": {"const": "romeo.hardware_diagnostic.v1"},
+    "status": {
+      "enum": ["not_commissioned", "commissioned", "preflight_failed", "ready"]
+    },
+    "ready": {"type": "boolean"},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "detail", "measured"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed", "skipped", "warning"]},
+          "detail": {"type": "string", "minLength": 1},
+          "measured": {}
+        }
+      }
+    },
+    "calibration": {"type": "object"},
+    "hardware": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "ready"}}, "required": ["status"]},
+      "then": {"properties": {"ready": {"const": true}}},
+      "else": {"properties": {"ready": {"const": false}}}
+    }
+  ]
+}

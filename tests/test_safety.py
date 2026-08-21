@@ -48,6 +48,62 @@ def test_watchdog_stops_after_command_timeout() -> None:
     clock.now += 0.02
     assert safety.poll()
     assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
+    assert safety.last_watchdog_stop_at == clock.now
+
+
+def test_command_timeout_reconfiguration_stops_before_applying() -> None:
+    safety, backend, _ = safe_backend()
+    safety.set_motor_speeds(0.5, 0.5)
+
+    safety.configure_command_timeout(0.2)
+
+    assert safety.command_timeout == 0.2
+    assert backend.left_speed == backend.right_speed == 0.0
+
+
+def test_speed_reconfiguration_stops_before_applying() -> None:
+    safety, backend, _ = safe_backend()
+    safety.set_motor_speeds(0.5, 0.5)
+
+    safety.configure_max_speed(0.2)
+
+    assert safety.max_speed == 0.2
+    assert backend.left_speed == backend.right_speed == 0.0
+
+
+def test_watchdog_timestamp_includes_backend_stop_latency() -> None:
+    clock = FakeClock()
+
+    class SlowStopBackend(MockBackend):
+        def stop(self) -> None:
+            clock.now += 0.12
+            super().stop()
+
+    safety, _, _ = safe_backend(SlowStopBackend(), clock=clock)
+    safety.set_motor_speeds(0.5, 0.5)
+    clock.now += 0.51
+
+    assert safety.poll()
+    assert safety.last_watchdog_stop_at == pytest.approx(10.63)
+
+
+def test_background_watchdog_uses_reconfigured_shorter_timeout() -> None:
+    stopped = threading.Event()
+
+    class ObservableBackend(MockBackend):
+        def stop(self) -> None:
+            super().stop()
+            stopped.set()
+
+    backend = ObservableBackend()
+    safety = SafetyBackend(backend, command_timeout=1.0, background_watchdog=True)
+    safety.configure_command_timeout(0.05)
+    stopped.clear()
+    safety.set_motor_speeds(0.2, 0.2)
+
+    assert stopped.wait(timeout=0.25)
+    assert safety.last_watchdog_stop_at is not None
+    safety.close()
 
 
 def test_heartbeat_extends_watchdog_deadline() -> None:

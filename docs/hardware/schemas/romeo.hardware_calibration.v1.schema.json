@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/TheBitPoets/romeo/schemas/romeo.hardware_calibration.v1",
+  "title": "Romeo physical unit calibration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_defaults", "unit_calibration", "commissioning"],
+  "properties": {
+    "schema_version": {"const": "romeo.hardware_calibration.v1"},
+    "model_defaults": {"$ref": "#/$defs/calibration"},
+    "unit_calibration": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/calibration"}]
+    },
+    "commissioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "timestamp", "package_version", "hardware_fingerprint",
+        "watchdog_samples_ms"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["not_commissioned", "commissioned", "preflight_failed", "ready"]
+        },
+        "timestamp": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+            }
+          ]
+        },
+        "package_version": {"type": ["string", "null"]},
+        "hardware_fingerprint": {"type": ["string", "null"]},
+        "watchdog_samples_ms": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {"type": "number", "minimum": 0.001, "maximum": 10000}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "calibration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left_inverted", "right_inverted", "left_trim", "right_trim", "speed_limit",
+        "pan_min", "pan_max", "tilt_min", "tilt_max", "watchdog_timeout"
+      ],
+      "properties": {
+        "left_inverted": {"type": "boolean"},
+        "right_inverted": {"type": "boolean"},
+        "left_trim": {"type": "number", "minimum": -1, "maximum": 1},
+        "right_trim": {"type": "number", "minimum": -1, "maximum": 1},
+        "speed_limit": {"type": "number", "minimum": 0.01, "maximum": 1},
+        "pan_min": {"type": "number", "minimum": 0, "maximum": 180},
+        "pan_max": {"type": "number", "minimum": 0, "maximum": 180},
+        "tilt_min": {"type": "number", "minimum": 0, "maximum": 180},
+        "tilt_max": {"type": "number", "minimum": 0, "maximum": 180},
+        "watchdog_timeout": {"type": "number", "minimum": 0.05, "maximum": 10}
+      },
+      "x-romeo-constraints": ["pan_min < pan_max", "tilt_min < tilt_max"]
+    }
+  }
+}
