@@ -5,6 +5,7 @@ Il Course Bundle contiene **43 unità**: 20 per il primo anno e 23 per il second
 ```{toctree}
 :maxdepth: 2
 
+methodology
 pedagogical-audit
 generated/index
 ```
