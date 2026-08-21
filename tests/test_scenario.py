@@ -38,16 +38,16 @@ def test_scenario_parses_obstacles_and_data_driven_checks() -> None:
                 {
                     "id": "finish",
                     "name": "Reach the finish area",
-                    "type": "position",
-                    "parameters": {"target": [5, 4], "tolerance": 0.2},
+                    "type": "reach_position",
+                    "parameters": {"x": 5, "y": 4, "tolerance": 0.2},
                 }
             ],
         }
     )
 
     assert scenario.obstacles[0].height == 2.0
-    assert scenario.checks[0].type == "position"
-    assert scenario.checks[0].parameters["target"] == (5, 4)
+    assert scenario.checks[0].type == "reach_position"
+    assert scenario.checks[0].parameters["x"] == 5
     with pytest.raises(TypeError):
         scenario.checks[0].parameters["new"] = 1  # type: ignore[index]
 
@@ -77,8 +77,18 @@ def test_from_json_reads_utf8_file(tmp_path: Path) -> None:
         (
             {
                 "checks": [
-                    {"id": "one", "name": "One", "type": "position", "parameters": {}},
-                    {"id": "one", "name": "Again", "type": "time", "parameters": {}},
+                    {
+                        "id": "one",
+                        "name": "One",
+                        "type": "is_stopped",
+                        "parameters": {},
+                    },
+                    {
+                        "id": "one",
+                        "name": "Again",
+                        "type": "is_stopped",
+                        "parameters": {},
+                    },
                 ]
             },
             "duplicate check id",
@@ -104,3 +114,34 @@ def test_json_root_must_be_an_object(tmp_path: Path) -> None:
 def test_missing_file_is_reported() -> None:
     with pytest.raises(FileNotFoundError):
         Scenario.from_json("does-not-exist.json")
+
+
+@pytest.mark.parametrize(
+    "check",
+    [
+        {"id": "bad", "name": "Bad", "type": "unknown", "parameters": {}},
+        {
+            "id": "bad",
+            "name": "Bad",
+            "type": "reach_position",
+            "parameters": {"x": 1, "y": 1, "tolerance": -0.1},
+        },
+        {
+            "id": "bad",
+            "name": "Bad",
+            "type": "minimum_motor_commands",
+            "parameters": {"count": 1.5},
+        },
+        {
+            "id": "bad",
+            "name": "Bad",
+            "type": "final_led_color",
+            "parameters": {"red": 300, "green": 0, "blue": 0},
+        },
+    ],
+)
+def test_invalid_grading_check_is_rejected_before_execution(check: dict[str, object]) -> None:
+    with pytest.raises(ValueError):
+        Scenario.from_mapping(
+            {"schema_version": SCENARIO_SCHEMA, "id": "bad-check", "checks": [check]}
+        )

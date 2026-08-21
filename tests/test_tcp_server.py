@@ -62,3 +62,23 @@ async def server_scenario() -> None:
 
 def test_tcp_server_protocol_ownership_and_disconnect_stop() -> None:
     asyncio.run(server_scenario())
+
+
+async def idle_client_scenario() -> None:
+    inner = MockBackend()
+    safety = SafetyBackend(inner, background_watchdog=False)
+    server = TcpRobotServer(safety, port=0, client_idle_timeout=0.02)
+    host, port = await server.start()
+    reader, writer = await asyncio.open_connection(host, port)
+    assert await read_line(reader) == "OK ROMEO/1 READY"
+    writer.write(b"FORWARD 0.4\n")
+    await writer.drain()
+    assert await read_line(reader) == "OK FORWARD"
+    assert await asyncio.wait_for(reader.read(), timeout=0.2) == b""
+    assert inner.left_speed == inner.right_speed == 0.0
+    await server.close()
+    safety.close()
+
+
+def test_tcp_idle_client_loses_lease_and_robot_stops() -> None:
+    asyncio.run(idle_client_scenario())

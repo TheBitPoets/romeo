@@ -111,6 +111,53 @@ def test_backend_failure_triggers_emergency_stop() -> None:
     assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
 
 
+def test_led_failure_triggers_emergency_stop() -> None:
+    class FailingLedBackend(MockBackend):
+        def set_led_color(self, red: int, green: int, blue: int) -> None:
+            raise OSError("LED controller unavailable")
+
+    backend = FailingLedBackend()
+    safety, _, _ = safe_backend(backend)
+    safety.set_motor_speeds(0.4, 0.4)
+
+    with pytest.raises(OSError, match="LED controller unavailable"):
+        safety.set_led_color(0, 0, 255)
+
+    assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
+
+
+def test_claiming_remote_control_stops_existing_local_motion() -> None:
+    safety, backend, _ = safe_backend()
+    safety.set_motor_speeds(0.4, 0.4)
+
+    safety.claim_controller("browser")
+
+    assert safety.active_controller == "browser"
+    assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
+
+
+def test_close_attempts_backend_cleanup_when_stop_fails() -> None:
+    class FailingStopBackend(MockBackend):
+        close_attempted = False
+
+        def stop(self) -> None:
+            raise OSError("stop failed")
+
+        def close(self) -> None:
+            self.close_attempted = True
+            self.closed = True
+
+    backend = FailingStopBackend()
+    safety, _, _ = safe_backend(backend)
+
+    with pytest.raises(OSError, match="stop failed"):
+        safety.close()
+
+    assert backend.close_attempted
+    assert backend.closed
+    assert safety._shutdown.is_set()
+
+
 def test_background_watchdog_stops_without_manual_poll() -> None:
     stopped = threading.Event()
 

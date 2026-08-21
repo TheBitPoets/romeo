@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from collections import deque
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass
 from typing import Any
@@ -37,6 +38,7 @@ class SimulationEngine:
     """Simulate normalized wheel commands using a fixed deterministic clock."""
 
     STATE_SCHEMA = "romeo.simulation.state.v1"
+    HISTORY_LIMIT = 10_000
 
     def __init__(self, scenario: Scenario, *, integration_step: float = 0.02) -> None:
         if not math.isfinite(integration_step) or integration_step <= 0.0:
@@ -56,8 +58,8 @@ class SimulationEngine:
         self.time = 0.0
         self.collisions = 0
         self.closed = False
-        self.trajectory: list[TrajectoryPoint] = []
-        self.events: list[SimulationEvent] = []
+        self.trajectory: deque[TrajectoryPoint] = deque(maxlen=self.HISTORY_LIMIT)
+        self.events: deque[SimulationEvent] = deque(maxlen=self.HISTORY_LIMIT)
         self._event_sequence = 0
         self._record_trajectory()
         if self._collides(self.pose):
@@ -111,6 +113,12 @@ class SimulationEngine:
         remaining = duration
         while remaining > 1e-12:
             delta = min(self.integration_step, remaining)
+            wheel_velocity = max(abs(self.left_speed), abs(self.right_speed)) * (
+                self.scenario.max_wheel_speed
+            )
+            if wheel_velocity > 0.0:
+                # Do not let a single integration step jump across a thin obstacle.
+                delta = min(delta, self.scenario.robot_radius / (2.0 * wheel_velocity))
             self._integrate(delta)
             remaining -= delta
 

@@ -46,18 +46,29 @@ def run_keyboard(
 ) -> None:
     """Run a portable prompt without exposing terminal-specific APIs."""
 
-    output_fn(HELP)
-    while True:
-        key = input_fn("> ")
+    failed = False
+    try:
+        output_fn(HELP)
+        while True:
+            key = input_fn("> ")
+            try:
+                command = command_for_key(key)
+            except ValueError as error:
+                output_fn(str(error))
+                continue
+            if command is None:
+                output_fn("Controllo terminato")
+                return
+            output_fn(client.send(command))
+    except BaseException:
+        failed = True
+        raise
+    finally:
         try:
-            command = command_for_key(key)
-        except ValueError as error:
-            output_fn(str(error))
-            continue
-        if command is None:
-            output_fn("Controllo terminato")
-            return
-        output_fn(client.send(command))
+            client.send(parse_command("STOP"))
+        except Exception:
+            if not failed:
+                raise
 
 
 def main() -> None:

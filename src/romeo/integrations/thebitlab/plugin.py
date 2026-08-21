@@ -17,6 +17,8 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 from uuid import uuid4
 
+from romeo.simulation.scenario import Scenario
+
 RUNTIME_ID = "romeo-sim"
 PLUGIN_VERSION = "0.1.0"
 MAX_SUBMISSION_BYTES = 1_000_000
@@ -25,7 +27,7 @@ MAX_CAPTURE_CHARS = 100_000
 
 @dataclass(frozen=True, slots=True)
 class RuntimeContext:
-    activity: Path
+    activity_path: Path
     workspace: Path
     config_path: Path
     scenario_path: Path
@@ -72,7 +74,11 @@ class RomeoRuntimePlugin:
             "available": True,
             "version": PLUGIN_VERSION,
             "detail": "deterministic headless simulator available",
-            "metadata": {"interactive_available": self._web_available()},
+            "metadata": {
+                "interactive_available": self._web_available(),
+                "execution_isolation": "process-only",
+                "untrusted_submissions_supported": False,
+            },
         }
 
     def launch(self, request: dict[str, Any]) -> dict[str, Any]:
@@ -88,11 +94,11 @@ class RomeoRuntimePlugin:
         session_id = uuid4().hex
         port = self._available_port()
         endpoint = f"http://127.0.0.1:{port}/"
-        environment = os.environ.copy()
+        environment = self._child_environment()
         environment["ROMEO_SCENARIO"] = str(context.scenario_path)
-        environment["PYTHONUTF8"] = "1"
         command = [
             sys.executable,
+            "-I",
             "-m",
             "uvicorn",
             "romeo.web.app:create_app",
@@ -139,8 +145,14 @@ class RomeoRuntimePlugin:
                 detail=str(error),
             )
 
-        run_directory = context.workspace / ".romeo" / "artifacts" / uuid4().hex
-        run_directory.mkdir(parents=True, exist_ok=False)
+        try:
+            run_directory = self._create_run_directory(context.workspace)
+        except (OSError, ValueError) as error:
+            return self._execution_result(
+                "invalid_payload",
+                started_at,
+                detail=f"unsafe artifact directory: {error}",
+            )
         worker_result_path = run_directory / "worker-result.json"
         command = [
             sys.executable,
@@ -156,8 +168,7 @@ class RomeoRuntimePlugin:
             "--max-simulation-seconds",
             str(context.max_simulation_seconds),
         ]
-        environment = os.environ.copy()
-        environment["PYTHONUTF8"] = "1"
+        environment = self._child_environment()
         try:
             completed = subprocess.run(
                 command,
@@ -244,16 +255,22 @@ class RomeoRuntimePlugin:
         paths = request.get("paths")
         if not isinstance(paths, dict):
             raise TypeError("paths must be an object")
-        activity = self._absolute_directory(paths.get("activity"), "paths.activity")
+        activity_path = self._absolute_file(paths.get("activity"), "paths.activity")
+        activity_root = activity_path.parent
         workspace = self._absolute_directory(paths.get("workspace"), "paths.workspace")
-        config_path = self._contained_file(paths.get("config"), activity, "paths.config")
+        config_path = self._contained_file(paths.get("config"), activity_root, "paths.config")
         config = json.loads(config_path.read_text(encoding="utf-8"))
         if not isinstance(config, dict) or config.get("schema_version") != "romeo.thebitlab.v1":
             raise ValueError("config schema_version must be 'romeo.thebitlab.v1'")
         scenario_relative = self._safe_relative(config.get("scenario"), "config.scenario")
-        scenario_path = self._resolved_within(config_path.parent, scenario_relative, activity)
+        scenario_path = self._resolved_within(
+            config_path.parent,
+            scenario_relative,
+            activity_root,
+        )
         if not scenario_path.is_file():
             raise ValueError("configured scenario file does not exist")
+        Scenario.from_json(scenario_path)
         artifact_id = config.get("submission_artifact_id", "main")
         if not isinstance(artifact_id, str) or not artifact_id:
             raise ValueError("submission_artifact_id must be a non-empty string")
@@ -289,7 +306,7 @@ class RomeoRuntimePlugin:
             raise ValueError("max_simulation_seconds must be a positive number")
         stdout_checks = self._stdout_checks(config.get("stdout_checks", []))
         return RuntimeContext(
-            activity,
+            activity_path,
             workspace,
             config_path,
             scenario_path,
@@ -305,6 +322,7 @@ class RomeoRuntimePlugin:
         run_directory: Path,
         result: dict[str, Any],
     ) -> list[dict[str, Any]]:
+        self._assert_run_directory(context.workspace, run_directory)
         state = dict(result["state"])
         trajectory = state.pop("trajectory", [])
         files = {
@@ -315,6 +333,7 @@ class RomeoRuntimePlugin:
         }
         artifacts: list[dict[str, Any]] = []
         for artifact_id, (filename, content, media_type) in files.items():
+            self._assert_run_directory(context.workspace, run_directory)
             path = run_directory / filename
             path.write_text(json.dumps(content, ensure_ascii=False, indent=2), encoding="utf-8")
             artifacts.append(
@@ -325,6 +344,7 @@ class RomeoRuntimePlugin:
                     "size": path.stat().st_size,
                 }
             )
+        self._assert_run_directory(context.workspace, run_directory)
         manifest_path = run_directory / "artifact-manifest.json"
         manifest_relative = manifest_path.relative_to(context.workspace).as_posix()
         manifest = {
@@ -344,6 +364,46 @@ class RomeoRuntimePlugin:
             }
         )
         return artifacts
+
+    @staticmethod
+    def _create_run_directory(workspace: Path) -> Path:
+        workspace = workspace.resolve()
+        current = workspace
+        for segment in (".romeo", "artifacts"):
+            current = current / segment
+            if current.exists() and (current.is_symlink() or not current.is_dir()):
+                raise ValueError(f"{current.name} must be a real directory")
+            current.mkdir(exist_ok=True)
+            if not current.resolve().is_relative_to(workspace):
+                raise ValueError("artifact directory escapes the workspace")
+        run_directory = current / uuid4().hex
+        run_directory.mkdir(exist_ok=False)
+        RomeoRuntimePlugin._assert_run_directory(workspace, run_directory)
+        return run_directory
+
+    @staticmethod
+    def _assert_run_directory(workspace: Path, run_directory: Path) -> None:
+        workspace = workspace.resolve()
+        if run_directory.is_symlink() or not run_directory.resolve().is_relative_to(workspace):
+            raise ValueError("artifact run directory escapes the workspace")
+
+    @staticmethod
+    def _child_environment() -> dict[str, str]:
+        """Pass only platform startup variables, never arbitrary host secrets."""
+
+        allowed = (
+            "SYSTEMROOT",
+            "WINDIR",
+            "COMSPEC",
+            "PATHEXT",
+            "TEMP",
+            "TMP",
+            "LANG",
+            "LC_ALL",
+        )
+        environment = {name: os.environ[name] for name in allowed if name in os.environ}
+        environment["PYTHONUTF8"] = "1"
+        return environment
 
     @staticmethod
     def _test_results(
@@ -438,6 +498,15 @@ class RomeoRuntimePlugin:
         path = Path(value)
         if not path.is_absolute() or not path.is_dir():
             raise ValueError(f"{label} must be an existing absolute directory")
+        return path.resolve()
+
+    @staticmethod
+    def _absolute_file(value: object, label: str) -> Path:
+        if not isinstance(value, str):
+            raise TypeError(f"{label} must be a path string")
+        path = Path(value)
+        if not path.is_absolute() or not path.is_file():
+            raise ValueError(f"{label} must be an existing absolute file")
         return path.resolve()
 
     @staticmethod

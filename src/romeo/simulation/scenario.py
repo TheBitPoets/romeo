@@ -10,6 +10,17 @@ from pathlib import Path
 from types import MappingProxyType
 
 SCENARIO_SCHEMA = "romeo.scenario.v1"
+SUPPORTED_CHECK_TYPES = {
+    "reach_position",
+    "avoid_collisions",
+    "final_orientation",
+    "stop_in_zone",
+    "max_time",
+    "checkpoints",
+    "minimum_motor_commands",
+    "final_led_color",
+    "is_stopped",
+}
 
 
 def _object(value: object, location: str) -> Mapping[str, object]:
@@ -62,6 +73,68 @@ def _freeze_json(value: object, location: str) -> object:
     if isinstance(value, Sequence) and not isinstance(value, (str, bytes)):
         return tuple(_freeze_json(item, f"{location}[{index}]") for index, item in enumerate(value))
     raise ValueError(f"{location} must contain only JSON-compatible values")
+
+
+def _parameter_number(
+    parameters: Mapping[str, object],
+    key: str,
+    location: str,
+    *,
+    default: float | None = None,
+    positive: bool = False,
+) -> float:
+    value = parameters.get(key, default)
+    if value is None:
+        raise ValueError(f"{location}.{key} is required")
+    return _number(value, f"{location}.{key}", positive=positive)
+
+
+def _nonnegative_integer(parameters: Mapping[str, object], key: str, location: str) -> int:
+    value = _parameter_number(parameters, key, location)
+    if value < 0 or not value.is_integer():
+        raise ValueError(f"{location}.{key} must be a non-negative integer")
+    return int(value)
+
+
+def _validate_check_parameters(
+    check_type: str, parameters: Mapping[str, object], location: str
+) -> None:
+    if check_type not in SUPPORTED_CHECK_TYPES:
+        raise ValueError(f"{location}.type is unsupported: {check_type!r}")
+    _parameter_number(parameters, "points", location, default=1.0, positive=True)
+    if check_type in {"reach_position", "stop_in_zone"}:
+        _parameter_number(parameters, "x", location)
+        _parameter_number(parameters, "y", location)
+        _parameter_number(parameters, "tolerance", location, default=0.1, positive=True)
+    elif check_type == "avoid_collisions":
+        _nonnegative_integer(parameters, "max_collisions", location)
+    elif check_type == "final_orientation":
+        _parameter_number(parameters, "degrees", location)
+        _parameter_number(
+            parameters,
+            "tolerance_degrees",
+            location,
+            default=5.0,
+            positive=True,
+        )
+    elif check_type == "max_time":
+        _parameter_number(parameters, "seconds", location, positive=True)
+    elif check_type == "checkpoints":
+        points = _sequence(parameters.get("checkpoints"), f"{location}.checkpoints")
+        if not points:
+            raise ValueError(f"{location}.checkpoints must not be empty")
+        for index, point in enumerate(points):
+            item = _object(point, f"{location}.checkpoints[{index}]")
+            _parameter_number(item, "x", f"{location}.checkpoints[{index}]")
+            _parameter_number(item, "y", f"{location}.checkpoints[{index}]")
+        _parameter_number(parameters, "tolerance", location, default=0.1, positive=True)
+    elif check_type == "minimum_motor_commands":
+        _nonnegative_integer(parameters, "count", location)
+    elif check_type == "final_led_color":
+        for name in ("red", "green", "blue"):
+            component = _nonnegative_integer(parameters, name, location)
+            if component > 255:
+                raise ValueError(f"{location}.{name} must be between 0 and 255")
 
 
 @dataclass(frozen=True, slots=True)
@@ -190,11 +263,13 @@ class Scenario:
             frozen_parameters = _freeze_json(parameters, f"{location}.parameters")
             if not isinstance(frozen_parameters, Mapping):  # pragma: no cover - guaranteed above
                 raise AssertionError("parameters did not freeze to a mapping")
+            check_type = _text(item.get("type"), f"{location}.type")
+            _validate_check_parameters(check_type, frozen_parameters, location)
             checks.append(
                 ScenarioCheck(
                     id=check_id,
                     name=_text(item.get("name"), f"{location}.name"),
-                    type=_text(item.get("type"), f"{location}.type"),
+                    type=check_type,
                     parameters=frozen_parameters,
                 )
             )

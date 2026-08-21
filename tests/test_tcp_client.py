@@ -108,6 +108,6 @@ def test_keyboard_loop_is_input_based_and_retries_invalid_keys() -> None:
 
     run_keyboard(client, input_fn=lambda _prompt: next(entries), output_fn=output.append)
 
-    assert client.commands == [Command("FORWARD", (0.5,))]
+    assert client.commands == [Command("FORWARD", (0.5,)), Command("STOP")]
     assert any("usa W" in line for line in output)
     assert output[-1] == "Controllo terminato"

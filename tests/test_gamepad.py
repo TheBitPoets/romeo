@@ -82,3 +82,21 @@ def test_gamepad_stops_when_device_is_removed() -> None:
     run_gamepad(sender, pygame_module=pygame)
 
     assert sender.commands == [Command("DRIVE", (0.7, 0.7)), Command("STOP")]
+
+
+def test_gamepad_quits_and_attempts_stop_when_initialization_fails() -> None:
+    calls: list[str] = []
+
+    class Sender:
+        def send(self, command: Command) -> str:
+            calls.append(command.name)
+            return "OK"
+
+    pygame = SimpleNamespace(
+        init=lambda: calls.append("init"),
+        quit=lambda: calls.append("quit"),
+        joystick=SimpleNamespace(init=lambda: None, get_count=lambda: 0),
+    )
+    with pytest.raises(RuntimeError, match="no game controller"):
+        run_gamepad(Sender(), pygame_module=pygame)
+    assert calls == ["init", "STOP", "quit"]

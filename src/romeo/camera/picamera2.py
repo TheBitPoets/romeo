@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import math
+import threading
 import time
 from collections.abc import Iterator
 from typing import Any
@@ -38,28 +39,31 @@ class Picamera2CameraService:
         self.warmup_seconds = warmup_seconds
         self._started = False
         self._closed = False
+        self._lock = threading.RLock()
 
     @property
     def available(self) -> bool:
         return not self._closed
 
     def start(self) -> None:
-        if self._closed:
-            raise CameraUnavailableError("camera is closed")
-        if self._started:
-            return
-        configuration = self._camera.create_video_configuration(main={"size": self.resolution})
-        self._camera.configure(configuration)
-        self._camera.start()
-        if self.warmup_seconds:
-            time.sleep(self.warmup_seconds)
-        self._started = True
+        with self._lock:
+            if self._closed:
+                raise CameraUnavailableError("camera is closed")
+            if self._started:
+                return
+            configuration = self._camera.create_video_configuration(main={"size": self.resolution})
+            self._camera.configure(configuration)
+            self._camera.start()
+            if self.warmup_seconds:
+                time.sleep(self.warmup_seconds)
+            self._started = True
 
     def capture_photo(self) -> bytes:
-        self.start()
-        output = io.BytesIO()
-        self._camera.capture_file(output, format="jpeg")
-        return output.getvalue()
+        with self._lock:
+            self.start()
+            output = io.BytesIO()
+            self._camera.capture_file(output, format="jpeg")
+            return output.getvalue()
 
     def frames(self, *, frames_per_second: float = 10.0) -> Iterator[bytes]:
         if not math.isfinite(frames_per_second) or frames_per_second <= 0.0:
@@ -73,10 +77,19 @@ class Picamera2CameraService:
                 time.sleep(remaining)
 
     def close(self) -> None:
-        if self._closed:
-            return
-        if self._started:
-            self._camera.stop()
-        self._camera.close()
-        self._closed = True
-        self._started = False
+        with self._lock:
+            if self._closed:
+                return
+            self._closed = True
+            stop_error: Exception | None = None
+            if self._started:
+                try:
+                    self._camera.stop()
+                except Exception as error:
+                    stop_error = error
+            try:
+                self._camera.close()
+            finally:
+                self._started = False
+            if stop_error is not None:
+                raise stop_error

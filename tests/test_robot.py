@@ -73,3 +73,15 @@ def test_host_can_bind_backend_for_plain_robot_constructor() -> None:
         Robot().forward(0.2)
 
     assert (backend.left_speed, backend.right_speed) == (0.2, 0.2)
+
+
+def test_falsey_backend_is_not_replaced() -> None:
+    class FalseyBackend(MockBackend):
+        def __bool__(self) -> bool:
+            return False
+
+    backend = FalseyBackend()
+
+    Robot(backend).forward(0.2)
+
+    assert (backend.left_speed, backend.right_speed) == (0.2, 0.2)

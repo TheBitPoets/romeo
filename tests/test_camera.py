@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import threading
 from collections.abc import Iterator
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
@@ -67,6 +69,73 @@ def test_picamera2_adapter_uses_current_capture_file_flow() -> None:
         {"main": {"size": (320, 240)}},
     )
     assert hardware.calls[-2:] == ["stop", "close"]
+
+
+def test_picamera2_serializes_concurrent_captures() -> None:
+    class FakeCamera:
+        def __init__(self) -> None:
+            self.active = 0
+            self.overlapped = False
+
+        def create_video_configuration(self, **configuration: object) -> object:
+            return configuration
+
+        def configure(self, configuration: object) -> None:
+            del configuration
+
+        def start(self) -> None:
+            return
+
+        def capture_file(self, output: object, *, format: str) -> None:
+            del format
+            self.active += 1
+            if self.active > 1:
+                self.overlapped = True
+            threading.Event().wait(0.02)
+            output.write(b"jpeg")  # type: ignore[attr-defined]
+            self.active -= 1
+
+        def stop(self) -> None:
+            return
+
+        def close(self) -> None:
+            return
+
+    hardware = FakeCamera()
+    camera = Picamera2CameraService(hardware, warmup_seconds=0)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        assert list(executor.map(lambda _: camera.capture_photo(), range(2))) == [
+            b"jpeg",
+            b"jpeg",
+        ]
+    assert not hardware.overlapped
+
+
+def test_camera_close_still_closes_device_when_stop_fails() -> None:
+    class BrokenStopCamera:
+        def create_video_configuration(self, **configuration: object) -> object:
+            return configuration
+
+        def configure(self, configuration: object) -> None:
+            del configuration
+
+        def start(self) -> None:
+            return
+
+        def stop(self) -> None:
+            raise RuntimeError("stop failed")
+
+        def close(self) -> None:
+            self.closed = True
+
+    hardware = BrokenStopCamera()
+    hardware.closed = False
+    camera = Picamera2CameraService(hardware, warmup_seconds=0)
+    camera.start()
+    with pytest.raises(RuntimeError, match="stop failed"):
+        camera.close()
+    assert hardware.closed
+    assert not camera.available
 
 
 def test_mjpeg_chunks_have_explicit_boundaries_and_lengths() -> None:

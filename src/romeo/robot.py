@@ -12,7 +12,7 @@ class Robot:
     def __init__(self, backend: Backend | None = None, *, speed_limit: float = 1.0) -> None:
         if not 0.0 < speed_limit <= 1.0:
             raise ValueError("speed_limit must be greater than 0 and at most 1")
-        self._backend = backend or create_backend()
+        self._backend = create_backend() if backend is None else backend
         self.speed_limit = speed_limit
         self._closed = False
 

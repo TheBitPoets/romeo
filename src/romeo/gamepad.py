@@ -80,16 +80,16 @@ def run_gamepad(
             raise RuntimeError("pygame is not installed; install the 'gamepad' extra") from error
     else:
         pygame_api = pygame_module
-    pygame_api.init()
-    pygame_api.joystick.init()
-    if pygame_api.joystick.get_count() < 1:
-        pygame_api.quit()
-        raise RuntimeError("no game controller found")
-    joystick = pygame_api.joystick.Joystick(0)
-    joystick.init()
-    clock = pygame_api.time.Clock()
-    previous: Command | None = None
+    failed = False
     try:
+        pygame_api.init()
+        pygame_api.joystick.init()
+        if pygame_api.joystick.get_count() < 1:
+            raise RuntimeError("no game controller found")
+        joystick = pygame_api.joystick.Joystick(0)
+        joystick.init()
+        clock = pygame_api.time.Clock()
+        previous: Command | None = None
         running = True
         while running:
             for event in pygame_api.event.get():
@@ -111,9 +111,15 @@ def run_gamepad(
             elif command.name == "DRIVE" and command.arguments != (0.0, 0.0):
                 client.send(Command("PING"))
             clock.tick(updates_per_second)
+    except BaseException:
+        failed = True
+        raise
     finally:
         try:
             client.send(Command("STOP"))
+        except Exception:
+            if not failed:
+                raise
         finally:
             pygame_api.quit()
 

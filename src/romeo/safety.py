@@ -67,6 +67,9 @@ class SafetyBackend:
             self._ensure_open()
             if self._active_controller not in (None, controller_id):
                 raise ControllerBusyError("another controller is already active")
+            if self._active_controller is None:
+                # A remote lease never inherits movement started by local code.
+                self._stop_locked()
             self._active_controller = controller_id
 
     def release_controller(self, controller_id: str) -> None:
@@ -127,7 +130,11 @@ class SafetyBackend:
             if self._active_controller is not None:
                 raise ControllerAccessError("robot is owned by a remote controller")
             self._ensure_open()
-            self.backend.set_led_color(red, green, blue)
+            try:
+                self.backend.set_led_color(red, green, blue)
+            except Exception:
+                self._best_effort_stop()
+                raise
 
     def stop(self) -> None:
         with self._lock:
@@ -143,15 +150,26 @@ class SafetyBackend:
             return True
 
     def close(self) -> None:
+        stop_error: Exception | None = None
         with self._lock:
             if self._closed:
                 return
-            self._stop_locked()
             self._closed = True
             self._shutdown.set()
+            try:
+                self._stop_locked()
+            except Exception as error:
+                self._deadline = None
+                stop_error = error
         if self._watchdog is not None and self._watchdog is not threading.current_thread():
             self._watchdog.join(timeout=min(self.command_timeout, 1.0))
-        self.backend.close()
+        try:
+            self.backend.close()
+        except Exception:
+            if stop_error is None:
+                raise
+        if stop_error is not None:
+            raise stop_error
 
     def _set_motor_speeds_locked(self, left: float, right: float) -> None:
         self._ensure_open()
@@ -169,8 +187,8 @@ class SafetyBackend:
         )
 
     def _stop_locked(self) -> None:
-        self.backend.stop()
         self._deadline = None
+        self.backend.stop()
 
     def _best_effort_stop(self) -> None:
         self._deadline = None

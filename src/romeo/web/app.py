@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import os
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Callable, Iterator
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any
@@ -27,22 +27,40 @@ STATIC_DIRECTORY = Path(__file__).parent / "static"
 class SimulationSession:
     """Advance an engine for an interactive viewer without changing headless semantics."""
 
-    def __init__(self, engine: SimulationEngine, *, tick_seconds: float = 0.02) -> None:
+    def __init__(
+        self,
+        engine: SimulationEngine,
+        *,
+        tick_seconds: float = 0.02,
+        watchdog: Callable[[], bool] | None = None,
+    ) -> None:
         self.engine = engine
         self.tick_seconds = tick_seconds
         self._task: asyncio.Task[None] | None = None
+        self._lock = asyncio.Lock()
+        self._watchdog = watchdog
 
     @property
     def running(self) -> bool:
         return self._task is not None and not self._task.done()
 
     async def start(self) -> bool:
-        if self.running:
-            return False
-        self._task = asyncio.create_task(self._run(), name="romeo-simulation-session")
-        return True
+        async with self._lock:
+            if self.running:
+                return False
+            self._task = asyncio.create_task(self._run(), name="romeo-simulation-session")
+            return True
 
     async def pause(self, *, stop_motors: bool = True) -> bool:
+        async with self._lock:
+            return await self._pause_locked(stop_motors=stop_motors)
+
+    async def reset(self) -> None:
+        async with self._lock:
+            await self._pause_locked(stop_motors=False)
+            self.engine.reset()
+
+    async def _pause_locked(self, *, stop_motors: bool) -> bool:
         task = self._task
         if task is None:
             if stop_motors:
@@ -56,14 +74,13 @@ class SimulationSession:
             self.engine.stop()
         return True
 
-    async def reset(self) -> None:
-        await self.pause(stop_motors=False)
-        self.engine.reset()
-
     async def _run(self) -> None:
         while True:
             await asyncio.sleep(self.tick_seconds)
-            self.engine.step(self.tick_seconds)
+            if self._watchdog is not None:
+                self._watchdog()
+            if not self.engine.stopped:
+                self.engine.step(self.tick_seconds)
 
 
 def create_app(
@@ -74,8 +91,13 @@ def create_app(
 
     active_engine = engine or _default_engine()
     active_camera = camera or UnavailableCameraService()
-    session = SimulationSession(active_engine)
-    control = SafetyBackend(active_engine, max_speed=1.0, command_timeout=0.75)
+    control = SafetyBackend(
+        active_engine,
+        max_speed=1.0,
+        command_timeout=0.75,
+        background_watchdog=False,
+    )
+    session = SimulationSession(active_engine, watchdog=control.poll)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -132,7 +154,7 @@ def create_app(
     @app.get("/api/camera/photo", responses={200: {"content": {"image/jpeg": {}}}})
     async def camera_photo() -> Response:
         try:
-            photo = active_camera.capture_photo()
+            photo = await asyncio.to_thread(active_camera.capture_photo)
         except CameraUnavailableError as error:
             raise HTTPException(status_code=503, detail=str(error)) from error
         return Response(photo, media_type="image/jpeg", headers={"Cache-Control": "no-store"})
@@ -220,7 +242,11 @@ def create_app(
 
 
 def _session_state(session: SimulationSession) -> dict[str, Any]:
-    state = session.engine.state()
+    state = session.engine.state(include_trajectory=False)
+    state["trajectory"] = [
+        {"time": point.time, "x": point.x, "y": point.y}
+        for point in list(session.engine.trajectory)[-1000:]
+    ]
     state["session_running"] = session.running
     state["events"] = session.engine.event_log()[-20:]
     return state

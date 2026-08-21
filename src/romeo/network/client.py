@@ -68,6 +68,9 @@ class TcpClient:
         try:
             connection.sendall((command.to_line() + "\n").encode("ascii"))
             response = self._read_line()
+        except ClientError:
+            self.close()
+            raise
         except (OSError, UnicodeError) as error:
             self.close()
             raise ClientError(f"connection failed: {error}") from error

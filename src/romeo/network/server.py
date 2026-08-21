@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import itertools
+import math
 from contextlib import suppress
 
 from romeo.network.control import execute_command
@@ -23,14 +24,19 @@ class TcpRobotServer:
         *,
         host: str = "127.0.0.1",
         port: int = 8765,
+        client_idle_timeout: float = 2.0,
     ) -> None:
         if not 0 <= port <= 65535:
             raise ValueError("port must be between 0 and 65535")
+        if not math.isfinite(client_idle_timeout) or client_idle_timeout <= 0.0:
+            raise ValueError("client_idle_timeout must be a positive finite number")
         self.backend = backend
         self.host = host
         self.port = port
+        self.client_idle_timeout = client_idle_timeout
         self._server: asyncio.Server | None = None
         self._writers: set[asyncio.StreamWriter] = set()
+        self._client_tasks: set[asyncio.Task[None]] = set()
         self._controller_ids = itertools.count(1)
 
     @property
@@ -71,6 +77,11 @@ class TcpRobotServer:
         for writer in writers:
             with suppress(ConnectionError):
                 await writer.wait_closed()
+        tasks = tuple(self._client_tasks)
+        for task in tasks:
+            task.cancel()
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
         self.backend.stop()
 
     async def _handle_client(
@@ -79,6 +90,9 @@ class TcpRobotServer:
         writer: asyncio.StreamWriter,
     ) -> None:
         self._writers.add(writer)
+        task = asyncio.current_task()
+        if task is not None:
+            self._client_tasks.add(task)
         controller_id = f"tcp-{next(self._controller_ids)}"
         claimed = False
         try:
@@ -91,7 +105,12 @@ class TcpRobotServer:
             await self._send(writer, "OK ROMEO/1 READY")
             while not reader.at_eof():
                 try:
-                    raw_line = await reader.readline()
+                    raw_line = await asyncio.wait_for(
+                        reader.readline(),
+                        timeout=self.client_idle_timeout,
+                    )
+                except TimeoutError:
+                    return
                 except ValueError:
                     await self._send(writer, "ERR command is too long")
                     return
@@ -113,6 +132,8 @@ class TcpRobotServer:
                 with suppress(ControllerAccessError):
                     self.backend.release_controller(controller_id)
             self._writers.discard(writer)
+            if task is not None:
+                self._client_tasks.discard(task)
             writer.close()
             with suppress(ConnectionError):
                 await writer.wait_closed()
@@ -146,7 +167,11 @@ def main() -> None:
     """Run the teaching TCP server from the command line."""
 
     parser = argparse.ArgumentParser(description="Server TCP didattico di Romeo")
-    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Indirizzo di ascolto; usa 0.0.0.0 solo su una LAN didattica fidata",
+    )
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--backend", choices=("mock", "sim", "crickit"))
     arguments = parser.parse_args()

@@ -24,6 +24,8 @@ def runtime_request(
     workspace = tmp_path / "workspace"
     runtime.mkdir(parents=True)
     workspace.mkdir()
+    activity_path = activity / "activity.json"
+    activity_path.write_text("{}", encoding="utf-8")
     scenario = {
         "schema_version": "romeo.scenario.v1",
         "id": "runtime-straight-line",
@@ -68,7 +70,7 @@ def runtime_request(
         "assignment_id": "assignment-1",
         "student_id": "student-1",
         "paths": {
-            "activity": str(activity.resolve()),
+            "activity": str(activity_path.resolve()),
             "workspace": str(workspace.resolve()),
             "config": str(config_path.resolve()),
         },
@@ -103,6 +105,8 @@ def test_descriptor_and_probe_follow_runtime_v1() -> None:
     }
     assert probe["schema_version"] == "runtime_probe.v1"
     assert probe["available"] is True
+    assert probe["metadata"]["execution_isolation"] == "process-only"
+    assert probe["metadata"]["untrusted_submissions_supported"] is False
 
 
 def test_installed_package_exposes_official_thebitlab_entry_point() -> None:
@@ -206,6 +210,37 @@ def test_wall_clock_timeout_terminates_busy_submission(tmp_path: Path) -> None:
     assert "exceeded 1 seconds" in result["detail"]
 
 
+def test_worker_does_not_inherit_arbitrary_host_secrets(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("ROMEO_TEST_SECRET", "must-not-reach-student")
+    request, _ = runtime_request(
+        tmp_path,
+        "import os\nprint(os.environ.get('ROMEO_TEST_SECRET', 'not-present'))\n",
+    )
+
+    result = create_plugin().run(request)
+
+    assert "must-not-reach-student" not in result["stdout"]
+    assert "not-present" in result["stdout"]
+
+
+def test_artifact_root_symlink_is_rejected(tmp_path: Path) -> None:
+    request, workspace = runtime_request(tmp_path, "print('hello')\n")
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    try:
+        (workspace / ".romeo").symlink_to(outside, target_is_directory=True)
+    except OSError:
+        pytest.skip("directory symlinks are unavailable on this host")
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "invalid_payload"
+    assert "unsafe artifact directory" in result["detail"]
+    assert list(outside.iterdir()) == []
+
+
 def test_invalid_request_is_reported_without_throwing(tmp_path: Path) -> None:
     request, _ = runtime_request(tmp_path, "print('hello')\n")
     request["runtime_id"] = "another-runtime"
@@ -234,6 +269,34 @@ def test_in_process_worker_runs_do_not_reuse_easy_api_backend(tmp_path: Path) ->
     assert second["grade"]["passed"] is True
 
 
+def test_cleanup_does_not_make_missing_student_stop_pass(tmp_path: Path) -> None:
+    request, workspace = runtime_request(
+        tmp_path,
+        "from romeo.easy import forward\n"
+        "from time import sleep\n"
+        "forward(0.5)\n"
+        "sleep(2)\n",
+    )
+    scenario = Path(request["paths"]["config"]).parent / "scenario.json"
+
+    result = execute_submission(workspace / "main.py", scenario, max_simulation_seconds=10)
+
+    checks = {check["id"]: check for check in result["grade"]["checks"]}
+    assert checks["target"]["passed"] is True
+    assert checks["stop"]["passed"] is False
+    assert result["state"]["running"] is True
+
+
+def test_in_process_worker_restores_sys_argv(tmp_path: Path) -> None:
+    request, workspace = runtime_request(tmp_path, "print('ok')\n")
+    scenario = Path(request["paths"]["config"]).parent / "scenario.json"
+    before = list(__import__("sys").argv)
+
+    execute_submission(workspace / "main.py", scenario, max_simulation_seconds=10)
+
+    assert __import__("sys").argv == before
+
+
 @pytest.mark.parametrize("unsafe_path", ["../scenario.json", "runtime//scenario.json", "C:/x.json"])
 def test_runtime_config_rejects_unsafe_paths(tmp_path: Path, unsafe_path: str) -> None:
     request, _ = runtime_request(tmp_path, "print('hello')\n")
@@ -249,17 +312,23 @@ def test_runtime_config_rejects_unsafe_paths(tmp_path: Path, unsafe_path: str) -
 
 
 def test_interactive_launch_returns_endpoint_and_close_is_idempotent(tmp_path: Path) -> None:
-    request, _ = runtime_request(tmp_path, "print('viewer')\n")
+    request, workspace = runtime_request(tmp_path, "print('viewer')\n")
     plugin = create_plugin()
     if not plugin.probe()["metadata"]["interactive_available"]:
         pytest.skip("Romeo web extra is not installed")
 
+    hijack_marker = workspace / "uvicorn-imported.txt"
+    (workspace / "uvicorn.py").write_text(
+        f"from pathlib import Path\nPath({str(hijack_marker)!r}).write_text('unsafe')\n",
+        encoding="utf-8",
+    )
     launch = plugin.launch(request)
     try:
         assert launch["status"] == "started", launch
         with urllib.request.urlopen(launch["endpoint"] + "api/info", timeout=2) as response:
             info = json.load(response)
         assert info["name"] == "Romeo"
+        assert not hijack_marker.exists()
     finally:
         if launch.get("session_id"):
             plugin.close(launch["session_id"])

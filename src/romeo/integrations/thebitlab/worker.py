@@ -36,6 +36,10 @@ def execute_submission(
     standard_error = io.StringIO()
     student_error: str | None = None
     original_sleep = time.sleep
+    original_argv = sys.argv.copy()
+    grade_result: dict[str, Any] | None = None
+    state_result: dict[str, Any] | None = None
+    events_result: list[dict[str, Any]] | None = None
     close_easy_api()
 
     def simulated_sleep(seconds: float) -> None:
@@ -62,26 +66,34 @@ def execute_submission(
         student_error = traceback.format_exc(limit=20)
     finally:
         time.sleep = original_sleep
-        close_easy_api()
-
-    try:
-        grade_result = grade(engine).to_mapping()
-    except Exception:
-        grade_result = {
-            "schema_version": "romeo.grade.v1",
-            "passed": False,
-            "score": 0.0,
-            "checks": [],
-        }
-        if student_error is None:
-            student_error = traceback.format_exc(limit=20)
+        sys.argv = original_argv
+        try:
+            # Grade the student-visible final state before cleanup stops/closes the engine.
+            grade_result = grade(engine).to_mapping()
+        except Exception:
+            grade_result = {
+                "schema_version": "romeo.grade.v1",
+                "passed": False,
+                "score": 0.0,
+                "checks": [],
+            }
+            if student_error is None:
+                student_error = traceback.format_exc(limit=20)
+        finally:
+            state_result = engine.state()
+            events_result = engine.event_log()
+            close_easy_api()
+    if grade_result is None:  # pragma: no cover - defensive narrowing
+        raise AssertionError("grading did not produce a result")
+    if state_result is None or events_result is None:  # pragma: no cover
+        raise AssertionError("grading did not capture final state")
     return {
         "schema_version": "romeo.worker_result.v1",
         "student_error": student_error,
         "stdout": standard_output.getvalue(),
         "stderr": standard_error.getvalue(),
-        "state": engine.state(),
-        "events": engine.event_log(),
+        "state": state_result,
+        "events": events_result,
         "grade": grade_result,
     }
 

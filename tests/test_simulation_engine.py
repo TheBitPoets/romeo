@@ -109,3 +109,27 @@ def test_factory_selects_headless_simulator(monkeypatch: pytest.MonkeyPatch) -> 
     backend = create_backend()
 
     assert isinstance(backend, SimulationEngine)
+
+
+def test_history_is_bounded_under_command_flood() -> None:
+    engine = SimulationEngine(scenario())
+
+    for index in range(engine.HISTORY_LIMIT + 100):
+        engine.set_motor_speeds(0.1 if index % 2 else 0.2, 0.1)
+
+    assert len(engine.events) == engine.HISTORY_LIMIT
+    assert engine.events[-1].sequence == engine.HISTORY_LIMIT + 100
+
+
+def test_high_speed_motion_does_not_tunnel_through_thin_obstacle() -> None:
+    obstacle = RectangleObstacle(x=2.0, y=0.5, width=0.01, height=1.0)
+    engine = SimulationEngine(
+        scenario(max_wheel_speed=100.0, obstacles=(obstacle,)),
+        integration_step=0.5,
+    )
+    engine.set_motor_speeds(1.0, 1.0)
+
+    engine.step(0.1)
+
+    assert engine.collisions == 1
+    assert engine.pose.x < obstacle.x
