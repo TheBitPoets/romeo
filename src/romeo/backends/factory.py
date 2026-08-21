@@ -1,6 +1,7 @@
 """Backend selection without leaking infrastructure into student programs."""
 
 import os
+from pathlib import Path
 
 from romeo.backends.base import Backend
 from romeo.backends.mock import MockBackend
@@ -10,8 +11,8 @@ from romeo.safety import SafetyBackend
 def create_backend(name: str | None = None, *, safety: bool = True) -> Backend:
     """Create a backend selected explicitly or through ``ROMEO_BACKEND``.
 
-    ``mock`` is the safe default on development machines. The simulation backend is
-    added by the simulator milestone and uses the same selection mechanism.
+    ``mock`` is the safe default on development machines. ``sim`` uses the scenario
+    named by ``ROMEO_SCENARIO`` or a small empty arena when the variable is unset.
     """
 
     selected_name = name if name is not None else os.environ.get("ROMEO_BACKEND", "mock")
@@ -22,9 +23,22 @@ def create_backend(name: str | None = None, *, safety: bool = True) -> Backend:
         from romeo.backends.crickit import CrickitBackend
 
         backend = CrickitBackend()
+    elif backend_name == "sim":
+        from romeo.simulation.engine import SimulationEngine
+        from romeo.simulation.scenario import SCENARIO_SCHEMA, Scenario
+
+        scenario_path = os.environ.get("ROMEO_SCENARIO")
+        scenario = (
+            Scenario.from_json(Path(scenario_path))
+            if scenario_path
+            else Scenario.from_mapping(
+                {"schema_version": SCENARIO_SCHEMA, "id": "default-arena"}
+            )
+        )
+        backend = SimulationEngine(scenario)
     else:
         raise ValueError(f"unknown Romeo backend: {backend_name!r}")
-    if not safety:
+    if not safety or backend_name == "sim":
         return backend
     max_speed = float(os.environ.get("ROMEO_MAX_SPEED", "0.7"))
     command_timeout = float(os.environ.get("ROMEO_COMMAND_TIMEOUT", "1.0"))
