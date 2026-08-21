@@ -1,0 +1,204 @@
+from __future__ import annotations
+
+import json
+import time
+import urllib.request
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from romeo.integrations.thebitlab import create_plugin
+
+
+def runtime_request(
+    tmp_path: Path,
+    source: str,
+    *,
+    timeout_seconds: int = 5,
+) -> tuple[dict[str, Any], Path]:
+    activity = tmp_path / "activity"
+    runtime = activity / "runtime"
+    workspace = tmp_path / "workspace"
+    runtime.mkdir(parents=True)
+    workspace.mkdir()
+    scenario = {
+        "schema_version": "romeo.scenario.v1",
+        "id": "runtime-straight-line",
+        "world_width": 3.0,
+        "world_height": 2.0,
+        "start_x": 0.5,
+        "start_y": 1.0,
+        "start_heading_degrees": 0.0,
+        "robot_radius": 0.1,
+        "wheel_base": 0.2,
+        "max_wheel_speed": 0.5,
+        "obstacles": [],
+        "checks": [
+            {
+                "id": "target",
+                "name": "Raggiunge il target",
+                "type": "reach_position",
+                "parameters": {"x": 1.0, "y": 1.0, "tolerance": 0.02, "points": 2},
+            },
+            {
+                "id": "stop",
+                "name": "Si ferma sul target",
+                "type": "stop_in_zone",
+                "parameters": {"x": 1.0, "y": 1.0, "tolerance": 0.02, "points": 1},
+            },
+        ],
+    }
+    (runtime / "scenario.json").write_text(json.dumps(scenario), encoding="utf-8")
+    config = {
+        "schema_version": "romeo.thebitlab.v1",
+        "scenario": "scenario.json",
+        "submission_artifact_id": "main",
+        "max_simulation_seconds": 10,
+    }
+    config_path = runtime / "config.json"
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+    (workspace / "main.py").write_text(source, encoding="utf-8")
+    request = {
+        "schema_version": "runtime_request.v1",
+        "runtime_id": "romeo-sim",
+        "activity_id": "first-movement",
+        "assignment_id": "assignment-1",
+        "student_id": "student-1",
+        "paths": {
+            "activity": str(activity.resolve()),
+            "workspace": str(workspace.resolve()),
+            "config": str(config_path.resolve()),
+        },
+        "submission_artifacts": [
+            {
+                "id": "main",
+                "path": "main.py",
+                "media_type": "text/x-python",
+                "required": True,
+            }
+        ],
+        "timeout_seconds": timeout_seconds,
+        "metadata": {},
+    }
+    return request, workspace
+
+
+def test_descriptor_and_probe_follow_runtime_v1() -> None:
+    plugin = create_plugin()
+
+    descriptor = plugin.describe()
+    probe = plugin.probe()
+
+    assert descriptor["schema_version"] == "runtime_descriptor.v1"
+    assert descriptor["runtime_id"] == "romeo-sim"
+    assert descriptor["api_version"] == "runtime_plugin.v1"
+    assert set(descriptor["capabilities"]) == {
+        "interactive-launch",
+        "headless-run",
+        "deterministic-grade",
+        "artifact-collect",
+    }
+    assert probe["schema_version"] == "runtime_probe.v1"
+    assert probe["available"] is True
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        """from romeo.easy import forward, stop
+from time import sleep
+forward(0.5)
+sleep(2)
+stop()
+print('missione completata')
+""",
+        """from romeo import Robot
+from time import sleep
+robot = Robot()
+robot.forward(0.5)
+sleep(2)
+robot.stop()
+""",
+    ],
+)
+def test_headless_run_executes_same_student_apis_deterministically(
+    tmp_path: Path,
+    source: str,
+) -> None:
+    request, workspace = runtime_request(tmp_path, source)
+    plugin = create_plugin()
+    started = time.monotonic()
+
+    result = plugin.run(request)
+
+    assert time.monotonic() - started < 2.0
+    assert result["schema_version"] == "runtime_execution.v1"
+    assert result["status"] == "passed", result
+    assert result["metadata"]["score"] == 10.0
+    assert all(test["passed"] for test in result["tests"])
+    assert len(result["metadata"]["artifacts"]) == 5
+    for artifact in result["metadata"]["artifacts"]:
+        assert not Path(artifact["path"]).is_absolute()
+        assert (workspace / artifact["path"]).is_file()
+
+
+def test_student_exception_is_a_stable_failed_execution(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "raise RuntimeError('boom')\n")
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "failed"
+    assert result["tests"][0]["name"] == "student program"
+    assert "RuntimeError: boom" in result["stderr"]
+
+
+def test_wall_clock_timeout_terminates_busy_submission(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "while True:\n    pass\n", timeout_seconds=1)
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "timeout"
+    assert "exceeded 1 seconds" in result["detail"]
+
+
+def test_invalid_request_is_reported_without_throwing(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "print('hello')\n")
+    request["runtime_id"] = "another-runtime"
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "invalid_payload"
+    assert "runtime_id" in result["detail"]
+
+
+@pytest.mark.parametrize("unsafe_path", ["../scenario.json", "runtime//scenario.json", "C:/x.json"])
+def test_runtime_config_rejects_unsafe_paths(tmp_path: Path, unsafe_path: str) -> None:
+    request, _ = runtime_request(tmp_path, "print('hello')\n")
+    config_path = Path(request["paths"]["config"])
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["scenario"] = unsafe_path
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "invalid_payload"
+    assert "safe relative POSIX path" in result["detail"]
+
+
+def test_interactive_launch_returns_endpoint_and_close_is_idempotent(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "print('viewer')\n")
+    plugin = create_plugin()
+    if not plugin.probe()["metadata"]["interactive_available"]:
+        pytest.skip("Romeo web extra is not installed")
+
+    launch = plugin.launch(request)
+    try:
+        assert launch["status"] == "started", launch
+        with urllib.request.urlopen(launch["endpoint"] + "api/info", timeout=2) as response:
+            info = json.load(response)
+        assert info["name"] == "Romeo"
+    finally:
+        if launch.get("session_id"):
+            plugin.close(launch["session_id"])
+            plugin.close(launch["session_id"])

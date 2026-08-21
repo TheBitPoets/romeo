@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from collections.abc import AsyncIterator, Iterator
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
@@ -252,8 +253,13 @@ def _command_from_payload(payload: object) -> Command:
 
 
 def _default_engine() -> SimulationEngine:
-    scenario = Scenario.from_mapping(
-        {"schema_version": SCENARIO_SCHEMA, "id": "viewer-default-arena"}
+    scenario_path = os.environ.get("ROMEO_SCENARIO")
+    scenario = (
+        Scenario.from_json(Path(scenario_path))
+        if scenario_path
+        else Scenario.from_mapping(
+            {"schema_version": SCENARIO_SCHEMA, "id": "viewer-default-arena"}
+        )
     )
     return SimulationEngine(scenario)
 

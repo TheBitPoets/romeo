@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
 
 [project]
 name = "thebitlab-romeo"
@@ -16,6 +16,9 @@ romeo-gamepad = "romeo.gamepad:main"
 romeo-keyboard = "romeo.network.keyboard:main"
 romeo-tcp-server = "romeo.network.server:main"
 
+[project.entry-points."thebitlab.runtimes"]
+romeo-sim = "romeo.integrations.thebitlab:create_plugin"
+
 [project.optional-dependencies]
 gamepad = ["pygame>=2.6"]
 hardware = ["adafruit-circuitpython-crickit>=2.3"]
@@ -30,13 +33,11 @@ dev = [
   "pytest>=8.0",
   "pytest-cov>=5.0",
   "ruff>=0.6",
+  "uvicorn>=0.30",
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools.package-data]
-"romeo.web" = ["static/*.css", "static/*.html", "static/*.js"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/romeo"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"

@@ -21,6 +21,8 @@ Le modifiche rilevanti del progetto sono registrate qui.
   pan/tilt tramite il backend Romeo.
 - Client gamepad pygame opzionale con mapping analogico, dead-zone, heartbeat e
   STOP garantito alla disconnessione.
+- Plugin TheBitLab `romeo-sim` con lifecycle ABI, launch interattivo, worker
+  headless deterministico, grading e manifest artifact.
 - Test unitari, simulation/safety/protocol test, lint, typing e CI Python 3.10/3.12.
 - Audit iniziale dei repository Romeo, `marwano/robo`, `2cornot2c` e
   `thebitlab-hardware`, con riferimenti riproducibili e rischi aperti.

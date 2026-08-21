@@ -1,6 +1,7 @@
 import pytest
 
 from romeo import Robot
+from romeo.backends.factory import backend_override
 from romeo.backends.mock import BackendCommand, MockBackend
 
 
@@ -47,3 +48,11 @@ def test_context_manager_stops_and_closes_backend() -> None:
     assert backend.closed
     assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
 
+
+def test_host_can_bind_backend_for_plain_robot_constructor() -> None:
+    backend = MockBackend()
+
+    with backend_override(backend):
+        Robot().forward(0.2)
+
+    assert (backend.left_speed, backend.right_speed) == (0.2, 0.2)
