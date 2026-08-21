@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import io
+import json
+import sys
+
 import pytest
 
+from romeo.integrations.thebitlab import sandbox_worker
 from romeo.integrations.thebitlab.sandbox_worker import (
     execute_behavioral_tests,
     execute_to_trace,
@@ -13,6 +18,126 @@ from romeo.simulation import Scenario, SimulationEngine
 def engine() -> SimulationEngine:
     return SimulationEngine(
         Scenario.from_mapping({"schema_version": "romeo.scenario.v1", "id": "trace"})
+    )
+
+
+def run_main_from_stdin(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    submission: object,
+    request: dict[str, object],
+) -> dict[str, object]:
+    envelope = {
+        "schema_version": "runtime_sandbox_worker_request.v1",
+        "worker_schema": "unused-by-worker",
+        "inputs": [],
+        "request": request,
+    }
+    monkeypatch.chdir(submission)
+    monkeypatch.setattr(sys, "argv", ["sandbox-worker"])
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(envelope)))
+
+    sandbox_worker.main()
+
+    return json.loads(capsys.readouterr().out)
+
+
+def test_main_dispatches_command_trace_from_broker_stdin(
+    tmp_path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (tmp_path / "main.py").write_text(
+        "from romeo.easy import forward, stop\n"
+        "from time import sleep\n"
+        "forward(0.4)\nsleep(1)\nstop()\n",
+        encoding="utf-8",
+    )
+
+    result = run_main_from_stdin(
+        monkeypatch,
+        capsys,
+        tmp_path,
+        {
+            "schema_version": "romeo.sandbox_request.v1",
+            "mode": "command-trace",
+            "entrypoint": "main.py",
+            "max_simulation_seconds": 5,
+            "entrypoints": [],
+        },
+    )
+
+    assert result["schema_version"] == "romeo.command_trace.v1"
+    assert [command["operation"] for command in result["commands"]] == [
+        "motors",
+        "wait",
+        "stop",
+    ]
+
+
+def test_main_dispatches_behavioral_tests_from_broker_stdin(
+    tmp_path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (tmp_path / "main.py").write_text(
+        "def double(value):\n    return value * 2\n", encoding="utf-8"
+    )
+    (tmp_path / "behavioral_tests.py").write_text(
+        "from main import double\n\n"
+        "def test_double_uses_its_argument():\n"
+        "    assert double(4) == 8\n",
+        encoding="utf-8",
+    )
+
+    result = run_main_from_stdin(
+        monkeypatch,
+        capsys,
+        tmp_path,
+        {
+            "schema_version": "romeo.sandbox_request.v1",
+            "mode": "behavioral-tests",
+            "entrypoint": "main.py",
+            "max_simulation_seconds": 5,
+            "entrypoints": ["double"],
+        },
+    )
+
+    assert result["schema_version"] == "romeo.behavioural_result.v1"
+    assert result["exit_code"] == 0
+    assert result["tests"] == [
+        {"name": "test_double_uses_its_argument", "passed": True, "detail": ""}
+    ]
+
+
+def test_legacy_source_dispatches_command_trace_once(
+    tmp_path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source = tmp_path / "main.py"
+    source.write_text("print('legacy')\n", encoding="utf-8")
+    calls = 0
+
+    def execute_once(path, *, max_simulation_seconds):
+        nonlocal calls
+        calls += 1
+        assert path == source
+        assert max_simulation_seconds == 5.0
+        return {"schema_version": "romeo.command_trace.v1"}
+
+    monkeypatch.setattr(sandbox_worker, "execute_to_trace", execute_once)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "sandbox-worker",
+            "--source",
+            str(source),
+            "--max-simulation-seconds",
+            "5",
+        ],
+    )
+
+    sandbox_worker.main()
+
+    assert calls == 1
+    assert json.loads(capsys.readouterr().out)["schema_version"] == (
+        "romeo.command_trace.v1"
     )
 
 

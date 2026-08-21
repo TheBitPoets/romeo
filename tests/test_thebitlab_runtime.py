@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import io
 import json
+import shutil
+import sys
 import time
 import urllib.request
 from importlib.metadata import entry_points
@@ -9,7 +12,7 @@ from typing import Any
 
 import pytest
 
-from romeo.integrations.thebitlab import create_plugin
+from romeo.integrations.thebitlab import create_plugin, sandbox_worker
 from romeo.integrations.thebitlab.worker import execute_submission
 
 
@@ -88,6 +91,56 @@ def runtime_request(
     return request, workspace
 
 
+def execute_broker_contract(
+    request: dict[str, Any],
+    plan: dict[str, Any],
+    container_root: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Materialize the same envelope and read-only input names as the broker."""
+
+    container_root.mkdir()
+    copied_inputs: list[dict[str, str]] = []
+    activity_root = Path(request["paths"]["activity"]).parent
+    workspace = Path(request["paths"]["workspace"])
+    artifacts = {
+        artifact["id"]: workspace / artifact["path"]
+        for artifact in request["submission_artifacts"]
+    }
+    for item in plan["inputs"]:
+        if item["source"] == "submission":
+            source = artifacts[item["artifact_id"]]
+            input_id = item["artifact_id"]
+        else:
+            source = activity_root / item["path"]
+            input_id = item["path"]
+        shutil.copy2(source, container_root / item["target"])
+        copied_inputs.append(
+            {"source": item["source"], "id": input_id, "path": item["target"]}
+        )
+    envelope = {
+        "schema_version": "runtime_sandbox_worker_request.v1",
+        "worker_schema": plan["profile"]["worker_schema"],
+        "inputs": copied_inputs,
+        "request": plan["worker_request"],
+    }
+    monkeypatch.chdir(container_root)
+    monkeypatch.setattr(sys, "argv", ["sandbox-worker"])
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(envelope)))
+
+    sandbox_worker.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    sandbox_result = {
+        "schema_version": "runtime_sandbox_result.v1",
+        "worker_schema": envelope["worker_schema"],
+        "status": "completed",
+        "payload": payload,
+    }
+    return envelope, sandbox_result
+
+
 def test_descriptor_and_probe_follow_runtime_v1() -> None:
     plugin = create_plugin()
 
@@ -141,6 +194,88 @@ def test_sandbox_plan_exposes_only_submission_not_grading_data(
     serialized = json.dumps(plan)
     assert "scenario.json" not in serialized
     assert "checks" not in serialized
+
+
+def test_command_trace_cross_contract_prepare_worker_finalize(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    request, _ = runtime_request(
+        tmp_path,
+        "from romeo.easy import forward, stop\n"
+        "from time import sleep\n"
+        "forward(0.5)\nsleep(2)\nstop()\n",
+    )
+    monkeypatch.setenv(
+        "ROMEO_SANDBOX_IMAGE",
+        "ghcr.io/thebitpoets/romeo-runtime@sha256:" + ("c" * 64),
+    )
+    plugin = create_plugin()
+    plan = plugin.prepare_sandbox(request)
+
+    envelope, sandbox_result = execute_broker_contract(
+        request, plan, tmp_path / "container", monkeypatch, capsys
+    )
+    result = plugin.finalize_sandbox(request, sandbox_result)
+
+    assert plan["profile"]["worker_schema"] == "romeo.command_trace.v1"
+    assert plan["worker_request"]["mode"] == "command-trace"
+    assert envelope["inputs"] == [
+        {"source": "submission", "id": "main", "path": "main.py"}
+    ]
+    assert sandbox_result["payload"]["schema_version"] == plan["profile"][
+        "worker_schema"
+    ]
+    assert result["status"] == "passed"
+    assert result["metadata"]["authoritative"] is True
+
+
+def test_behavioral_cross_contract_prepare_worker_finalize(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    request, _ = runtime_request(tmp_path, "def double(value):\n    return value * 2\n")
+    config_path = Path(request["paths"]["config"])
+    (config_path.parent / "behavioral_tests.py").write_text(
+        "from main import double\n\n"
+        "def test_double_uses_its_argument():\n"
+        "    assert double(4) == 8\n",
+        encoding="utf-8",
+    )
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["behavioral_tests"] = {
+        "path": "behavioral_tests.py",
+        "entrypoints": ["double"],
+    }
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+    monkeypatch.setenv(
+        "ROMEO_SANDBOX_IMAGE",
+        "ghcr.io/thebitpoets/romeo-runtime@sha256:" + ("d" * 64),
+    )
+    plugin = create_plugin()
+    plan = plugin.prepare_sandbox(request)
+
+    envelope, sandbox_result = execute_broker_contract(
+        request, plan, tmp_path / "container", monkeypatch, capsys
+    )
+    result = plugin.finalize_sandbox(request, sandbox_result)
+
+    assert plan["profile"]["worker_schema"] == "romeo.behavioural_result.v1"
+    assert plan["worker_request"]["mode"] == "behavioral-tests"
+    assert [item["path"] for item in envelope["inputs"]] == [
+        "main.py",
+        "behavioral_tests.py",
+    ]
+    assert sandbox_result["payload"]["schema_version"] == plan["profile"][
+        "worker_schema"
+    ]
+    assert sandbox_result["payload"]["tests"] == [
+        {"name": "test_double_uses_its_argument", "passed": True, "detail": ""}
+    ]
+    assert result["status"] == "passed"
+    assert result["metadata"]["authoritative"] is True
 
 
 @pytest.mark.parametrize("image", [None, "ghcr.io/thebitpoets/romeo-runtime:latest"])

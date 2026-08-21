@@ -162,7 +162,7 @@ def main() -> None:
         ) != "main.py":
             raise SystemExit("unsupported sandbox request")
         mode = requested_mode
-        source = Path("/submission/main.py")
+        source = Path("main.py")
         maximum = request.get("max_simulation_seconds")
         if isinstance(maximum, bool) or not isinstance(maximum, (int, float)):
             raise SystemExit("invalid simulation time limit")
@@ -171,13 +171,9 @@ def main() -> None:
             parser.error("--max-simulation-seconds is required with --source")
         source = arguments.source
         maximum = arguments.max_simulation_seconds
-        if mode == "behavioral-tests":
-            result = execute_behavioral_tests(
-                source, Path("/submission/behavioral_tests.py")
-            )
-        else:
-            result = execute_to_trace(source, max_simulation_seconds=float(maximum))
-    if arguments.source is not None:
+    if mode == "behavioral-tests":
+        result = execute_behavioral_tests(source, Path("behavioral_tests.py"))
+    else:
         result = execute_to_trace(source, max_simulation_seconds=float(maximum))
     print(json.dumps(result, ensure_ascii=False, separators=(",", ":")))
 
