@@ -1,0 +1,213 @@
+{
+  "schema_version": "romeo.curriculum.v1",
+  "course_id": "romeo-python-robotics",
+  "language": "it",
+  "years": [
+    {
+      "year": 1,
+      "focus": "Python, programmazione procedurale e robotica 2D",
+      "units": [
+        {
+          "id": "y1-u01-introduzione",
+          "year": 1,
+          "order": 1,
+          "title": "Conosci Romeo",
+          "objective": "eseguire il primo programma e fermare il robot",
+          "estimated_minutes": 45,
+          "difficulty": "A",
+          "activity": "activities/y1-u01-introduzione/activity.json"
+        },
+        {
+          "id": "y1-u02-componenti",
+          "year": 1,
+          "order": 2,
+          "title": "Dai componenti ai comandi",
+          "objective": "collegare API, motori, ruote e LED",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u02-componenti/activity.json"
+        },
+        {
+          "id": "y1-u03-repl",
+          "year": 1,
+          "order": 3,
+          "title": "Esplora con il REPL",
+          "objective": "provare una chiamata alla volta e leggere gli errori",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u03-repl/activity.json"
+        },
+        {
+          "id": "y1-u04-chiamate-funzione",
+          "year": 1,
+          "order": 4,
+          "title": "Chiama una funzione",
+          "objective": "riconoscere nome, parentesi e argomento",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u04-chiamate-funzione/activity.json"
+        },
+        {
+          "id": "y1-u05-led",
+          "year": 1,
+          "order": 5,
+          "title": "Comunica con il LED",
+          "objective": "usare un output immediato per mostrare lo stato",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u05-led/activity.json"
+        },
+        {
+          "id": "y1-u06-motore-singolo",
+          "year": 1,
+          "order": 6,
+          "title": "Controlla una ruota",
+          "objective": "comandare separatamente la ruota sinistra",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u06-motore-singolo/activity.json"
+        },
+        {
+          "id": "y1-u07-due-motori",
+          "year": 1,
+          "order": 7,
+          "title": "Coordina due ruote",
+          "objective": "confrontare velocità delle due ruote",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u07-due-motori/activity.json"
+        },
+        {
+          "id": "y1-u08-avanti-indietro",
+          "year": 1,
+          "order": 8,
+          "title": "Avanti e indietro",
+          "objective": "comporre due movimenti opposti nel tempo",
+          "estimated_minutes": 55,
+          "difficulty": "A",
+          "activity": "activities/y1-u08-avanti-indietro/activity.json"
+        },
+        {
+          "id": "y1-u09-curve-rotazioni",
+          "year": 1,
+          "order": 9,
+          "title": "Curve e rotazioni",
+          "objective": "distinguere curva e rotazione sul posto",
+          "estimated_minutes": 60,
+          "difficulty": "B",
+          "activity": "activities/y1-u09-curve-rotazioni/activity.json"
+        },
+        {
+          "id": "y1-u10-stop-safety",
+          "year": 1,
+          "order": 10,
+          "title": "Stop e sicurezza",
+          "objective": "garantire l'arresto anche al termine di una sequenza",
+          "estimated_minutes": 50,
+          "difficulty": "A",
+          "activity": "activities/y1-u10-stop-safety/activity.json"
+        },
+        {
+          "id": "y1-u11-velocita",
+          "year": 1,
+          "order": 11,
+          "title": "Scegli la velocità",
+          "objective": "confrontare valori normalizzati tra 0 e 1",
+          "estimated_minutes": 55,
+          "difficulty": "A",
+          "activity": "activities/y1-u11-velocita/activity.json"
+        },
+        {
+          "id": "y1-u12-funzioni",
+          "year": 1,
+          "order": 12,
+          "title": "Crea una funzione",
+          "objective": "racchiudere una sequenza in una funzione con parametro",
+          "estimated_minutes": 60,
+          "difficulty": "B",
+          "activity": "activities/y1-u12-funzioni/activity.json"
+        },
+        {
+          "id": "y1-u13-sequenze",
+          "year": 1,
+          "order": 13,
+          "title": "Progetta una sequenza",
+          "objective": "ordinare azioni e durate per una missione",
+          "estimated_minutes": 60,
+          "difficulty": "B",
+          "activity": "activities/y1-u13-sequenze/activity.json"
+        },
+        {
+          "id": "y1-u14-condizioni",
+          "year": 1,
+          "order": 14,
+          "title": "Decidi con if",
+          "objective": "scegliere un comportamento in base a un dato",
+          "estimated_minutes": 60,
+          "difficulty": "B",
+          "activity": "activities/y1-u14-condizioni/activity.json"
+        },
+        {
+          "id": "y1-u15-ciclo-for",
+          "year": 1,
+          "order": 15,
+          "title": "Ripeti con for",
+          "objective": "ripetere un numero noto di azioni",
+          "estimated_minutes": 55,
+          "difficulty": "B",
+          "activity": "activities/y1-u15-ciclo-for/activity.json"
+        },
+        {
+          "id": "y1-u16-ciclo-while",
+          "year": 1,
+          "order": 16,
+          "title": "Controlla un ciclo while",
+          "objective": "usare una condizione e assicurare la terminazione",
+          "estimated_minutes": 60,
+          "difficulty": "B",
+          "activity": "activities/y1-u16-ciclo-while/activity.json"
+        },
+        {
+          "id": "y1-u17-simulazione",
+          "year": 1,
+          "order": 17,
+          "title": "Osserva il simulatore",
+          "objective": "usare traiettoria, clock ed eventi per il debug",
+          "estimated_minutes": 65,
+          "difficulty": "B",
+          "activity": "activities/y1-u17-simulazione/activity.json"
+        },
+        {
+          "id": "y1-u18-coordinate",
+          "year": 1,
+          "order": 18,
+          "title": "Raggiungi una coordinata",
+          "objective": "tradurre metri e orientamento in comandi",
+          "estimated_minutes": 70,
+          "difficulty": "C",
+          "activity": "activities/y1-u18-coordinate/activity.json"
+        },
+        {
+          "id": "y1-u19-missioni",
+          "year": 1,
+          "order": 19,
+          "title": "Completa una missione",
+          "objective": "scomporre un percorso in segmenti verificabili",
+          "estimated_minutes": 80,
+          "difficulty": "C",
+          "activity": "activities/y1-u19-missioni/activity.json"
+        },
+        {
+          "id": "y1-u20-capstone",
+          "year": 1,
+          "order": 20,
+          "title": "Capstone: consegna robotica",
+          "objective": "progettare, testare e spiegare una missione completa",
+          "estimated_minutes": 120,
+          "difficulty": "C",
+          "activity": "activities/y1-u20-capstone/activity.json"
+        }
+      ]
+    }
+  ]
+}

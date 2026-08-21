@@ -1,0 +1,5 @@
+# Exit ticket — Raggiungi una coordinata
+
+1. Spiega con parole tue come tradurre metri e orientamento in comandi.
+2. Indica un errore che il simulatore ti ha aiutato a trovare.
+3. Cerchia: autonomo / con un hint / con guida. Motiva con un'evidenza del run.

@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "id": "romeo-y1-u06-motore-singolo",
+  "title": "Controlla una ruota",
+  "titolo": "Controlla una ruota",
+  "kind": "laboratorio",
+  "tipo": "laboratorio",
+  "language": "python",
+  "linguaggio": "python",
+  "difficulty": "A",
+  "difficolta": "A",
+  "topics": [
+    "Robot",
+    "drive",
+    "velocità con segno"
+  ],
+  "argomenti": [
+    "Robot",
+    "drive",
+    "velocità con segno"
+  ],
+  "objective": "comandare separatamente la ruota sinistra",
+  "prerequisites": [
+    "romeo-y1-u05-led"
+  ],
+  "instructions": "Con Robot.drive fai girare solo la ruota sinistra, poi ferma Romeo.",
+  "consegna": "Con Robot.drive fai girare solo la ruota sinistra, poi ferma Romeo.",
+  "student_support_mode": "hint-progressivi",
+  "grading_policy": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "correzione": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "metriche": {
+    "tempo_stimato_minuti": 50,
+    "traccia_tempo_dichiarato": true,
+    "traccia_sessioni_thebitlab": true,
+    "traccia_eventi_didattici": true,
+    "traccia_errori_compilazione": true
+  },
+  "rubrica": [
+    {
+      "criterio": "Missione deterministica",
+      "punti": 6
+    },
+    {
+      "criterio": "Codice leggibile",
+      "punti": 2
+    },
+    {
+      "criterio": "Spiegazione e safety",
+      "punti": 2
+    }
+  ],
+  "assets": [
+    {
+      "type": "starter",
+      "path": "starter.py",
+      "target_path": "main.py",
+      "visibility": "student",
+      "description": "Codice iniziale"
+    },
+    {
+      "type": "fixture",
+      "path": "scenario.json",
+      "visibility": "grading",
+      "description": "Scenario deterministico"
+    },
+    {
+      "type": "fixture",
+      "path": "runtime-config.json",
+      "visibility": "grading",
+      "description": "Configurazione romeo-sim"
+    },
+    {
+      "type": "teacher_only",
+      "path": "solution.py",
+      "visibility": "teacher",
+      "description": "Soluzione commentata"
+    },
+    {
+      "type": "example",
+      "path": "hints.md",
+      "visibility": "student",
+      "description": "Hint progressivi"
+    }
+  ],
+  "extensions": {
+    "thebitlab.runtime": {
+      "schema_version": "runtime_activity.v1",
+      "runtime_id": "romeo-sim",
+      "config": {
+        "path": "runtime-config.json",
+        "media_type": "application/json"
+      },
+      "required_capabilities": [
+        "headless-run",
+        "deterministic-grade",
+        "artifact-collect"
+      ],
+      "submission": {
+        "artifacts": [
+          {
+            "id": "main",
+            "path": "main.py",
+            "media_type": "text/x-python",
+            "required": true
+          }
+        ]
+      }
+    }
+  }
+}

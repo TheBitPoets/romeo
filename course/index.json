@@ -1,0 +1,548 @@
+{
+  "units": [
+    {
+      "id": "y1-u01-introduzione",
+      "title": "Conosci Romeo",
+      "order": 1,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u01-introduzione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u01-introduzione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u01-introduzione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u01-introduzione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u01-introduzione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u02-componenti",
+      "title": "Dai componenti ai comandi",
+      "order": 2,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u02-componenti/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u02-componenti.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u02-componenti.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u02-componenti-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u02-componenti-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u03-repl",
+      "title": "Esplora con il REPL",
+      "order": 3,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u03-repl/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u03-repl.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u03-repl.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u03-repl-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u03-repl-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u04-chiamate-funzione",
+      "title": "Chiama una funzione",
+      "order": 4,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u04-chiamate-funzione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u04-chiamate-funzione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u04-chiamate-funzione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u04-chiamate-funzione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u04-chiamate-funzione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u05-led",
+      "title": "Comunica con il LED",
+      "order": 5,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u05-led/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u05-led.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u05-led.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u05-led-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u05-led-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u06-motore-singolo",
+      "title": "Controlla una ruota",
+      "order": 6,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u06-motore-singolo/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u06-motore-singolo.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u06-motore-singolo.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u06-motore-singolo-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u06-motore-singolo-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u07-due-motori",
+      "title": "Coordina due ruote",
+      "order": 7,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u07-due-motori/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u07-due-motori.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u07-due-motori.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u07-due-motori-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u07-due-motori-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u08-avanti-indietro",
+      "title": "Avanti e indietro",
+      "order": 8,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u08-avanti-indietro/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u08-avanti-indietro.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u08-avanti-indietro.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u08-avanti-indietro-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u08-avanti-indietro-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u09-curve-rotazioni",
+      "title": "Curve e rotazioni",
+      "order": 9,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u09-curve-rotazioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u09-curve-rotazioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u09-curve-rotazioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u09-curve-rotazioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u09-curve-rotazioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u10-stop-safety",
+      "title": "Stop e sicurezza",
+      "order": 10,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u10-stop-safety/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u10-stop-safety.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u10-stop-safety.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u10-stop-safety-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u10-stop-safety-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u11-velocita",
+      "title": "Scegli la velocità",
+      "order": 11,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u11-velocita/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u11-velocita.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u11-velocita.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u11-velocita-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u11-velocita-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u12-funzioni",
+      "title": "Crea una funzione",
+      "order": 12,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u12-funzioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u12-funzioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u12-funzioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u12-funzioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u12-funzioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u13-sequenze",
+      "title": "Progetta una sequenza",
+      "order": 13,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u13-sequenze/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u13-sequenze.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u13-sequenze.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u13-sequenze-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u13-sequenze-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u14-condizioni",
+      "title": "Decidi con if",
+      "order": 14,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u14-condizioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u14-condizioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u14-condizioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u14-condizioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u14-condizioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u15-ciclo-for",
+      "title": "Ripeti con for",
+      "order": 15,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u15-ciclo-for/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u15-ciclo-for.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u15-ciclo-for.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u15-ciclo-for-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u15-ciclo-for-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u16-ciclo-while",
+      "title": "Controlla un ciclo while",
+      "order": 16,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u16-ciclo-while/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u16-ciclo-while.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u16-ciclo-while.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u16-ciclo-while-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u16-ciclo-while-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u17-simulazione",
+      "title": "Osserva il simulatore",
+      "order": 17,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u17-simulazione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u17-simulazione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u17-simulazione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u17-simulazione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u17-simulazione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u18-coordinate",
+      "title": "Raggiungi una coordinata",
+      "order": 18,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u18-coordinate/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u18-coordinate.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u18-coordinate.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u18-coordinate-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u18-coordinate-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u19-missioni",
+      "title": "Completa una missione",
+      "order": 19,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u19-missioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u19-missioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u19-missioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u19-missioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u19-missioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u20-capstone",
+      "title": "Capstone: consegna robotica",
+      "order": 20,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u20-capstone/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u20-capstone.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u20-capstone.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-assessment.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-rubric.md"
+        }
+      ]
+    }
+  ]
+}
