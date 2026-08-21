@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import importlib.metadata
 import json
-import platform
 from collections.abc import Callable, Sequence
 from contextlib import suppress
 from datetime import datetime, timezone
@@ -21,6 +20,11 @@ from romeo.doctor.config import (
     default_config_path,
     load_config,
     save_config,
+)
+from romeo.doctor.identity import (
+    UnitIdentifierProvider,
+    fingerprint_unit_identifier,
+    read_raspberry_unit_identifier,
 )
 from romeo.doctor.models import CalibrationValues, CommissioningRecord, DoctorConfig
 from romeo.doctor.render import render_json, render_text
@@ -62,6 +66,7 @@ def run_commissioning(
     output_fn: Output = print,
     camera_factory: CameraFactory = _camera_factory,
     package_version: str | None = None,
+    unit_identifier_provider: UnitIdentifierProvider = read_raspberry_unit_identifier,
 ) -> int:
     """Commission one unit interactively; save only after all active checks pass."""
 
@@ -83,6 +88,7 @@ def run_commissioning(
         return EXIT_CANCELLED
 
     try:
+        hardware_fingerprint = fingerprint_unit_identifier(unit_identifier_provider())
         left = executor.test_motor("left")
         right = executor.test_motor("right")
         if left.cancelled or right.cancelled:
@@ -166,7 +172,7 @@ def run_commissioning(
                 status="commissioned",
                 timestamp=datetime.now(timezone.utc).isoformat(),
                 package_version=version,
-                hardware_fingerprint=f"{platform.system()}-{platform.machine()}",
+                hardware_fingerprint=hardware_fingerprint,
                 watchdog_samples_ms=tuple(
                     round(sample * 1000.0, 3) for sample in watchdog.samples_seconds
                 ),

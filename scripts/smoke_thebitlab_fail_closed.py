@@ -14,9 +14,16 @@ import tempfile
 from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 
-APPROVED_IMAGE = (
-    "ghcr.io/thebitpoets/romeo-runtime@sha256:"
-    "3d854fb99d2d1f4b7264c87fcce550dd5e3e739de055c73325609893a088d997"
+from romeo.integrations.thebitlab.runtime_record import (
+    load_runtime_image_record,
+    validate_digest_pinned_image,
+)
+
+DEFAULT_RUNTIME_RECORD = (
+    pathlib.Path(__file__).resolve().parents[1]
+    / "docs"
+    / "release"
+    / "runtime-image-current.env"
 )
 
 
@@ -60,7 +67,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--thebitlab-root", type=pathlib.Path, required=True)
     parser.add_argument("--romeo-root", type=pathlib.Path, required=True)
+    parser.add_argument("--runtime-record", type=pathlib.Path, default=DEFAULT_RUNTIME_RECORD)
+    parser.add_argument(
+        "--image",
+        help="immutable override; defaults to ROMEO_SANDBOX_IMAGE from the release record",
+    )
     arguments = parser.parse_args()
+
+    runtime_record = load_runtime_image_record(arguments.runtime_record)
+    approved_image = validate_digest_pinned_image(
+        arguments.image or runtime_record.sandbox_image
+    )
 
     sys.path.insert(0, str(arguments.thebitlab_root.resolve(strict=True)))
     from scripts import student_runtime
@@ -80,7 +97,7 @@ def main() -> int:
         "image_missing": {"ROMEO_SANDBOX_IMAGE": None, "DOCKER_HOST": None},
         "image_invalid": {"ROMEO_SANDBOX_IMAGE": "romeo-runtime:latest", "DOCKER_HOST": None},
         "broker_unavailable": {
-            "ROMEO_SANDBOX_IMAGE": APPROVED_IMAGE,
+            "ROMEO_SANDBOX_IMAGE": approved_image,
             "DOCKER_HOST": "tcp://127.0.0.1:1",
         },
     }
@@ -121,7 +138,14 @@ def main() -> int:
         raise RuntimeError(f"plugin.run() fallback observed {len(fallback_calls)} time(s)")
     print(
         json.dumps(
-            {"status": "passed", "plugin_run_fallback_calls": 0, "cases": results},
+            {
+                "status": "passed",
+                "plugin_run_fallback_calls": 0,
+                "runtime_image": approved_image,
+                "runtime_source_sha": runtime_record.runtime_source_sha,
+                "thebitlab_broker_sha": runtime_record.thebitlab_broker_sha,
+                "cases": results,
+            },
             ensure_ascii=False,
             indent=2,
             sort_keys=True,

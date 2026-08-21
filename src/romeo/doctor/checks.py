@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hmac
 import importlib.metadata
 import ipaddress
 import os
@@ -14,6 +15,12 @@ from typing import Protocol
 
 from romeo.backends.base import Backend
 from romeo.doctor.config import DoctorConfigError, load_config
+from romeo.doctor.identity import (
+    UnitIdentifierProvider,
+    fingerprint_unit_identifier,
+    is_unit_fingerprint,
+    read_raspberry_unit_identifier,
+)
 from romeo.doctor.models import CheckResult, DiagnosticReport, DoctorConfig
 from romeo.safety import SafetyBackend
 
@@ -97,6 +104,51 @@ def _calibration_checks(config: DoctorConfig, package_version: str | None) -> li
     return [calibration_result]
 
 
+def _unit_identity_check(
+    config: DoctorConfig | None,
+    unit_identifier_provider: UnitIdentifierProvider,
+) -> CheckResult:
+    if config is None or config.unit_calibration is None:
+        return CheckResult(
+            "unit_identity",
+            "failed",
+            "Identità del singolo Romeo non registrata da un commissioning valido.",
+        )
+    recorded = config.commissioning.hardware_fingerprint
+    if not is_unit_fingerprint(recorded):
+        return CheckResult(
+            "unit_identity",
+            "failed",
+            "Fingerprint del singolo Romeo assente o non valido; rifare il commissioning.",
+        )
+    assert isinstance(recorded, str)
+    try:
+        current = fingerprint_unit_identifier(unit_identifier_provider())
+    except Exception as error:
+        return CheckResult(
+            "unit_identity",
+            "failed",
+            "Impossibile verificare che la calibrazione appartenga a questo Romeo.",
+            {"error": type(error).__name__},
+        )
+    matches = hmac.compare_digest(recorded, current)
+    return CheckResult(
+        "unit_identity",
+        "passed" if matches else "failed",
+        "Calibrazione associata a questo esemplare."
+        if matches
+        else "La calibrazione appartiene a un altro esemplare Romeo.",
+        (
+            {"fingerprint": current}
+            if matches
+            else {
+                "recorded_fingerprint": recorded,
+                "current_fingerprint": current,
+            }
+        ),
+    )
+
+
 def run_preflight(
     config_path: str | Path,
     *,
@@ -107,6 +159,7 @@ def run_preflight(
     network_probe: NetworkProbe = _network_addresses,
     server_probe: ServerProbe = _server_probe,
     i2c_exists: Callable[[Path], bool] = Path.exists,
+    unit_identifier_provider: UnitIdentifierProvider = read_raspberry_unit_identifier,
 ) -> DiagnosticReport:
     """Run checks that do not move motors or servo and return a stable report."""
 
@@ -159,6 +212,7 @@ def run_preflight(
                 _skipped("speed_limit", "Calibrazione non leggibile."),
             ]
         )
+    checks.append(_unit_identity_check(config, unit_identifier_provider))
 
     selected_backend = environment.get("ROMEO_BACKEND", "mock").strip().lower()
     hardware_selected = selected_backend == "crickit"
@@ -371,6 +425,7 @@ def run_preflight(
         "python",
         "package",
         "calibration",
+        "unit_identity",
         "backend",
         "i2c",
         "crickit",
