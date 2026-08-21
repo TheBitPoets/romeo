@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Iterator
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse, Response, StreamingResponse
 
+from romeo.camera.base import CameraService, CameraUnavailableError
+from romeo.camera.mock import UnavailableCameraService
 from romeo.network.control import execute_command
 from romeo.network.protocol import Command, ProtocolError, parse_command
 from romeo.safety import ControllerAccessError, ControllerBusyError, SafetyBackend
@@ -63,10 +65,14 @@ class SimulationSession:
             self.engine.step(self.tick_seconds)
 
 
-def create_app(engine: SimulationEngine | None = None) -> FastAPI:
+def create_app(
+    engine: SimulationEngine | None = None,
+    camera: CameraService | None = None,
+) -> FastAPI:
     """Create an isolated viewer app around one simulation engine."""
 
     active_engine = engine or _default_engine()
+    active_camera = camera or UnavailableCameraService()
     session = SimulationSession(active_engine)
     control = SafetyBackend(active_engine, max_speed=1.0, command_timeout=0.75)
 
@@ -76,6 +82,7 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
         yield
         await session.pause()
         control.close()
+        active_camera.close()
 
     app = FastAPI(
         title="Romeo Simulator",
@@ -116,9 +123,28 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
             "name": "Romeo",
             "version": "0.1.0",
             "backend": "simulation",
+            "camera_available": active_camera.available,
             "state_schema": SimulationEngine.STATE_SCHEMA,
             "commands": ["forward", "backward", "left", "right", "stop", "look"],
         }
+
+    @app.get("/api/camera/photo", responses={200: {"content": {"image/jpeg": {}}}})
+    async def camera_photo() -> Response:
+        try:
+            photo = active_camera.capture_photo()
+        except CameraUnavailableError as error:
+            raise HTTPException(status_code=503, detail=str(error)) from error
+        return Response(photo, media_type="image/jpeg", headers={"Cache-Control": "no-store"})
+
+    @app.get("/api/camera/stream", responses={200: {"content": {"multipart/x-mixed-replace": {}}}})
+    async def camera_stream() -> StreamingResponse:
+        if not active_camera.available:
+            raise HTTPException(status_code=503, detail="camera is not configured")
+        return StreamingResponse(
+            _mjpeg_stream(active_camera),
+            media_type="multipart/x-mixed-replace; boundary=FRAME",
+            headers={"Cache-Control": "no-store, no-cache, must-revalidate"},
+        )
 
     @app.post("/api/simulation/start")
     async def start() -> dict[str, Any]:
@@ -230,3 +256,14 @@ def _default_engine() -> SimulationEngine:
         {"schema_version": SCENARIO_SCHEMA, "id": "viewer-default-arena"}
     )
     return SimulationEngine(scenario)
+
+
+def _mjpeg_stream(camera: CameraService) -> Iterator[bytes]:
+    for frame in camera.frames():
+        yield (
+            b"--FRAME\r\n"
+            b"Content-Type: image/jpeg\r\n"
+            + f"Content-Length: {len(frame)}\r\n\r\n".encode("ascii")
+            + frame
+            + b"\r\n"
+        )

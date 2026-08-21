@@ -42,6 +42,7 @@ filterwarnings = [
   "ignore:Using `httpx` with `starlette.testclient` is deprecated:starlette.exceptions.StarletteDeprecationWarning",
 ]
 pythonpath = ["src"]
+markers = ["hardware: requires a physical Raspberry Pi peripheral"]
 testpaths = ["tests"]
 
 [tool.ruff]

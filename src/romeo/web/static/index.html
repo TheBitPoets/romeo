@@ -82,6 +82,19 @@
           </dl>
         </section>
 
+        <section class="panel camera-panel" aria-labelledby="camera-title">
+          <p class="label">Picamera2 · MJPEG</p>
+          <h2 id="camera-title">Telecamera</h2>
+          <div class="camera-preview">
+            <img id="camera-stream" alt="Anteprima in tempo reale della telecamera di Romeo" hidden>
+            <p id="camera-unavailable">Telecamera non disponibile su questo host.</p>
+          </div>
+          <label class="camera-control" for="camera-pan-control">Pan <output id="camera-pan-value">90°</output></label>
+          <input id="camera-pan-control" type="range" min="0" max="180" step="1" value="90">
+          <label class="camera-control" for="camera-tilt-control">Tilt <output id="camera-tilt-value">90°</output></label>
+          <input id="camera-tilt-control" type="range" min="0" max="180" step="1" value="90">
+        </section>
+
         <section class="panel legend" aria-labelledby="legend-title">
           <p class="label">Legenda</p>
           <h2 id="legend-title">Elementi</h2>

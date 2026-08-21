@@ -416,6 +416,30 @@ speedInput.addEventListener("input", () => {
   document.querySelector("#drive-speed-value").textContent = formatNumber(speedInput.value);
 });
 
+const panInput = document.querySelector("#camera-pan-control");
+const tiltInput = document.querySelector("#camera-tilt-control");
+function updateCameraPosition() {
+  document.querySelector("#camera-pan-value").textContent = `${formatNumber(panInput.value, 0)}°`;
+  document.querySelector("#camera-tilt-value").textContent = `${formatNumber(tiltInput.value, 0)}°`;
+  sendControl({ command: "look", pan: finiteNumber(panInput.value), tilt: finiteNumber(tiltInput.value) });
+}
+panInput.addEventListener("change", updateCameraPosition);
+tiltInput.addEventListener("change", updateCameraPosition);
+
+async function initializeCameraPreview() {
+  try {
+    const response = await fetch("/api/info");
+    const info = await response.json();
+    if (!info.camera_available) return;
+    const stream = document.querySelector("#camera-stream");
+    stream.src = "/api/camera/stream";
+    stream.hidden = false;
+    document.querySelector("#camera-unavailable").hidden = true;
+  } catch (error) {
+    console.warn("Anteprima camera non disponibile:", error);
+  }
+}
+
 if ("ResizeObserver" in window) {
   new ResizeObserver(resizeCanvas).observe(canvasWrap);
 } else {
@@ -425,3 +449,4 @@ if ("ResizeObserver" in window) {
 resizeCanvas();
 connect();
 connectControl();
+initializeCameraPreview();
