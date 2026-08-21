@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import ast
 import importlib.util
 import json
 import math
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -17,12 +19,18 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 from uuid import uuid4
 
+from romeo.integrations.thebitlab.trace import TRACE_SCHEMA, replay_trace
+from romeo.simulation.engine import SimulationEngine
+from romeo.simulation.grading import grade
 from romeo.simulation.scenario import Scenario
 
 RUNTIME_ID = "romeo-sim"
 PLUGIN_VERSION = "0.1.0"
 MAX_SUBMISSION_BYTES = 1_000_000
 MAX_CAPTURE_CHARS = 100_000
+SANDBOX_PLAN_SCHEMA = "runtime_sandbox_plan.v1"
+SANDBOX_RESULT_SCHEMA = "runtime_sandbox_result.v1"
+_PINNED_IMAGE_RE = re.compile(r"^[a-z0-9][a-z0-9./_-]*@sha256:[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,6 +43,8 @@ class RuntimeContext:
     timeout_seconds: int
     max_simulation_seconds: float
     stdout_checks: tuple[StdoutCheck, ...]
+    behavioral_tests_path: Path | None
+    behavioral_entrypoints: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -63,6 +73,7 @@ class RomeoRuntimePlugin:
                 "headless-run",
                 "deterministic-grade",
                 "artifact-collect",
+                "sandbox-plan.v1",
             ],
             "vendor": "TheBitLab",
             "homepage": "https://github.com/TheBitPoets/romeo",
@@ -78,6 +89,7 @@ class RomeoRuntimePlugin:
                 "interactive_available": self._web_available(),
                 "execution_isolation": "process-only",
                 "untrusted_submissions_supported": False,
+                "sandbox_broker_available": self._sandbox_image() is not None,
             },
         }
 
@@ -230,7 +242,12 @@ class RomeoRuntimePlugin:
                 stderr=stderr[:MAX_CAPTURE_CHARS],
                 detail="mission completed" if passed else "mission requirements not met",
                 tests=checks,
-                metadata={"score": score, "artifacts": artifacts},
+                metadata={
+                    "score": score,
+                    "artifacts": artifacts,
+                    "authoritative": False,
+                    "execution_isolation": "process-only",
+                },
             )
         except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as error:
             return self._execution_result(
@@ -241,11 +258,221 @@ class RomeoRuntimePlugin:
                 tests=[{"name": "runtime worker", "passed": False, "detail": str(error)}],
             )
 
+    def prepare_sandbox(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Prepare a minimal broker plan without exposing scenario or grading policy."""
+
+        context = self._request_context(request)
+        image = self._sandbox_image()
+        if image is None:
+            raise ValueError(
+                "ROMEO_SANDBOX_IMAGE must name an immutable OCI image by sha256 digest"
+            )
+        behavioral = context.behavioral_tests_path is not None
+        worker_schema = "romeo.behavioural_result.v1" if behavioral else TRACE_SCHEMA
+        inputs = [
+            {
+                "source": "submission",
+                "artifact_id": self._submission_artifact_id(request, context.submission_path),
+                "target": "main.py",
+            }
+        ]
+        if context.behavioral_tests_path is not None:
+            inputs.append(
+                {
+                    "source": "activity",
+                    "path": context.behavioral_tests_path.relative_to(
+                        context.activity_path.parent
+                    ).as_posix(),
+                    "target": "behavioral_tests.py",
+                }
+            )
+        return {
+            "schema_version": SANDBOX_PLAN_SCHEMA,
+            "profile": {
+                "image": image,
+                "platform": "linux/amd64",
+                "worker_schema": worker_schema,
+            },
+            "inputs": inputs,
+            "worker_request": {
+                "schema_version": "romeo.sandbox_request.v1",
+                "mode": "behavioral-tests" if behavioral else "command-trace",
+                "entrypoint": "main.py",
+                "max_simulation_seconds": context.max_simulation_seconds,
+                "entrypoints": list(context.behavioral_entrypoints),
+            },
+        }
+
+    def finalize_sandbox(
+        self,
+        request: dict[str, Any],
+        sandbox_result: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Replay an untrusted command trace and grade only on the trusted host."""
+
+        started_at = time.monotonic()
+        try:
+            context = self._request_context(request)
+            if context.behavioral_tests_path is not None:
+                return self._finalize_behavioral(context, sandbox_result, started_at)
+            payload = self._sandbox_payload(sandbox_result, TRACE_SCHEMA)
+            engine = SimulationEngine(Scenario.from_json(context.scenario_path))
+            stdout, stderr, student_error = replay_trace(
+                payload,
+                engine,
+                max_simulation_seconds=context.max_simulation_seconds,
+            )
+            grade_result = grade(engine).to_mapping()
+            result = {
+                "schema_version": "romeo.worker_result.v1",
+                "student_error": student_error,
+                "stdout": stdout,
+                "stderr": stderr,
+                "state": engine.state(),
+                "events": engine.event_log(),
+                "grade": grade_result,
+            }
+            run_directory = self._create_run_directory(context.workspace)
+            artifacts = self._write_artifacts(context, run_directory, result)
+            checks, score, checks_passed = self._test_results(result, ())
+            passed = student_error is None and checks_passed
+            return self._execution_result(
+                "passed" if passed else "failed",
+                started_at,
+                stdout=stdout,
+                stderr=(f"{stderr}\n{student_error or ''}").strip(),
+                detail=(
+                    "mission completed in the TheBitLab sandbox"
+                    if passed
+                    else "mission requirements not met"
+                ),
+                tests=checks,
+                metadata={
+                    "score": score,
+                    "artifacts": artifacts,
+                    "authoritative": True,
+                    "execution_isolation": "thebitlab-sandbox",
+                },
+            )
+        except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as error:
+            return self._execution_result(
+                "invalid_payload",
+                started_at,
+                detail=f"sandbox result rejected: {error}",
+            )
+
+    def _finalize_behavioral(
+        self,
+        context: RuntimeContext,
+        sandbox_result: dict[str, Any],
+        started_at: float,
+    ) -> dict[str, Any]:
+        payload = self._sandbox_payload(sandbox_result, "romeo.behavioural_result.v1")
+        if payload.get("schema_version") != "romeo.behavioural_result.v1":
+            raise ValueError("behavioral result has an unsupported schema")
+        raw_tests = payload.get("tests")
+        if not isinstance(raw_tests, list):
+            raise TypeError("behavioral result tests must be an array")
+        expected = self._behavioral_test_names(context.behavioral_tests_path)
+        tests: list[dict[str, Any]] = []
+        names: list[str] = []
+        for index, raw in enumerate(raw_tests):
+            if not isinstance(raw, dict):
+                raise TypeError(f"behavioral test {index} must be an object")
+            name = raw.get("name")
+            passed = raw.get("passed")
+            detail = raw.get("detail", "")
+            if not isinstance(name, str) or not isinstance(passed, bool):
+                raise TypeError(f"behavioral test {index} has invalid fields")
+            if not isinstance(detail, str) or len(detail) > MAX_CAPTURE_CHARS:
+                raise ValueError(f"behavioral test {index} detail is invalid")
+            names.append(name)
+            tests.append({"name": name, "passed": passed, "detail": detail})
+        if tuple(names) != expected:
+            raise ValueError("behavioral result does not match the trusted test manifest")
+        passed = bool(tests) and all(test["passed"] for test in tests)
+        score = round(10.0 * sum(test["passed"] for test in tests) / len(tests), 4)
+        run_directory = self._create_run_directory(context.workspace)
+        result_path = run_directory / "result.json"
+        result_path.write_text(
+            json.dumps({"passed": passed, "score": score, "tests": tests}, indent=2),
+            encoding="utf-8",
+        )
+        artifact = {
+            "id": "result",
+            "path": result_path.relative_to(context.workspace).as_posix(),
+            "media_type": "application/json",
+            "size": result_path.stat().st_size,
+        }
+        return self._execution_result(
+            "passed" if passed else "failed",
+            started_at,
+            stdout=self._bounded_payload_text(payload, "stdout"),
+            stderr=self._bounded_payload_text(payload, "stderr"),
+            detail="behavioral contract verified" if passed else "behavioral tests failed",
+            tests=tests,
+            metadata={
+                "score": score,
+                "artifacts": [artifact],
+                "authoritative": True,
+                "execution_isolation": "thebitlab-sandbox",
+            },
+        )
+
     def close(self, session_id: str) -> None:
         with self._sessions_lock:
             process = self._sessions.pop(session_id, None)
         if process is not None:
             self._terminate(process)
+
+    @staticmethod
+    def _sandbox_payload(result: object, worker_schema: str) -> dict[str, Any]:
+        if not isinstance(result, dict) or result.get("schema_version") != SANDBOX_RESULT_SCHEMA:
+            raise ValueError(f"sandbox result schema must be {SANDBOX_RESULT_SCHEMA!r}")
+        if result.get("status") != "completed" or result.get("worker_schema") != worker_schema:
+            raise ValueError("sandbox worker did not complete with the expected schema")
+        payload = result.get("payload")
+        if not isinstance(payload, dict):
+            raise TypeError("sandbox payload must be an object")
+        return payload
+
+    @staticmethod
+    def _behavioral_test_names(path: Path | None) -> tuple[str, ...]:
+        if path is None:
+            raise ValueError("behavioral test path is missing")
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        names = tuple(
+            node.name
+            for node in tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name.startswith("test_")
+        )
+        if not names or len(names) != len(set(names)):
+            raise ValueError("behavioral test manifest must contain unique tests")
+        return names
+
+    @staticmethod
+    def _bounded_payload_text(payload: dict[str, Any], key: str) -> str:
+        value = payload.get(key, "")
+        if not isinstance(value, str) or len(value) > MAX_CAPTURE_CHARS:
+            raise ValueError(f"behavioral {key} must be a bounded string")
+        return value
+
+    @staticmethod
+    def _sandbox_image() -> str | None:
+        image = os.environ.get("ROMEO_SANDBOX_IMAGE", "").strip().lower()
+        return image if _PINNED_IMAGE_RE.fullmatch(image) else None
+
+    @staticmethod
+    def _submission_artifact_id(request: dict[str, Any], path: Path) -> str:
+        workspace = Path(str(request["paths"]["workspace"])).resolve()
+        relative = path.relative_to(workspace).as_posix()
+        for artifact in request["submission_artifacts"]:
+            if isinstance(artifact, dict) and artifact.get("path") == relative:
+                artifact_id = artifact.get("id")
+                if isinstance(artifact_id, str) and artifact_id:
+                    return artifact_id
+        raise ValueError("submission artifact id could not be resolved")
 
     def _request_context(self, request: dict[str, Any]) -> RuntimeContext:
         if not isinstance(request, dict) or request.get("schema_version") != "runtime_request.v1":
@@ -305,6 +532,34 @@ class RomeoRuntimePlugin:
         ):
             raise ValueError("max_simulation_seconds must be a positive number")
         stdout_checks = self._stdout_checks(config.get("stdout_checks", []))
+        behavioral_path: Path | None = None
+        behavioral_entrypoints: tuple[str, ...] = ()
+        behavioral = config.get("behavioral_tests")
+        if behavioral is not None:
+            if not isinstance(behavioral, dict):
+                raise TypeError("behavioral_tests must be an object")
+            if behavioral.get("execution_boundary") not in {
+                None,
+                "thebitlab-sandbox-broker",
+            }:
+                raise ValueError("behavioral_tests requires the TheBitLab sandbox broker")
+            relative = self._safe_relative(behavioral.get("path"), "behavioral_tests.path")
+            behavioral_path = self._resolved_within(
+                config_path.parent,
+                relative,
+                activity_root,
+            )
+            if not behavioral_path.is_file():
+                raise ValueError("configured behavioral test file does not exist")
+            raw_entrypoints = behavioral.get("entrypoints")
+            if not isinstance(raw_entrypoints, list) or not raw_entrypoints:
+                raise ValueError("behavioral_tests.entrypoints must be a non-empty array")
+            if any(
+                not isinstance(name, str) or not name.isidentifier()
+                for name in raw_entrypoints
+            ):
+                raise ValueError("behavioral test entrypoints must be Python identifiers")
+            behavioral_entrypoints = tuple(raw_entrypoints)
         return RuntimeContext(
             activity_path,
             workspace,
@@ -314,6 +569,8 @@ class RomeoRuntimePlugin:
             timeout,
             float(maximum),
             stdout_checks,
+            behavioral_path,
+            behavioral_entrypoints,
         )
 
     def _write_artifacts(

@@ -102,11 +102,175 @@ def test_descriptor_and_probe_follow_runtime_v1() -> None:
         "headless-run",
         "deterministic-grade",
         "artifact-collect",
+        "sandbox-plan.v1",
     }
     assert probe["schema_version"] == "runtime_probe.v1"
     assert probe["available"] is True
     assert probe["metadata"]["execution_isolation"] == "process-only"
     assert probe["metadata"]["untrusted_submissions_supported"] is False
+    assert probe["metadata"]["sandbox_broker_available"] is False
+
+
+def test_probe_reports_configured_immutable_sandbox_image(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        "ROMEO_SANDBOX_IMAGE",
+        "ghcr.io/thebitpoets/romeo-runtime@sha256:" + ("c" * 64),
+    )
+
+    probe = create_plugin().probe()
+
+    assert probe["metadata"]["sandbox_broker_available"] is True
+
+
+def test_sandbox_plan_exposes_only_submission_not_grading_data(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    request, _ = runtime_request(tmp_path, "print('student')\n")
+    image = "ghcr.io/thebitpoets/romeo-runtime@sha256:" + ("a" * 64)
+    monkeypatch.setenv("ROMEO_SANDBOX_IMAGE", image)
+
+    plan = create_plugin().prepare_sandbox(request)
+
+    assert plan["schema_version"] == "runtime_sandbox_plan.v1"
+    assert plan["profile"]["image"] == image
+    assert plan["inputs"] == [
+        {"source": "submission", "artifact_id": "main", "target": "main.py"}
+    ]
+    serialized = json.dumps(plan)
+    assert "scenario.json" not in serialized
+    assert "checks" not in serialized
+
+
+@pytest.mark.parametrize("image", [None, "ghcr.io/thebitpoets/romeo-runtime:latest"])
+def test_sandbox_plan_fails_closed_without_immutable_image(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    image: str | None,
+) -> None:
+    request, _ = runtime_request(tmp_path, "print('student')\n")
+    if image is None:
+        monkeypatch.delenv("ROMEO_SANDBOX_IMAGE", raising=False)
+    else:
+        monkeypatch.setenv("ROMEO_SANDBOX_IMAGE", image)
+
+    with pytest.raises(ValueError, match="immutable OCI image"):
+        create_plugin().prepare_sandbox(request)
+
+
+def test_sandbox_finalize_replays_trace_and_ignores_forged_grade(tmp_path: Path) -> None:
+    request, workspace = runtime_request(tmp_path, "print('unused')\n")
+    sandbox_result = {
+        "schema_version": "runtime_sandbox_result.v1",
+        "worker_schema": "romeo.command_trace.v1",
+        "status": "completed",
+        "payload": {
+            "schema_version": "romeo.command_trace.v1",
+            "commands": [
+                {"operation": "motors", "arguments": [0.5, 0.5]},
+                {"operation": "wait", "arguments": [2.0]},
+                {"operation": "stop", "arguments": []},
+            ],
+            "stdout": "forged SCORE 10",
+            "stderr": "",
+            "student_error": None,
+            "grade": {"passed": False, "score": 0},
+        },
+    }
+
+    result = create_plugin().finalize_sandbox(request, sandbox_result)
+
+    assert result["status"] == "passed", result
+    assert result["metadata"]["authoritative"] is True
+    assert result["metadata"]["score"] == 10.0
+    assert (workspace / result["metadata"]["artifacts"][0]["path"]).is_file()
+
+
+def test_behavioral_plan_and_finalize_use_trusted_manifest(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    request, workspace = runtime_request(tmp_path, "def answer(value):\n    return value * 2\n")
+    config_path = Path(request["paths"]["config"])
+    tests_path = config_path.parent / "behavioral_tests.py"
+    tests_path.write_text(
+        "from main import answer\n\n"
+        "def test_uses_the_argument():\n"
+        "    assert answer(3) == 6\n",
+        encoding="utf-8",
+    )
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["behavioral_tests"] = {
+        "path": "behavioral_tests.py",
+        "entrypoints": ["answer"],
+    }
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+    image = "ghcr.io/thebitpoets/romeo-runtime@sha256:" + ("b" * 64)
+    monkeypatch.setenv("ROMEO_SANDBOX_IMAGE", image)
+    plugin = create_plugin()
+
+    plan = plugin.prepare_sandbox(request)
+
+    assert plan["worker_request"]["mode"] == "behavioral-tests"
+    assert plan["inputs"] == [
+        {"source": "submission", "artifact_id": "main", "target": "main.py"},
+        {
+            "source": "activity",
+            "path": "runtime/behavioral_tests.py",
+            "target": "behavioral_tests.py",
+        },
+    ]
+    result = plugin.finalize_sandbox(
+        request,
+        {
+            "schema_version": "runtime_sandbox_result.v1",
+            "worker_schema": "romeo.behavioural_result.v1",
+            "status": "completed",
+            "payload": {
+                "schema_version": "romeo.behavioural_result.v1",
+                "tests": [
+                    {"name": "test_uses_the_argument", "passed": True, "detail": ""}
+                ],
+                "stdout": "",
+                "stderr": "",
+            },
+        },
+    )
+
+    assert result["status"] == "passed"
+    assert result["metadata"]["authoritative"] is True
+    assert result["metadata"]["score"] == 10.0
+    assert (workspace / result["metadata"]["artifacts"][0]["path"]).is_file()
+
+
+def test_behavioral_finalize_rejects_forged_test_names(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "def answer():\n    return 42\n")
+    config_path = Path(request["paths"]["config"])
+    (config_path.parent / "behavioral_tests.py").write_text(
+        "def test_real_contract():\n    assert True\n", encoding="utf-8"
+    )
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["behavioral_tests"] = {
+        "path": "behavioral_tests.py",
+        "entrypoints": ["answer"],
+    }
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = create_plugin().finalize_sandbox(
+        request,
+        {
+            "schema_version": "runtime_sandbox_result.v1",
+            "worker_schema": "romeo.behavioural_result.v1",
+            "status": "completed",
+            "payload": {
+                "schema_version": "romeo.behavioural_result.v1",
+                "tests": [{"name": "test_fake", "passed": True, "detail": ""}],
+            },
+        },
+    )
+
+    assert result["status"] == "invalid_payload"
+    assert "trusted test manifest" in result["detail"]
 
 
 def test_installed_package_exposes_official_thebitlab_entry_point() -> None:
@@ -154,6 +318,8 @@ def test_headless_run_executes_same_student_apis_deterministically(
     assert result["schema_version"] == "runtime_execution.v1"
     assert result["status"] == "passed", result
     assert result["metadata"]["score"] == 10.0
+    assert result["metadata"]["authoritative"] is False
+    assert result["metadata"]["execution_isolation"] == "process-only"
     assert all(test["passed"] for test in result["tests"])
     assert len(result["metadata"]["artifacts"]) == 5
     for artifact in result["metadata"]["artifacts"]:
