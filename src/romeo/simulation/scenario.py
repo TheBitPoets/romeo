@@ -119,9 +119,7 @@ class Scenario:
         )
         start_x = _number(data.get("start_x", 0.5), "start_x")
         start_y = _number(data.get("start_y", 0.5), "start_y")
-        start_heading = _number(
-            data.get("start_heading_degrees", 0.0), "start_heading_degrees"
-        )
+        start_heading = _number(data.get("start_heading_degrees", 0.0), "start_heading_degrees")
 
         if 2 * robot_radius > world_width or 2 * robot_radius > world_height:
             raise ValueError("robot_radius is too large for the world")

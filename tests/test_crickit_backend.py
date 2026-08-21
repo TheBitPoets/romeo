@@ -11,6 +11,7 @@ def fake_board() -> SimpleNamespace:
         dc_motor_2=SimpleNamespace(throttle=None),
         servo_1=SimpleNamespace(angle=None),
         servo_4=SimpleNamespace(angle=None),
+        onboard_pixel=[(0, 0, 0)],
     )
 
 
@@ -23,11 +24,13 @@ def test_crickit_wiring_and_calibration() -> None:
 
     backend.set_motor_speeds(0.4, -0.2)
     backend.set_camera_angles(10.0, 200.0)
+    backend.set_led_color(10, 20, 30)
 
     assert board.dc_motor_2.throttle == -0.4
     assert board.dc_motor_1.throttle == -0.2
     assert board.servo_1.angle == 30.0
     assert board.servo_4.angle == 180.0
+    assert board.onboard_pixel[0] == (10, 20, 30)
 
 
 def test_crickit_stops_after_motor_write_error() -> None:
@@ -49,4 +52,3 @@ def test_crickit_stops_after_motor_write_error() -> None:
         backend.set_motor_speeds(0.5, 0.5)
 
     assert board.dc_motor_1.throttle == 0.0
-

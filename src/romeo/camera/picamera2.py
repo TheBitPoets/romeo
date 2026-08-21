@@ -48,9 +48,7 @@ class Picamera2CameraService:
             raise CameraUnavailableError("camera is closed")
         if self._started:
             return
-        configuration = self._camera.create_video_configuration(
-            main={"size": self.resolution}
-        )
+        configuration = self._camera.create_video_configuration(main={"size": self.resolution})
         self._camera.configure(configuration)
         self._camera.start()
         if self.warmup_seconds:
@@ -82,4 +80,3 @@ class Picamera2CameraService:
         self._camera.close()
         self._closed = True
         self._started = False
-

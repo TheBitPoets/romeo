@@ -52,6 +52,7 @@ class SimulationEngine:
         self.right_speed = 0.0
         self.pan_angle = 90.0
         self.tilt_angle = 90.0
+        self.led_color = (0, 0, 0)
         self.time = 0.0
         self.collisions = 0
         self.closed = False
@@ -82,6 +83,13 @@ class SimulationEngine:
         self.pan_angle = float(pan)
         self.tilt_angle = float(tilt)
         self._record_event("camera_changed", {"pan": self.pan_angle, "tilt": self.tilt_angle})
+
+    def set_led_color(self, red: int, green: int, blue: int) -> None:
+        self._ensure_open()
+        if any(not 0 <= value <= 255 for value in (red, green, blue)):
+            raise ValueError("LED components must be between 0 and 255")
+        self.led_color = (red, green, blue)
+        self._record_event("led_changed", {"red": red, "green": green, "blue": blue})
 
     def stop(self) -> None:
         self.left_speed = 0.0
@@ -120,6 +128,7 @@ class SimulationEngine:
         self.right_speed = 0.0
         self.pan_angle = 90.0
         self.tilt_angle = 90.0
+        self.led_color = (0, 0, 0)
         self.time = 0.0
         self.collisions = 0
         self.trajectory.clear()
@@ -140,6 +149,11 @@ class SimulationEngine:
             "pose": asdict(self.pose),
             "motors": {"left": self.left_speed, "right": self.right_speed},
             "camera": {"pan": self.pan_angle, "tilt": self.tilt_angle},
+            "led": {
+                "red": self.led_color[0],
+                "green": self.led_color[1],
+                "blue": self.led_color[2],
+            },
             "collisions": self.collisions,
             "world": {
                 "width": self.scenario.world_width,
@@ -175,9 +189,7 @@ class SimulationEngine:
                             if isinstance(marker_x, (int, float)) and isinstance(
                                 marker_y, (int, float)
                             ):
-                                checkpoints.append(
-                                    {"x": marker_x, "y": marker_y, "label": index}
-                                )
+                                checkpoints.append({"x": marker_x, "y": marker_y, "label": index})
         return {"targets": targets, "checkpoints": checkpoints}
 
     def _integrate(self, duration: float) -> None:

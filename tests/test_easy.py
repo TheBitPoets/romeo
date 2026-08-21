@@ -1,5 +1,5 @@
 from romeo.backends.mock import BackendCommand, MockBackend
-from romeo.easy import close, forward, left, stop, use_backend
+from romeo.easy import close, forward, led, left, stop, use_backend
 
 
 def test_function_api_delegates_to_configured_backend() -> None:
@@ -17,3 +17,12 @@ def test_function_api_delegates_to_configured_backend() -> None:
     ]
     close()
 
+
+def test_named_led_colors_keep_the_first_lesson_simple() -> None:
+    backend = MockBackend()
+    use_backend(backend)
+
+    led("blue")
+
+    assert backend.led_color == (0, 0, 255)
+    close()

@@ -39,9 +39,7 @@ def create_backend(name: str | None = None, *, safety: bool = True) -> Backend:
         scenario = (
             Scenario.from_json(Path(scenario_path))
             if scenario_path
-            else Scenario.from_mapping(
-                {"schema_version": SCENARIO_SCHEMA, "id": "default-arena"}
-            )
+            else Scenario.from_mapping({"schema_version": SCENARIO_SCHEMA, "id": "default-arena"})
         )
         backend = SimulationEngine(scenario)
     else:

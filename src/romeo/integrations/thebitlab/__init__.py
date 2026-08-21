@@ -10,4 +10,3 @@ def create_plugin() -> RomeoRuntimePlugin:
 
 
 __all__ = ["RomeoRuntimePlugin", "create_plugin"]
-

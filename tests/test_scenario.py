@@ -7,9 +7,7 @@ from romeo.simulation.scenario import SCENARIO_SCHEMA, Scenario
 
 
 def test_scenario_uses_documented_defaults() -> None:
-    scenario = Scenario.from_mapping(
-        {"schema_version": SCENARIO_SCHEMA, "id": "empty-arena"}
-    )
+    scenario = Scenario.from_mapping({"schema_version": SCENARIO_SCHEMA, "id": "empty-arena"})
 
     assert (scenario.world_width, scenario.world_height) == (4.0, 3.0)
     assert (scenario.start_x, scenario.start_y, scenario.start_heading_degrees) == (0.5, 0.5, 0.0)

@@ -124,9 +124,7 @@ def _checkpoints(parameters: Mapping[str, object], engine: SimulationEngine) -> 
     return True, f"{len(raw_points)} checkpoints reached in order"
 
 
-def _number(
-    parameters: Mapping[str, object], key: str, *, default: float | None = None
-) -> float:
+def _number(parameters: Mapping[str, object], key: str, *, default: float | None = None) -> float:
     value = parameters.get(key, default)
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise ValueError(f"parameter {key!r} must be a finite number")

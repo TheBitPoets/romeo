@@ -52,6 +52,11 @@ class CrickitBackend:
         self._board.servo_1.angle = bounded_pan
         self._board.servo_4.angle = bounded_tilt
 
+    def set_led_color(self, red: int, green: int, blue: int) -> None:
+        self._ensure_open()
+        # seesaw exposes the single CRICKIT NeoPixel as a sequence.
+        self._board.onboard_pixel[0] = (red, green, blue)
+
     def stop(self) -> None:
         self._board.dc_motor_2.throttle = 0.0
         self._board.dc_motor_1.throttle = 0.0

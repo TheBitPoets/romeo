@@ -44,9 +44,7 @@ def wheel_speeds(
     magnitude = min(1.0, math.hypot(x, y))
     if magnitude <= active_mapping.dead_zone:
         return 0.0, 0.0
-    scaled_magnitude = (magnitude - active_mapping.dead_zone) / (
-        1.0 - active_mapping.dead_zone
-    )
+    scaled_magnitude = (magnitude - active_mapping.dead_zone) / (1.0 - active_mapping.dead_zone)
     scale = scaled_magnitude / magnitude
     turn = max(-1.0, min(1.0, x * scale))
     forward = max(-1.0, min(1.0, -y * scale))

@@ -12,9 +12,11 @@ class Backend(Protocol):
     def set_camera_angles(self, pan: float, tilt: float) -> None:
         """Set camera pan and tilt angles in degrees."""
 
+    def set_led_color(self, red: int, green: int, blue: int) -> None:
+        """Set the onboard RGB LED using values in the inclusive range 0..255."""
+
     def stop(self) -> None:
         """Stop both motors immediately."""
 
     def close(self) -> None:
         """Release resources, leaving motors stopped."""
-

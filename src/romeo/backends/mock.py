@@ -19,6 +19,7 @@ class MockBackend:
         self.right_speed = 0.0
         self.pan_angle = 90.0
         self.tilt_angle = 90.0
+        self.led_color = (0, 0, 0)
         self.closed = False
         self.history: list[BackendCommand] = []
 
@@ -34,6 +35,11 @@ class MockBackend:
         self.tilt_angle = tilt
         self.history.append(BackendCommand("set_camera_angles", (pan, tilt)))
 
+    def set_led_color(self, red: int, green: int, blue: int) -> None:
+        self._ensure_open()
+        self.led_color = (red, green, blue)
+        self.history.append(BackendCommand("set_led_color", (red, green, blue)))
+
     def stop(self) -> None:
         self.left_speed = 0.0
         self.right_speed = 0.0
@@ -48,4 +54,3 @@ class MockBackend:
     def _ensure_open(self) -> None:
         if self.closed:
             raise RuntimeError("backend is closed")
-

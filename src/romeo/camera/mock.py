@@ -55,4 +55,3 @@ class UnavailableCameraService:
 
     def close(self) -> None:
         return
-

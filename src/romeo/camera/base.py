@@ -21,4 +21,3 @@ class CameraService(Protocol):
 
     def close(self) -> None:
         """Release the camera safely."""
-

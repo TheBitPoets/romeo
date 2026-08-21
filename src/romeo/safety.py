@@ -121,6 +121,13 @@ class SafetyBackend:
                 self._best_effort_stop()
                 raise
 
+    def set_led_color(self, red: int, green: int, blue: int) -> None:
+        with self._lock:
+            if self._active_controller is not None:
+                raise ControllerAccessError("robot is owned by a remote controller")
+            self._ensure_open()
+            self.backend.set_led_color(red, green, blue)
+
     def stop(self) -> None:
         with self._lock:
             self._stop_locked()
