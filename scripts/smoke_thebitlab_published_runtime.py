@@ -66,7 +66,10 @@ def _run_activity(
     if not isinstance(runtime, dict) or runtime.get("backend") != "docker":
         raise RuntimeError(f"TheBitLab did not promote runtime grading to Docker for {slug}")
     if runtime.get("requested_backend") != "local":
-        raise RuntimeError(f"TheBitLab smoke did not exercise the historical local default for {slug}")
+        raise RuntimeError(
+            "TheBitLab smoke did not exercise the historical local default "
+            f"for {slug}"
+        )
     metadata = runtime.get("metadata")
     if not isinstance(metadata, dict):
         raise RuntimeError(f"TheBitLab runtime metadata missing for {slug}")
