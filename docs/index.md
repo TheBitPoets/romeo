@@ -1,45 +1,49 @@
 # Romeo · documentazione
 
-Romeo è la piattaforma didattica di Python e robotica integrata con TheBitLab. Questo sito raccoglie in un unico punto la documentazione per **studenti**, **docenti**, **amministratori** e **sviluppatori**, insieme alla reference API generata dal codice.
+Romeo è la piattaforma didattica di Python e robotica integrata con TheBitLab. Questo sito raccoglie in un unico punto la documentazione per **studenti**, **docenti**, **amministratori**, **autori di contenuti** e **sviluppatori**, insieme alla reference API generata dal codice.
 
 ```{admonition} Regola operativa
 :class: important
-Nel lavoro quotidiano si sviluppa e si prova prima nel simulatore. Il robot fisico è un target successivo, usato solo dopo il collaudo e secondo la checklist di sicurezza.
+Nel lavoro quotidiano si sviluppa e si prova prima nel simulatore. Il robot fisico è un target successivo, usato solo dopo commissioning/preflight e secondo la checklist di sicurezza.
 ```
 
 ## Percorsi consigliati
 
-- **Studente**: prepara l'ambiente, apri una consegna TheBitLab, modifica `main.py`, prova nel simulatore, leggi il report, correggi e seleziona il tentativo finale.
-- **Docente**: prepara la classe, verifica runtime e grading, assegna le Activity, controlla i report e decide quando autorizzare il passaggio al robot fisico.
-- **Amministratore**: installa il plugin `romeo-sim`, configura il digest OCI approvato e verifica che il grading runtime sia autorevole e fail-closed.
-- **Sviluppatore**: usa un virtual environment, esegue lint/type-check/test/docs e consulta la reference API.
+- **Studente**: prepara l'ambiente, scrivi `main.py`, prova nel simulatore, interpreta il report, correggi e passa al robot solo quando autorizzato.
+- **Docente**: prepara la lezione, verifica runtime/grading, gestisci la classe in parallelo e usa il singolo robot come stazione finale condivisa.
+- **Amministratore**: identifica il deployment reale, installa `romeo-sim`, configura il digest OCI, esegui probe/smoke e conserva rollback riproducibili.
+- **Autore di contenuti**: crea Activity, scenari e grader senza duplicare i contratti del Course Bundle.
+- **Sviluppatore**: lavora in venv, preserva gli invarianti real/sim, esegue test/CI/docs e consulta la reference API.
 
 ```{toctree}
 :maxdepth: 2
-:caption: Inizia qui
+:caption: Percorsi
 
 getting-started
 student/index
 teacher/index
 operations/index
+authoring/index
 development/index
+course/index
 ```
 
 ```{toctree}
 :maxdepth: 2
-:caption: Progetto e sicurezza
+:caption: Progetto, hardware e sicurezza
 
 architecture/target
 architecture/decisions
 integrations/thebitlab-runtime
 security/submission-threat-model
 hardware/safety
+hardware/commissioning
+hardware/preflight
 hardware/pre-merge-checklist
 hardware/camera
 network/gamepad
 release/runtime-image
 release/readiness
-course/pedagogical-audit
 requirements-traceability
 roadmap
 audit
