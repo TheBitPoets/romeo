@@ -17,6 +17,10 @@ def execute_command(backend: SafetyBackend, controller_id: str, command: Command
     if command.name == "STOP":
         backend.set_motor_speeds_for(controller_id, 0.0, 0.0)
         return
+    if command.name == "DRIVE":
+        left, right = command.arguments
+        backend.set_motor_speeds_for(controller_id, left, right)
+        return
     speed = command.arguments[0]
     wheel_speeds = {
         "FORWARD": (speed, speed),
@@ -26,4 +30,3 @@ def execute_command(backend: SafetyBackend, controller_id: str, command: Command
     }
     left, right = wheel_speeds[command.name]
     backend.set_motor_speeds_for(controller_id, left, right)
-

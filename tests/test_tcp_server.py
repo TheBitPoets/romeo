@@ -23,6 +23,11 @@ async def server_scenario() -> None:
     assert await read_line(reader) == "OK FORWARD"
     assert (inner.left_speed, inner.right_speed) == (0.4, 0.4)
 
+    writer.write(b"DRIVE -0.2 0.3\n")
+    await writer.drain()
+    assert await read_line(reader) == "OK DRIVE"
+    assert (inner.left_speed, inner.right_speed) == (-0.2, 0.3)
+
     busy_reader, busy_writer = await asyncio.open_connection(host, port)
     assert (await read_line(busy_reader)).startswith("ERR BUSY")
     busy_writer.close()

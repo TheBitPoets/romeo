@@ -13,6 +13,7 @@ def test_commands_and_serialization() -> None:
     assert parse_command("STOP") == Command("STOP")
     assert parse_command("PING") == Command("PING")
     assert parse_command("LOOK 10 175.5") == Command("LOOK", (10.0, 175.5))
+    assert parse_command("DRIVE -0.2 0.75") == Command("DRIVE", (-0.2, 0.75))
 
 
 @pytest.mark.parametrize(
@@ -27,6 +28,8 @@ def test_commands_and_serialization() -> None:
         ("FORWARD 1.1", "speed must be between"),
         ("LOOK 90", "requires pan and tilt"),
         ("LOOK -1 90", "between 0 and 180"),
+        ("DRIVE 0.2", "requires left and right"),
+        ("DRIVE -1.1 0", "between -1 and 1"),
         ("PING\nSTOP", "exactly one line"),
     ],
 )

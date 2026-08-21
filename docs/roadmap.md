@@ -13,7 +13,7 @@ hardware non bloccano lo sviluppo delle parti verificabili in CI.
 | M5 — TCP | Completata | Protocollo testuale, server/client e tastiera leggibile. |
 | M6 — HTTP/REST/WebSocket | Completata | FastAPI, status, controllo e telemetria real-time. |
 | M7 — Camera | Completata | CameraService, Picamera2, foto, pan/tilt e MJPEG. |
-| M8 — Gamepad | Pianificata | Client pygame, mapping configurabile e stop su disconnessione. |
+| M8 — Gamepad | Completata | Client pygame, mapping configurabile e stop su disconnessione. |
 | M9 — Runtime TheBitLab | Pianificata | Plugin `romeo-sim`, lifecycle ABI, run headless, grading e artefatti. |
 | M10 — Bundle primo anno | Pianificata | Attività Python/robotica, materiali studente/docente e capstone. |
 | M11 — Bundle secondo anno | Pianificata | Socket, REST, WebSocket, camera, gamepad e telepresenza. |

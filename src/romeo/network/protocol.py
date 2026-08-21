@@ -6,10 +6,19 @@ import math
 from dataclasses import dataclass
 from typing import Literal, cast
 
-CommandName = Literal["FORWARD", "BACKWARD", "LEFT", "RIGHT", "STOP", "LOOK", "PING"]
+CommandName = Literal[
+    "FORWARD",
+    "BACKWARD",
+    "LEFT",
+    "RIGHT",
+    "DRIVE",
+    "STOP",
+    "LOOK",
+    "PING",
+]
 
 _MOVEMENT_COMMANDS = frozenset({"FORWARD", "BACKWARD", "LEFT", "RIGHT"})
-_COMMANDS = _MOVEMENT_COMMANDS | {"STOP", "LOOK", "PING"}
+_COMMANDS = _MOVEMENT_COMMANDS | {"DRIVE", "STOP", "LOOK", "PING"}
 DEFAULT_SPEED = 0.5
 
 
@@ -67,6 +76,15 @@ def parse_command(line: str) -> Command:
         if not 0.0 <= pan <= 180.0 or not 0.0 <= tilt <= 180.0:
             raise ProtocolError("pan and tilt must be between 0 and 180 degrees")
         return Command(name, (pan, tilt))
+
+    if name == "DRIVE":
+        if len(raw_arguments) != 2:
+            raise ProtocolError("DRIVE requires left and right wheel speeds")
+        left = _number(raw_arguments[0], "left wheel speed")
+        right = _number(raw_arguments[1], "right wheel speed")
+        if not -1.0 <= left <= 1.0 or not -1.0 <= right <= 1.0:
+            raise ProtocolError("wheel speeds must be between -1 and 1")
+        return Command(name, (left, right))
 
     if raw_arguments:
         raise ProtocolError(f"{name} does not accept arguments")
