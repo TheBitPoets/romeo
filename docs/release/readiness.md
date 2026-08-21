@@ -35,10 +35,17 @@ risultato. Queste prove non impediscono simulazione, corso o grading headless.
 
 ## Licenze e provenienza degli asset
 
-Il Course Bundle è CC BY-SA 4.0, ma il blocco sulle 53 immagini resta aperto:
-la history non dimostra paternità e concessione. I PNG sono esclusi dalla
-distribuzione finché issue #1 non contiene un'attestazione committata. Il
-manifest del bundle non include queste immagini.
+Il software è Apache-2.0 e il Course Bundle è CC BY-SA 4.0. La provenienza delle
+53 immagini storiche è stata chiarita con un'attestazione persistente del
+maintainer in `images/PROVENANCE.md`: le fotografie originali sono dell'autore
+della guida e devono essere conservate perché fanno parte della guida di
+assemblaggio storica del README.
+
+Le immagini non vengono però assorbite automaticamente nella licenza del
+software o del corso. `images/LICENSE.md` mantiene separati i diritti sulle
+fotografie e preserva i diritti di terzi per screenshot, interfacce software,
+documentazione, marchi, loghi e design di prodotto. Il manifest del Course
+Bundle continua a non dipendere dai PNG storici.
 
 ## M12
 
