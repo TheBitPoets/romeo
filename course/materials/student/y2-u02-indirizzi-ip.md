@@ -49,7 +49,7 @@ Scrivi una funzione `descrivi(indirizzo)` che restituisce `locale` oppure `non l
 
 ## Consegna valutata
 
-Risolvi localhost, valida l'indirizzo e stampa IP OK.
+Completa `resolve_ipv4` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: risolvere un nome e riconoscere IPv4.
 
 ## Errori tipici
 

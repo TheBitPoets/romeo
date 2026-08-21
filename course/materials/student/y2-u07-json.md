@@ -47,7 +47,7 @@ Restituisci un errore leggibile per JSON malformato o con schema incompleto.
 
 ## Consegna valutata
 
-Codifica uno stato Romeo, decodificalo e verifica i tipi.
+Completa `encode_state`, `decode_state` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: serializzare e validare un messaggio.
 
 ## Errori tipici
 

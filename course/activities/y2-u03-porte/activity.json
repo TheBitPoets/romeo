@@ -23,19 +23,19 @@
   "prerequisites": [
     "romeo-y2-u02-indirizzi-ip"
   ],
-  "instructions": "Chiedi al sistema una porta effimera e verifica che sia positiva.",
-  "consegna": "Chiedi al sistema una porta effimera e verifica che sia positiva.",
+  "instructions": "Completa `choose_free_port` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: associare una porta libera a un socket.",
+  "consegna": "Completa `choose_free_port` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: associare una porta libera a un socket.",
   "student_support_mode": "hint-progressivi",
   "grading_policy": {
     "compila": true,
-    "test": false,
-    "sandbox": false,
+    "test": true,
+    "sandbox": true,
     "ai_feedback": false
   },
   "correzione": {
     "compila": true,
-    "test": false,
-    "sandbox": false,
+    "test": true,
+    "sandbox": true,
     "ai_feedback": false
   },
   "metriche": {
@@ -84,6 +84,12 @@
       "description": "Check deterministici"
     },
     {
+      "type": "fixture",
+      "path": "behavioral_tests.py",
+      "visibility": "grading",
+      "description": "Test comportamentali eseguiti dal sandbox broker TheBitLab"
+    },
+    {
       "type": "teacher_only",
       "path": "solution.py",
       "visibility": "teacher",
@@ -107,7 +113,8 @@
       "required_capabilities": [
         "headless-run",
         "deterministic-grade",
-        "artifact-collect"
+        "artifact-collect",
+        "sandbox-plan.v1"
       ],
       "submission": {
         "artifacts": [

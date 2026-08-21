@@ -46,7 +46,7 @@ Progetta path e rappresentazione JSON per una risorsa `info` senza implementare 
 
 ## Consegna valutata
 
-Interroga /api/status con TestClient e verifica il contratto.
+Completa `read_robot_status` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: consumare una risorsa JSON.
 
 ## Errori tipici
 

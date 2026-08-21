@@ -1,5 +1,5 @@
 from ipaddress import ip_address
 
-loopback = ip_address("127.0.0.1")
-assert loopback.is_loopback
-print("RETE OK")
+def is_loopback(address):
+    """Restituisce True se address indica questo stesso computer."""
+    return ip_address(address).is_loopback

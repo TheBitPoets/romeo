@@ -12,6 +12,7 @@ from build_first_year_bundle import COURSE, UNITS, dump, write
 from build_first_year_bundle import build as build_first_year
 from lessons_year2 import LESSONS_Y2
 from pedagogy_content import bullets, glossary_table, numbered
+from y2_contracts import CONTRACTS_Y2
 
 
 @dataclass(frozen=True)
@@ -32,20 +33,9 @@ def code(value: str) -> str:
 
 
 def starter_code(unit: NetworkUnit) -> str:
-    """Keep lesson imports visible without revealing the behavioral solution."""
+    """Return the import-safe callable contract for one lesson."""
 
-    imports = [
-        line
-        for line in unit.solution.splitlines()
-        if line.startswith("import ") or line.startswith("from ")
-    ]
-    return (
-        f'"""{unit.task}"""\n\n'
-        + "\n".join(imports)
-        + "\n\n# 1. Prepara gli endpoint o i dati.\n"
-        + "# 2. Esegui l'operazione e valida la risposta con assert.\n"
-        + "# 3. Stampa il marker richiesto solo dopo le verifiche.\n"
-    )
+    return CONTRACTS_Y2[unit.slug].starter
 
 
 UNITS_Y2 = (
@@ -523,6 +513,16 @@ UNITS_Y2 = (
 )
 
 
+def contract_instruction(unit: NetworkUnit) -> str:
+    names = ", ".join(f"`{name}`" for name in CONTRACTS_Y2[unit.slug].entrypoints)
+    return (
+        f"Completa {names} nello starter senza rinominare le funzioni. "
+        "Rispetta parametri, valore restituito e cleanup descritti nella docstring: "
+        "TheBitLab importerà le funzioni e le proverà con input diversi. "
+        f"Obiettivo: {unit.objective}."
+    )
+
+
 def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
     identifier = f"romeo-y2-u{index:02d}-{unit.slug}"
     previous = (
@@ -545,11 +545,11 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
         "argomenti": [part.strip() for part in unit.concepts.split(",")],
         "objective": unit.objective,
         "prerequisites": [previous],
-        "instructions": unit.task,
-        "consegna": unit.task,
+        "instructions": contract_instruction(unit),
+        "consegna": contract_instruction(unit),
         "student_support_mode": "hint-progressivi",
-        "grading_policy": {"compila": True, "test": False, "sandbox": False, "ai_feedback": False},
-        "correzione": {"compila": True, "test": False, "sandbox": False, "ai_feedback": False},
+        "grading_policy": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
+        "correzione": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
         "metriche": {
             "tempo_stimato_minuti": unit.minutes,
             "traccia_tempo_dichiarato": True,
@@ -584,6 +584,12 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
                 "description": "Check deterministici",
             },
             {
+                "type": "fixture",
+                "path": "behavioral_tests.py",
+                "visibility": "grading",
+                "description": "Test comportamentali eseguiti dal sandbox broker TheBitLab",
+            },
+            {
                 "type": "teacher_only",
                 "path": "solution.py",
                 "visibility": "teacher",
@@ -605,6 +611,7 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
                     "headless-run",
                     "deterministic-grade",
                     "artifact-collect",
+                    "sandbox-plan.v1",
                 ],
                 "submission": {
                     "artifacts": [
@@ -617,6 +624,26 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
                     ]
                 },
             }
+        },
+    }
+
+
+def runtime_config(unit: NetworkUnit) -> dict[str, object]:
+    """Describe formative output and broker-owned behavioural grading."""
+
+    contract = CONTRACTS_Y2[unit.slug]
+    return {
+        "schema_version": "romeo.thebitlab.v1",
+        "scenario": "scenario.json",
+        "submission_artifact_id": "main",
+        "max_simulation_seconds": 20,
+        # Output markers are deliberately not grading evidence. The sandbox
+        # broker invokes the named functions through the fixture below.
+        "stdout_checks": [],
+        "behavioral_tests": {
+            "path": "behavioral_tests.py",
+            "entrypoints": list(contract.entrypoints),
+            "execution_boundary": "thebitlab-sandbox-broker",
         },
     }
 
@@ -659,7 +686,7 @@ In questa unità imparerai a {unit.objective}.
 
 ## Consegna valutata
 
-{unit.task}
+{contract_instruction(unit)}
 
 ## Errori tipici
 
@@ -699,9 +726,9 @@ Durata: {unit.minutes} minuti. Difficoltà: {unit.difficulty}. Obiettivo osserva
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–{unit.minutes} min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
-come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
-anche gli assert e i check comportamentali presuppongono una submission collaborativa.
+Il marker di output offre soltanto feedback formativo e non è prova sommativa. Il risultato è
+autorevole solo quando il runtime usa il sandbox broker TheBitLab e un'immagine Romeo identificata
+da digest; il run locale resta esplicitamente diagnostico.
 
 ## Misconcezioni e safety
 
@@ -722,6 +749,7 @@ def build() -> None:
     curriculum = json.loads((COURSE / "curriculum.json").read_text(encoding="utf-8"))
     for index, unit in enumerate(UNITS_Y2, start=1):
         lesson = LESSONS_Y2[unit.slug]
+        contract = CONTRACTS_Y2[unit.slug]
         unit_id = f"y2-u{index:02d}-{unit.slug}"
         base = COURSE / "activities" / unit_id
         dump(base / "activity.json", activity(index, unit))
@@ -729,20 +757,10 @@ def build() -> None:
             base / "scenario.json",
             {"schema_version": "romeo.scenario.v1", "id": unit_id, "checks": []},
         )
-        dump(
-            base / "runtime-config.json",
-            {
-                "schema_version": "romeo.thebitlab.v1",
-                "scenario": "scenario.json",
-                "submission_artifact_id": "main",
-                "max_simulation_seconds": 20,
-                "stdout_checks": [
-                    {"name": marker, "contains": marker, "points": 1} for marker in unit.markers
-                ],
-            },
-        )
+        dump(base / "runtime-config.json", runtime_config(unit))
         write(base / "starter.py", starter_code(unit))
-        write(base / "solution.py", unit.solution)
+        write(base / "solution.py", contract.solution)
+        write(base / "behavioral_tests.py", contract.hidden_tests)
         write(
             base / "hints.md",
             "# Hint progressivi\n\n"

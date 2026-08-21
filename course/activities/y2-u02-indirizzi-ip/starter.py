@@ -1,8 +1,7 @@
-"""Risolvi localhost, valida l'indirizzo e stampa IP OK."""
-
 import socket
 from ipaddress import ip_address
 
-# 1. Prepara gli endpoint o i dati.
-# 2. Esegui l'operazione e valida la risposta con assert.
-# 3. Stampa il marker richiesto solo dopo le verifiche.
+def resolve_ipv4(hostname):
+    """Risolve hostname e restituisce un indirizzo IPv4 valido."""
+    # TODO: usa socket.gethostbyname e valida il risultato.
+    pass

@@ -1,10 +1,8 @@
-from fastapi.testclient import TestClient
-from romeo.camera.mock import MINIMAL_JPEG, MockCameraService
-from romeo.web import create_app
-
-with TestClient(create_app(camera=MockCameraService())) as client:
+def download_photo(client):
+    """Scarica e valida una foto JPEG dalla REST API."""
     response = client.get("/api/camera/photo")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/jpeg"
-    assert response.content == MINIMAL_JPEG
-print("FOTO JPEG OK")
+    if response.status_code != 200:
+        raise ValueError("foto non disponibile")
+    if not response.headers.get("content-type", "").startswith("image/jpeg"):
+        raise ValueError("media type inatteso")
+    return response.content

@@ -47,7 +47,7 @@ Gestisci `available == False` senza tentare la cattura e garantendo cleanup.
 
 ## Consegna valutata
 
-Acquisisci una foto dal mock senza importare Picamera2.
+Completa `capture_photo` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: usare una camera sostituibile.
 
 ## Errori tipici
 

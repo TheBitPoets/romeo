@@ -45,7 +45,7 @@ Crea una sequenza controllata che invia STOP dopo un periodo senza nuovi tasti.
 
 ## Consegna valutata
 
-Trasforma W e spazio nei comandi remoti FORWARD e STOP.
+Completa `commands_for_keys` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: separare la mappa dei tasti dal trasporto e garantire lo stop finale.
 
 ## Errori tipici
 

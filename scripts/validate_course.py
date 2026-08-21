@@ -73,6 +73,7 @@ def validate_activity(path: Path) -> None:
         "headless-run",
         "deterministic-grade",
         "artifact-collect",
+        "sandbox-plan.v1",
     }:
         raise ValueError(f"{path}: unknown runtime capability")
     config = safe_file(runtime["config"]["path"], base=path.parent)

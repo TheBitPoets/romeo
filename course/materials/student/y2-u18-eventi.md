@@ -47,7 +47,7 @@ Gestisci tre tipi di evento mantenendo handler piccoli e un comportamento sicuro
 
 ## Consegna valutata
 
-Inserisci due eventi in una coda e gestiscili nell'ordine.
+Completa `dispatch_events` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: reagire a eventi senza polling fragile.
 
 ## Errori tipici
 

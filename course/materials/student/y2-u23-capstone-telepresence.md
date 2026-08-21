@@ -47,7 +47,7 @@ Dimostra con log automatico che disconnect, timeout e camera indisponibile degra
 
 ## Consegna valutata
 
-Verifica foto, stato, controllo WebSocket e stop alla fine della sessione.
+Completa `run_telepresence_session` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: integrare video, controllo, telemetria e safety.
 
 ## Errori tipici
 

@@ -47,7 +47,7 @@ Disabilita i comandi di movimento quando la connessione non è pronta e lascia S
 
 ## Consegna valutata
 
-Invia FORWARD via WebSocket, controlla ack, quindi STOP.
+Completa `drive_then_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: tradurre input UI in messaggi validi.
 
 ## Errori tipici
 

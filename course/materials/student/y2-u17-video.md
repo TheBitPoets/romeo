@@ -54,7 +54,7 @@ Interrompi la lettura dopo tre frame e dimostra che camera e stream vengono chiu
 
 ## Consegna valutata
 
-Leggi il primo frame del mock e verifica i marker JPEG.
+Completa `first_video_frame` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: riconoscere frame e boundary.
 
 ## Errori tipici
 

@@ -1,9 +1,7 @@
-import socket
-
-client, server = socket.socketpair()
-with client, server:
+def exchange_ping_pong(client, server):
+    """Scambia PING e PONG sui due socket già collegati."""
     client.sendall(b"PING\n")
-    assert server.recv(16) == b"PING\n"
+    request = server.recv(16)
     server.sendall(b"PONG\n")
-    assert client.recv(16) == b"PONG\n"
-print("CLIENT SERVER OK")
+    response = client.recv(16)
+    return request, response

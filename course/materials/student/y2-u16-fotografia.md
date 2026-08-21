@@ -45,7 +45,7 @@ Definisci il comportamento REST per camera non disponibile, motivando status e b
 
 ## Consegna valutata
 
-Inietta MockCameraService e verifica /api/camera/photo.
+Completa `download_photo` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: ricevere JPEG con media type corretto.
 
 ## Errori tipici
 

@@ -48,7 +48,7 @@ Disegna che cosa dovrà essere aggiunto per trasformare la coppia locale in clie
 
 ## Consegna valutata
 
-Invia PING su una coppia di socket e rispondi PONG.
+Completa `exchange_ping_pong` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: scambiare byte tra due endpoint.
 
 ## Errori tipici
 

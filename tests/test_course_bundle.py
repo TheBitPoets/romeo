@@ -62,15 +62,20 @@ def test_all_student_lessons_have_specific_scaffolded_depth() -> None:
     assert len(set(bodies)) == 43
 
 
-def test_course_does_not_claim_a_submission_sandbox() -> None:
+def test_course_claims_sandbox_only_for_brokered_second_year() -> None:
     activities = sorted((COURSE / "activities").glob("y*-*/activity.json"))
     for path in activities:
         activity = json.loads(path.read_text(encoding="utf-8"))
-        assert activity["grading_policy"]["sandbox"] is False
-        assert activity["correzione"]["sandbox"] is False
-        if path.parent.name.startswith("y2-"):
-            assert activity["grading_policy"]["test"] is False
-            assert activity["correzione"]["test"] is False
+        is_second_year = path.parent.name.startswith("y2-")
+        assert activity["grading_policy"]["sandbox"] is is_second_year
+        assert activity["correzione"]["sandbox"] is is_second_year
+        capabilities = activity["extensions"]["thebitlab.runtime"][
+            "required_capabilities"
+        ]
+        assert ("sandbox-plan.v1" in capabilities) is is_second_year
+        if is_second_year:
+            assert activity["grading_policy"]["test"] is True
+            assert activity["correzione"]["test"] is True
 
 
 def test_all_python_examples_in_student_lessons_compile() -> None:

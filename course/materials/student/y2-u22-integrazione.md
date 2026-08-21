@@ -46,7 +46,7 @@ Interrompi il canale control senza STOP esplicito e dimostra il fail-safe tramit
 
 ## Consegna valutata
 
-Invia un comando, leggi lo stato e chiudi lasciando Romeo fermo.
+Completa `control_and_read` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: collegare comando realtime e telemetria.
 
 ## Errori tipici
 

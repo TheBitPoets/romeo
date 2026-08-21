@@ -23,19 +23,19 @@
   "prerequisites": [
     "romeo-y2-u11-websocket"
   ],
-  "instructions": "Invia FORWARD via WebSocket, controlla ack, quindi STOP.",
-  "consegna": "Invia FORWARD via WebSocket, controlla ack, quindi STOP.",
+  "instructions": "Completa `drive_then_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: tradurre input UI in messaggi validi.",
+  "consegna": "Completa `drive_then_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: tradurre input UI in messaggi validi.",
   "student_support_mode": "hint-progressivi",
   "grading_policy": {
     "compila": true,
-    "test": false,
-    "sandbox": false,
+    "test": true,
+    "sandbox": true,
     "ai_feedback": false
   },
   "correzione": {
     "compila": true,
-    "test": false,
-    "sandbox": false,
+    "test": true,
+    "sandbox": true,
     "ai_feedback": false
   },
   "metriche": {
@@ -84,6 +84,12 @@
       "description": "Check deterministici"
     },
     {
+      "type": "fixture",
+      "path": "behavioral_tests.py",
+      "visibility": "grading",
+      "description": "Test comportamentali eseguiti dal sandbox broker TheBitLab"
+    },
+    {
       "type": "teacher_only",
       "path": "solution.py",
       "visibility": "teacher",
@@ -107,7 +113,8 @@
       "required_capabilities": [
         "headless-run",
         "deterministic-grade",
-        "artifact-collect"
+        "artifact-collect",
+        "sandbox-plan.v1"
       ],
       "submission": {
         "artifacts": [

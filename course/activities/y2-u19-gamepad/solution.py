@@ -1,6 +1,5 @@
 from romeo.gamepad import GamepadMapping, wheel_speeds
 
-left, right = wheel_speeds(0.0, -1.0, GamepadMapping(max_speed=0.6))
-assert left == 0.6 and right == 0.6
-assert wheel_speeds(0.02, 0.02) == (0.0, 0.0)
-print("GAMEPAD OK")
+def stick_to_wheels(x, y, max_speed=0.6):
+    """Converte gli assi dello stick in velocità delle ruote."""
+    return wheel_speeds(x, y, GamepadMapping(max_speed=max_speed))

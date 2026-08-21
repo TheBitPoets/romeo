@@ -1,6 +1,6 @@
-from romeo.camera.mock import MINIMAL_JPEG, MockCameraService
-
-camera = MockCameraService()
-assert camera.available and camera.capture_photo() == MINIMAL_JPEG
-camera.close()
-print("CAMERA SERVICE OK")
+def capture_photo(camera):
+    """Acquisisce una foto usando il servizio ricevuto."""
+    photo = camera.capture_photo()
+    if not isinstance(photo, bytes):
+        raise ValueError("la foto deve essere bytes")
+    return photo

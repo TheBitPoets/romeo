@@ -47,7 +47,7 @@ Disegna il percorso concettuale computer studente → rete locale → Romeo → 
 
 ## Consegna valutata
 
-Valida l'indirizzo di loopback e stampa il marker solo dopo l'assert.
+Completa `is_loopback` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: distinguere host, rete e servizio.
 
 ## Errori tipici
 

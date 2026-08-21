@@ -48,7 +48,7 @@ Aggiungi un parametro di path semplice e verifica anche il caso non valido resti
 
 ## Consegna valutata
 
-Crea /status, chiamalo senza rete esterna e verifica il JSON.
+Completa `create_status_app` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: definire un endpoint tipizzato.
 
 ## Errori tipici
 

@@ -47,7 +47,7 @@ Gestisci un saluto errato restituendo `ERROR` senza lasciare thread o socket ape
 
 ## Consegna valutata
 
-Avvia un piccolo server in thread, collega il client e verifica la risposta.
+Completa `tcp_request` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: aprire server e client sul loopback.
 
 ## Errori tipici
 

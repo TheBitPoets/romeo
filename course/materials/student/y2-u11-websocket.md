@@ -51,7 +51,7 @@ Disegna come heartbeat o timeout rileverebbero un client scomparso, senza implem
 
 ## Consegna valutata
 
-Collegati a /ws/control, invia STOP e verifica l'ack.
+Completa `request_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: mantenere una connessione per comandi realtime.
 
 ## Errori tipici
 

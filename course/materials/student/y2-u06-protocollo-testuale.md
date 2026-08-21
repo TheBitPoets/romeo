@@ -47,7 +47,7 @@ Produci risposte testuali coerenti `OK` o `ERROR motivo` senza muovere il robot 
 
 ## Consegna valutata
 
-Analizza FORWARD e STOP e controlla nome e argomenti.
+Completa `parse_command_line` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: analizzare comandi testuali con una whitelist.
 
 ## Errori tipici
 

@@ -51,7 +51,7 @@ Confronta due response con lo stesso body ma Content-Type diversi e spiega quale
 
 ## Consegna valutata
 
-Servi JSON su loopback, esegui GET e verifica status 200.
+Completa `fetch_status` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: riconoscere metodo, status e body.
 
 ## Errori tipici
 

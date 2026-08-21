@@ -48,7 +48,7 @@ Simula una disconnessione durante il movimento e raccogli una traccia che dimost
 
 ## Consegna valutata
 
-Prendi il controllo, muovi, rilascia e verifica motori a zero.
+Completa `drive_safely` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: applicare ownership, timeout e stop.
 
 ## Errori tipici
 

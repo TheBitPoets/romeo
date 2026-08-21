@@ -16,9 +16,9 @@ Pan ruota lo sguardo a sinistra/destra; tilt lo inclina su/giù. Gli angoli sono
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–60 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
-come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
-anche gli assert e i check comportamentali presuppongono una submission collaborativa.
+Il marker di output offre soltanto feedback formativo e non è prova sommativa. Il risultato è
+autorevole solo quando il runtime usa il sandbox broker TheBitLab e un'immagine Romeo identificata
+da digest; il run locale resta esplicitamente diagnostico.
 
 ## Misconcezioni e safety
 

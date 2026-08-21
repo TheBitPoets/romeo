@@ -1,7 +1,4 @@
-"""Invia PING su una coppia di socket e rispondi PONG."""
-
-import socket
-
-# 1. Prepara gli endpoint o i dati.
-# 2. Esegui l'operazione e valida la risposta con assert.
-# 3. Stampa il marker richiesto solo dopo le verifiche.
+def exchange_ping_pong(client, server):
+    """Scambia PING e PONG sui due socket già collegati."""
+    # TODO: usa sendall e recv e restituisci i due messaggi ricevuti.
+    pass

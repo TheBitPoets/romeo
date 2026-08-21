@@ -49,7 +49,7 @@ Spiega perché salvare una porta trovata chiudendo subito il socket non garantis
 
 ## Consegna valutata
 
-Chiedi al sistema una porta effimera e verifica che sia positiva.
+Completa `choose_free_port` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: associare una porta libera a un socket.
 
 ## Errori tipici
 

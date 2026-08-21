@@ -45,7 +45,7 @@ Scrivi un consumer che ignora campi aggiuntivi ma rifiuta versioni incompatibili
 
 ## Consegna valutata
 
-Genera uno snapshot simulato e verifica schema e campi.
+Completa `read_telemetry` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: leggere stato senza dipendere dal renderer.
 
 ## Errori tipici
 

@@ -1,8 +1,4 @@
-from collections import deque
-
-events = deque([{"type": "key", "value": "w"}, {"type": "key", "value": "space"}])
-handled = []
-while events:
-    handled.append(events.popleft()["value"])
-assert handled == ["w", "space"]
-print("EVENTI OK")
+def dispatch_events(events, handler):
+    """Consegna ogni evento al callback nello stesso ordine."""
+    for event in events:
+        handler(event)

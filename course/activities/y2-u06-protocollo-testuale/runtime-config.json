@@ -3,11 +3,12 @@
   "scenario": "scenario.json",
   "submission_artifact_id": "main",
   "max_simulation_seconds": 20,
-  "stdout_checks": [
-    {
-      "name": "PROTOCOLLO OK",
-      "contains": "PROTOCOLLO OK",
-      "points": 1
-    }
-  ]
+  "stdout_checks": [],
+  "behavioral_tests": {
+    "path": "behavioral_tests.py",
+    "entrypoints": [
+      "parse_command_line"
+    ],
+    "execution_boundary": "thebitlab-sandbox-broker"
+  }
 }

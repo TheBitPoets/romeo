@@ -1,8 +1,3 @@
-"""Invia FORWARD via WebSocket, controlla ack, quindi STOP."""
-
-from fastapi.testclient import TestClient
-from romeo.web import create_app
-
-# 1. Prepara gli endpoint o i dati.
-# 2. Esegui l'operazione e valida la risposta con assert.
-# 3. Stampa il marker richiesto solo dopo le verifiche.
+def drive_then_stop(client, speed):
+    """Invia FORWARD e garantisce STOP prima di chiudere."""
+    pass

@@ -1,7 +1,9 @@
-"""Codifica uno stato Romeo, decodificalo e verifica i tipi."""
-
 import json
 
-# 1. Prepara gli endpoint o i dati.
-# 2. Esegui l'operazione e valida la risposta con assert.
-# 3. Stampa il marker richiesto solo dopo le verifiche.
+def encode_state(state):
+    """Codifica uno stato come testo JSON."""
+    pass
+
+def decode_state(text):
+    """Decodifica e valida type, motors e moving."""
+    pass

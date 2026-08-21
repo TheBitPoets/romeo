@@ -48,7 +48,7 @@ Limita in modo esplicito due valori ricevuti prima di passarli a `look` e spiega
 
 ## Consegna valutata
 
-Porta la camera a pan 60 e tilt 120 con il backend mock.
+Completa `point_camera` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: orientare la camera attraverso Robot.
 
 ## Errori tipici
 

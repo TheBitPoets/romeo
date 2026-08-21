@@ -44,7 +44,7 @@ Crea una configurazione con dead-zone e max speed diverse senza modificare la fu
 
 ## Consegna valutata
 
-Calcola le ruote per stick avanti e verifica direzione e limite.
+Completa `stick_to_wheels` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: convertire assi in velocità ruote.
 
 ## Errori tipici
 

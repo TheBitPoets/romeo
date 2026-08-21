@@ -1,10 +1,11 @@
-from fastapi.testclient import TestClient
-from romeo.web import create_app
-
-with TestClient(create_app()) as client:
+def request_stop(client):
+    """Apre /ws/control, invia STOP e restituisce l'ack."""
     with client.websocket_connect("/ws/control") as websocket:
         ready = websocket.receive_json()
+        if ready.get("type") != "ready":
+            raise ValueError("WebSocket non pronto")
         websocket.send_json({"command": "STOP"})
         ack = websocket.receive_json()
-        assert ready["type"] == "ready" and ack["type"] == "ack"
-print("WEBSOCKET ACK OK")
+        if ack.get("type") != "ack":
+            raise ValueError("ack mancante")
+        return ack

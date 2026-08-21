@@ -3,11 +3,12 @@
   "scenario": "scenario.json",
   "submission_artifact_id": "main",
   "max_simulation_seconds": 20,
-  "stdout_checks": [
-    {
-      "name": "CONTROLLO REMOTO OK",
-      "contains": "CONTROLLO REMOTO OK",
-      "points": 1
-    }
-  ]
+  "stdout_checks": [],
+  "behavioral_tests": {
+    "path": "behavioral_tests.py",
+    "entrypoints": [
+      "commands_for_keys"
+    ],
+    "execution_boundary": "thebitlab-sandbox-broker"
+  }
 }
