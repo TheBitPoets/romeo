@@ -18,8 +18,12 @@ Nessuna voce hardware è considerata completata senza osservazione diretta.
 - Wheel SHA-256:
   `511c63f3538d7df05ecd15e8ef19d74bb3af124e87453f5d2371b8d80c950356`.
 - Docker client/server: 28.3.2; Docker Desktop 4.44.0; daemon Linux amd64.
-- OCI runtime:
+- Digest OCI testato durante questa sessione storica:
   `ghcr.io/thebitpoets/romeo-runtime@sha256:3d854fb99d2d1f4b7264c87fcce550dd5e3e739de055c73325609893a088d997`.
+
+Questo valore documenta la prova del 2026-08-21 e non identifica
+automaticamente il digest corrente approvato. Per nuove installazioni leggere
+`ROMEO_SANDBOX_IMAGE` da `docs/release/runtime-image-current.env`.
 
 Il checkout classroom moderno presente sull'host è incompleto: non esistono una
 box Vagrant `2cornot2c/*` né `.classroom-box`. Una VM Vagrant legacy registrata

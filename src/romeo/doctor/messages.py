@@ -64,6 +64,18 @@ CHECK_HELP: dict[str, CheckHelp] = {
         ("chiedi al docente di eseguire romeo-doctor --commission",),
         "non copiare la calibrazione di un altro robot",
     ),
+    "unit_identity": CheckHelp(
+        "Identità Romeo",
+        "il legame tra calibrazione e singolo Raspberry Pi",
+        "impedisce di usare su un robot la calibrazione misurata su un altro.",
+        (
+            "il file proviene da un altro Romeo",
+            "il Raspberry non rende disponibile una identità hardware stabile",
+            "il commissioning è precedente al fingerprint per-unità",
+        ),
+        ("chiedi al docente di rifare romeo-doctor --commission su questo robot",),
+        "non copiare hardware.json tra robot diversi",
+    ),
     "watchdog": CheckHelp(
         "Watchdog",
         "il timeout automatico dei comandi motore",

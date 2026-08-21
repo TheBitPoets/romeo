@@ -8,6 +8,12 @@ from romeo.doctor.config import (
     load_config,
     save_config,
 )
+from romeo.doctor.identity import (
+    UnitIdentityError,
+    fingerprint_unit_identifier,
+    is_unit_fingerprint,
+    read_raspberry_unit_identifier,
+)
 from romeo.doctor.models import (
     CONFIG_SCHEMA_VERSION,
     REPORT_SCHEMA_VERSION,
@@ -32,6 +38,10 @@ __all__ = [
     "DoctorConfigVersionError",
     "default_config_path",
     "ModelValidationError",
+    "UnitIdentityError",
+    "fingerprint_unit_identifier",
+    "is_unit_fingerprint",
     "load_config",
+    "read_raspberry_unit_identifier",
     "save_config",
 ]

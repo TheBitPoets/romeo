@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from romeo.backends.mock import MockBackend
 from romeo.camera.mock import MockCameraService
 from romeo.doctor import cli
 from romeo.doctor.config import load_config
+from romeo.doctor.identity import UnitIdentityError, fingerprint_unit_identifier
 from romeo.doctor.models import CheckResult, DiagnosticReport
 from romeo.safety import SafetyBackend
 
@@ -42,6 +45,7 @@ def test_commissioning_cancel_does_not_save(tmp_path: Path) -> None:
         output_fn=lambda _message: None,
         camera_factory=MockCameraService,
         package_version="0.1.0",
+        unit_identifier_provider=lambda: "unit-a-raw-serial",
     )
 
     assert result == cli.EXIT_CANCELLED
@@ -94,6 +98,7 @@ def test_commissioning_records_polarity_trim_limits_and_camera(tmp_path: Path) -
         output_fn=lambda _message: None,
         camera_factory=MockCameraService,
         package_version="0.1.0",
+        unit_identifier_provider=lambda: "unit-a-raw-serial",
     )
 
     assert result == cli.EXIT_READY
@@ -106,8 +111,34 @@ def test_commissioning_records_polarity_trim_limits_and_camera(tmp_path: Path) -
     assert saved.unit_calibration.pan_min == 50.0
     assert saved.unit_calibration.tilt_max == 125.0
     assert saved.commissioning.status == "commissioned"
+    assert saved.commissioning.hardware_fingerprint == fingerprint_unit_identifier(
+        "unit-a-raw-serial"
+    )
     assert len(saved.commissioning.watchdog_samples_ms) == 3
     assert raw_backend.left_speed == raw_backend.right_speed == 0.0
+    backend.close()
+
+
+def test_commissioning_without_reliable_identity_does_not_move_or_save(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "hardware.json"
+    raw_backend = MockBackend()
+    backend = SafetyBackend(raw_backend, command_timeout=0.05)
+
+    with pytest.raises(UnitIdentityError):
+        cli.run_commissioning(
+            path,
+            backend,
+            input_fn=lambda _prompt: "SICURO",
+            output_fn=lambda _message: None,
+            camera_factory=MockCameraService,
+            unit_identifier_provider=lambda: "",
+        )
+
+    assert not path.exists()
+    assert raw_backend.left_speed == raw_backend.right_speed == 0.0
+    assert all(command.name == "stop" for command in raw_backend.history)
     backend.close()
 
 

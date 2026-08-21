@@ -82,8 +82,18 @@ Percorso Linux predefinito:
 - `model_defaults`: valori generali del modello;
 - `unit_calibration`: inversioni, trim, speed limit, limiti servo e watchdog del
   singolo robot;
-- `commissioning`: stato, timestamp, versione package e fingerprint generico
-  privo di seriali, più le misure watchdog in millisecondi.
+- `commissioning`: stato, timestamp, versione package e fingerprint per-unità
+  SHA-256 specifico del singolo Raspberry ma privo del seriale grezzo, più le
+  misure watchdog in millisecondi.
+
+Il fingerprint deriva prima dal seriale device-tree del Raspberry e usa il
+campo `Serial` di `/proc/cpuinfo` soltanto come fallback per kernel Raspberry
+meno recenti. Il seriale originale non viene salvato né mostrato. Il preflight
+ricalcola il fingerprint: una calibrazione copiata su un altro Romeo, un record
+legacy senza fingerprint valido o una identità non leggibile bloccano `ready`.
+La forma JSON resta `romeo.hardware_calibration.v1`: il campo
+`hardware_fingerprint` esisteva già, quindi cambia soltanto la sua semantica
+fail-closed e non serve una v2.
 
 Il file è validato in modo stretto e salvato atomicamente. Campi sconosciuti
 sono rifiutati, anche per evitare che credenziali vengano inserite per errore.

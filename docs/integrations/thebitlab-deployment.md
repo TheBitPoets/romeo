@@ -37,6 +37,9 @@ Prima di un nuovo deployment:
 5. usa il broker allo SHA `ROMEO_THEBITLAB_BROKER_SHA` o una revisione successiva
    che abbia superato nuovamente gli stessi gate.
 
+Verifica che `ROMEO_SANDBOX_IMAGE` corrisponda esattamente a
+`ghcr.io/...@sha256:<64 cifre esadecimali>`. Tag come `latest` non sono validi.
+
 Esempio di build da source SHA registrato:
 
 ```text
@@ -79,8 +82,8 @@ record autorevole. Esempi, da adattare alla topologia osservata:
 - servizio Windows: environment del service wrapper, non della shell corrente;
 - launcher shell: file environment letto dal launcher amministrativo.
 
-Un semplice `export` o `$env:` in una console di collaudo non configura un
-servizio separato.
+Il valore deve essere copiato dal record autorevole. Un semplice `export` o
+`$env:` in una console di collaudo non configura un servizio separato.
 
 ## Probe e percorso studente
 
