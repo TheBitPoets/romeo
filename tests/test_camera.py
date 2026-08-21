@@ -82,6 +82,12 @@ def test_mjpeg_chunks_have_explicit_boundaries_and_lengths() -> None:
     assert chunk.endswith(MINIMAL_JPEG + b"\r\n")
 
 
+@pytest.mark.parametrize("warmup", [-1.0, float("nan"), float("inf")])
+def test_camera_warmup_must_be_non_negative_and_finite(warmup: float) -> None:
+    with pytest.raises(ValueError, match="non-negative finite"):
+        Picamera2CameraService(object(), warmup_seconds=warmup)
+
+
 @pytest.mark.hardware
 @pytest.mark.skip(reason="requires a physical Raspberry Pi camera")
 def test_physical_picamera2_capture() -> None:

@@ -58,8 +58,15 @@ class CrickitBackend:
         self._board.onboard_pixel.fill(packed_color)
 
     def stop(self) -> None:
-        self._board.dc_motor_2.throttle = 0.0
-        self._board.dc_motor_1.throttle = 0.0
+        first_error: Exception | None = None
+        for motor in (self._board.dc_motor_2, self._board.dc_motor_1):
+            try:
+                motor.throttle = 0.0
+            except Exception as error:
+                if first_error is None:
+                    first_error = error
+        if first_error is not None:
+            raise first_error
 
     def close(self) -> None:
         if not self._closed:

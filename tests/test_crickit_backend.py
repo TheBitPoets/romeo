@@ -60,3 +60,24 @@ def test_crickit_stops_after_motor_write_error() -> None:
         backend.set_motor_speeds(0.5, 0.5)
 
     assert board.dc_motor_1.throttle == 0.0
+
+
+def test_stop_attempts_both_motors_when_first_zero_write_fails() -> None:
+    class BrokenStopMotor:
+        @property
+        def throttle(self) -> float:
+            return 0.5
+
+        @throttle.setter
+        def throttle(self, value: float) -> None:
+            raise OSError("left motor I2C failure")
+
+    board = fake_board()
+    board.dc_motor_2 = BrokenStopMotor()
+    board.dc_motor_1.throttle = 0.5
+    backend = CrickitBackend(board)
+
+    with pytest.raises(OSError, match="left motor"):
+        backend.stop()
+
+    assert board.dc_motor_1.throttle == 0.0

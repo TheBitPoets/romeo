@@ -126,3 +126,9 @@ def test_background_watchdog_stops_without_manual_poll() -> None:
     assert stopped.wait(timeout=1.0)
     assert (backend.left_speed, backend.right_speed) == (0.0, 0.0)
     safety.close()
+
+
+@pytest.mark.parametrize("timeout", [0.0, -1.0, float("nan"), float("inf")])
+def test_command_timeout_must_be_positive_and_finite(timeout: float) -> None:
+    with pytest.raises(ValueError, match="positive finite"):
+        SafetyBackend(MockBackend(), command_timeout=timeout)

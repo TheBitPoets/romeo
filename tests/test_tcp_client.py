@@ -71,6 +71,12 @@ def test_send_requires_a_connection() -> None:
         TcpClient("localhost").send(Command("PING"))
 
 
+@pytest.mark.parametrize("timeout", [0.0, -1.0, float("nan"), float("inf")])
+def test_client_timeout_must_be_positive_and_finite(timeout: float) -> None:
+    with pytest.raises(ValueError, match="positive finite"):
+        TcpClient("localhost", timeout=timeout)
+
+
 @pytest.mark.parametrize(
     ("key", "expected"),
     [

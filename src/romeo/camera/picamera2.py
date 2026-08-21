@@ -23,8 +23,8 @@ class Picamera2CameraService:
     ) -> None:
         if resolution[0] <= 0 or resolution[1] <= 0:
             raise ValueError("resolution dimensions must be positive")
-        if warmup_seconds < 0.0:
-            raise ValueError("warmup_seconds must not be negative")
+        if not math.isfinite(warmup_seconds) or warmup_seconds < 0.0:
+            raise ValueError("warmup_seconds must be a non-negative finite number")
         if camera is None:
             try:
                 from picamera2 import Picamera2  # type: ignore[import-not-found]

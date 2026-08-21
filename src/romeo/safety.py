@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import threading
 import time
 from collections.abc import Callable
@@ -32,8 +33,8 @@ class SafetyBackend:
     ) -> None:
         if not 0.0 < max_speed <= 1.0:
             raise ValueError("max_speed must be greater than 0 and at most 1")
-        if command_timeout <= 0.0:
-            raise ValueError("command_timeout must be greater than 0")
+        if not math.isfinite(command_timeout) or command_timeout <= 0.0:
+            raise ValueError("command_timeout must be a positive finite number")
         self.backend = backend
         self.max_speed = max_speed
         self.command_timeout = command_timeout

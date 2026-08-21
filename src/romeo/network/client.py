@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import socket
 from types import TracebackType
 
@@ -27,8 +28,8 @@ class TcpClient:
             raise ValueError("host must not be empty")
         if not 1 <= port <= 65535:
             raise ValueError("port must be between 1 and 65535")
-        if timeout <= 0:
-            raise ValueError("timeout must be greater than zero")
+        if not math.isfinite(timeout) or timeout <= 0:
+            raise ValueError("timeout must be a positive finite number")
         self.host = host
         self.port = port
         self.timeout = timeout
