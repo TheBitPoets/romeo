@@ -111,3 +111,18 @@ roadmap 2D o modificare hardware/licenza/distribuzione.
   deterministico; le alternative aumentano hardware, privacy e dipendenze.
 - **Conseguenze:** ogni estensione M12 richiederà un caso didattico verificato e,
   se cambia hardware/licenza/distribuzione, una decisione di prodotto esplicita.
+
+## ADR-012 — Licenze separate per software e corso
+
+- **Stato:** accettata, 2026-08-21.
+- **Problema:** codice, materiali didattici e fotografie richiedono permessi e
+  obblighi adatti alla loro natura; il repository iniziale non li dichiarava.
+- **Decisione:** software Apache-2.0; Course Bundle e 53 immagini originali CC
+  BY-SA 4.0; nomi e loghi esclusi dalle concessioni sui marchi.
+- **Motivazione:** Apache-2.0 mantiene il runtime permissivo con una concessione
+  esplicita sui brevetti; CC BY-SA consente riuso e adattamento del corso facendo
+  restare condivisibili gli adattamenti.
+- **Alternative:** MIT con CC BY (massima permissività, senza reciprocità sui
+  materiali) e corso proprietario (maggiore controllo, minore collaborazione).
+- **Conseguenze:** manifest, avvisi e inventario asset devono restare coerenti;
+  ogni nuovo contenuto di terzi richiede provenienza e licenza esplicite.

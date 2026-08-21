@@ -40,6 +40,15 @@ Il plugin TheBitLab è scoperto come runtime `romeo-sim`. Le attività in
 [`course/`](course/) possono essere lanciate o corrette headless e producono
 risultato, traiettoria, event log e stato finale.
 
+## Licenze
+
+Il software è distribuito con licenza Apache-2.0 (`LICENSE`). I materiali
+didattici in [`course/`](course/) e le 53 immagini originali in
+[`images/`](images/) sono distribuiti con licenza CC BY-SA 4.0. Consulta
+`NOTICE`, gli avvisi nelle rispettive directory e
+[`docs/assets.md`](docs/assets.md) per confini e attribuzione. Nomi e loghi Romeo
+e TheBitLab non sono concessi in licenza come marchi.
+
 ## Mappa del progetto
 
 - `src/romeo/easy.py`: API a funzioni per il primo approccio;

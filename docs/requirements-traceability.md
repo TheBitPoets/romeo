@@ -26,7 +26,8 @@ Matrice aggiornata il 21 agosto 2026. I path indicano l'evidenza autoritativa;
 | Primo anno | 20 unità Python/robotica con attività, starter, hint, soluzione e materiali | `test_course_bundle.py`, piano `course/docs/first-year-plan.md` |
 | Secondo anno | 23 unità rete/telepresenza e check sul comportamento osservabile | plugin completo per ogni soluzione, piano secondo anno |
 | Qualità e CI | packaging Hatchling, Ruff, mypy strict, pytest su 3.10/3.12 | `.github/workflows/quality.yml`, wheel build |
-| Git e decision log | branch dedicato e commit incrementali; ADR-001–ADR-011 | `git log main..feat/platform-foundation` |
+| Git e decision log | branch dedicato e commit incrementali; ADR-001–ADR-012 | `git log main..feat/platform-foundation` |
+| Licenze e asset | software Apache-2.0; corso e 53 immagini originali CC BY-SA 4.0 | `LICENSE`, `NOTICE`, avvisi di directory, manifest e `docs/assets.md` |
 | Evoluzione M12 | confini compatibili con renderer/backend futuri; feature complesse differite | ADR-011, nessuna dipendenza 3D/WebRTC introdotta |
 
 ## Limiti dichiarati
@@ -35,5 +36,5 @@ Matrice aggiornata il 21 agosto 2026. I path indicano l'evidenza autoritativa;
 - Il browser integrato non era disponibile nell'ambiente di audit; viewer, asset,
   JavaScript, REST e WebSocket sono verificati automaticamente, non tramite una
   sessione visuale manuale.
-- Licenza del progetto e provenienza delle immagini iniziali restano la sola
-  decisione necessaria prima di push/release, tracciata nell'issue GitHub #1.
+- Le verifiche automatiche non determinano diritti su futuri asset: ogni nuovo
+  file deve indicare autore, fonte e licenza nell'inventario.

@@ -6,6 +6,8 @@ Le modifiche rilevanti del progetto sono registrate qui.
 
 ### Added
 
+- Licenze esplicite: Apache-2.0 per il software e CC BY-SA 4.0 per Course Bundle
+  e immagini originali, con avvisi, inventario asset e validazione del manifest.
 - API studente `romeo.easy` e classe `Robot`, con backend mock e adapter CRICKIT.
 - Safety backend con limite velocità, watchdog, timeout, controller esclusivo e
   stop fail-safe.

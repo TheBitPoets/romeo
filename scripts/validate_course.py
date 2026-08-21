@@ -23,6 +23,7 @@ ACTIVITY_TYPES = {
     "debug-didattico",
 }
 DIFFICULTIES = set("ABCDEF")
+COURSE_LICENSE = "CC-BY-SA-4.0"
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -99,6 +100,10 @@ def validate() -> int:
     }
     if bundle.keys() < required or bundle["schema_version"] != "1.0.0":
         raise ValueError("bundle.json does not implement Course Bundle 1.0.0")
+    if bundle["license"] != COURSE_LICENSE:
+        raise ValueError(f"bundle.json must use {COURSE_LICENSE}")
+    if not (COURSE / "LICENSE.md").is_file():
+        raise ValueError("course license notice is missing")
     units = bundle["content"]["units"]
     ids: set[str] = set()
     expected_index = []

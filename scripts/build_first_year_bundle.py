@@ -586,7 +586,7 @@ def build() -> None:
         "language": "it",
         "platform_min_version": "2026.8.0",
         "authors": [{"name": "TheBitLab", "role": "author"}],
-        "license": "TBD-before-public-release",
+        "license": "CC-BY-SA-4.0",
         "price": None,
         "content": {"units": units_manifest},
     }
@@ -666,7 +666,7 @@ documentazione. Il docente conserva il controllo dell'alimentazione e verifica c
     )
     write(
         COURSE / "README.md",
-        "# Course Bundle Romeo\n\nBundle TheBitLab per il biennio. I contenuti sono originali e separano materiali studente, guide docente, handout e asset di grading. Rigenera il primo anno con `python scripts/build_first_year_bundle.py` e valida con `python scripts/validate_course.py`.\n",
+        "# Course Bundle Romeo\n\nBundle TheBitLab per il biennio. I contenuti sono originali e separano materiali studente, guide docente, handout e asset di grading. È distribuito con licenza CC BY-SA 4.0; consulta `LICENSE.md`. Rigenera il primo anno con `python scripts/build_first_year_bundle.py` e valida con `python scripts/validate_course.py`.\n",
     )
 
 

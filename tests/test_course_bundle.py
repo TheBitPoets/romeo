@@ -1,3 +1,4 @@
+import json
 import shutil
 import subprocess
 import sys
@@ -10,6 +11,16 @@ from romeo.integrations.thebitlab.worker import execute_submission
 
 ROOT = Path(__file__).resolve().parents[1]
 COURSE = ROOT / "course"
+
+
+def test_course_declares_the_selected_license() -> None:
+    bundle = json.loads((COURSE / "bundle.json").read_text(encoding="utf-8"))
+
+    assert bundle["license"] == "CC-BY-SA-4.0"
+    assert "CC BY-SA 4.0" in (COURSE / "LICENSE.md").read_text(encoding="utf-8")
+    assert (ROOT / "LICENSE").read_text(encoding="utf-8").startswith(
+        "                                 Apache License"
+    )
 
 
 def test_first_year_bundle_validates_offline() -> None:

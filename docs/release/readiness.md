@@ -26,13 +26,12 @@ latenza effettiva del watchdog, alimentazione e brownout. Seguire
 `docs/hardware/safety.md` su un esemplare reale e registrare modello/revisione e
 risultato. Queste prove non impediscono simulazione, corso o grading headless.
 
-## Blocco di distribuzione
+## Licenze e provenienza degli asset
 
-Il repository iniziale non dichiarava licenza né provenienza delle 54 immagini.
-Il nuovo codice e i materiali non devono essere pubblicati come release finché
-non viene scelta una licenza e gli asset non sono attribuiti, sostituiti o esclusi.
-Il punto è tracciato in `TheBitPoets/romeo#1`; `course/bundle.json` mantiene
-intenzionalmente `TBD-before-public-release` per evitare una dichiarazione falsa.
+Il blocco di distribuzione è risolto: software Apache-2.0, Course Bundle e 53
+immagini originali CC BY-SA 4.0. `LICENSE`, `NOTICE`, gli avvisi nelle directory
+e `docs/assets.md` rendono espliciti confini, attribuzione e provenienza. Il
+manifest del bundle dichiara `CC-BY-SA-4.0` ed è verificato dal validatore CI.
 
 ## M12
 
