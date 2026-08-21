@@ -5,13 +5,21 @@ import pytest
 from romeo.backends.crickit import CrickitBackend, CrickitConfig
 
 
+class FakePixel:
+    def __init__(self) -> None:
+        self.color = 0
+
+    def fill(self, color: int) -> None:
+        self.color = color
+
+
 def fake_board() -> SimpleNamespace:
     return SimpleNamespace(
         dc_motor_1=SimpleNamespace(throttle=None),
         dc_motor_2=SimpleNamespace(throttle=None),
         servo_1=SimpleNamespace(angle=None),
         servo_4=SimpleNamespace(angle=None),
-        onboard_pixel=[(0, 0, 0)],
+        onboard_pixel=FakePixel(),
     )
 
 
@@ -30,7 +38,7 @@ def test_crickit_wiring_and_calibration() -> None:
     assert board.dc_motor_1.throttle == -0.2
     assert board.servo_1.angle == 30.0
     assert board.servo_4.angle == 180.0
-    assert board.onboard_pixel[0] == (10, 20, 30)
+    assert board.onboard_pixel.color == 0x0A141E
 
 
 def test_crickit_stops_after_motor_write_error() -> None:

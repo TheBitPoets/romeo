@@ -54,8 +54,8 @@ class CrickitBackend:
 
     def set_led_color(self, red: int, green: int, blue: int) -> None:
         self._ensure_open()
-        # seesaw exposes the single CRICKIT NeoPixel as a sequence.
-        self._board.onboard_pixel[0] = (red, green, blue)
+        packed_color = red << 16 | green << 8 | blue
+        self._board.onboard_pixel.fill(packed_color)
 
     def stop(self) -> None:
         self._board.dc_motor_2.throttle = 0.0
