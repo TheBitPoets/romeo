@@ -4,6 +4,13 @@ Romeo si registra nel gruppo entry point `thebitlab.runtimes` e implementa il
 protocollo duck-typed `runtime_plugin.v1`. Non importa moduli interni di
 TheBitLab.
 
+Il contratto generico autorevole appartiene alla piattaforma TheBitLab:
+
+- [runtime plugin contract](https://github.com/TheBitPoets/2cornot2c/blob/main/doc/architecture/runtime-plugin-contract.md);
+- [sandbox per il grading](https://github.com/TheBitPoets/2cornot2c/blob/main/doc/ASSIGNMENT_SANDBOX.md).
+
+Questa pagina documenta invece l'implementazione Romeo di quei contratti.
+
 ```toml
 [project.entry-points."thebitlab.runtimes"]
 romeo-sim = "romeo.integrations.thebitlab:create_plugin"
@@ -66,12 +73,23 @@ prodotti dal runtime. Non viene aggiunto alcun campo top-level fuori ABI.
 `authoritative=false`. Il percorso autorevole richiede il broker TheBitLab e
 un'immagine configurata per digest. Nel caso geometrico la submission produce
 una trace e scenario/grader restano sull'host; nel caso Y2 il container esegue
-la fixture e il finalizzatore la confronta con il manifest docente.
+la fixture e il finalizzatore ricostruisce il risultato autorevole lato trusted.
 
-## Conformance verificata
+Nel normale percorso studente un runtime sandbox-capable viene promosso dal
+requested backend storico `local` al backend effettivo `docker`; un errore del
+boundary non deve provocare fallback automatico al percorso process-only.
 
-Il 21 agosto 2026 discovery, inventory e probe sono stati provati contro
-`TheBitPoets/2cornot2c` al commit
-`5472eef86568a4e7ce59ad34ba937220df27efd7`. La suite mirata upstream ha prodotto
-33 test passati. Il package usa Hatchling affinché un editable install esponga un
-solo entry point, come richiesto dal registry.
+## Conformance e release corrente
+
+La conformance non è attestata da una frase mantenuta a mano. Il file generato
+[`docs/release/runtime-image-current.env`](../release/runtime-image-current.env)
+registra la combinazione effettivamente verificata di:
+
+- SHA sorgente Romeo;
+- digest OCI immutabile;
+- workflow run di pubblicazione;
+- SHA del broker TheBitLab.
+
+Quel record viene aggiornato solo dopo build/push dell'immagine, smoke del suo
+ENTRYPOINT e smoke attraverso il broker TheBitLab. Per installazione o audit usa
+sempre il record corrente invece di copiare un digest da una guida narrativa.
