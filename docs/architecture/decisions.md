@@ -88,3 +88,26 @@ roadmap 2D o modificare hardware/licenza/distribuzione.
 - **Alternative:** bundle separati per anno o file mantenuti soltanto a mano.
 - **Conseguenze:** i generatori sono sorgenti autoritative e ogni soluzione
   docente viene eseguita nel simulatore in CI.
+
+## ADR-010 — Grading di rete per comportamento osservabile
+
+- **Stato:** accettata, 2026-08-21.
+- **Problema:** un check spaziale non dimostra che un programma abbia compreso
+  socket, JSON o status HTTP.
+- **Decisione:** la configurazione runtime può aggiungere `stdout_checks`
+  pesati; le soluzioni stampano i marker soltanto dopo assert sul comportamento.
+- **Motivazione:** mantiene il protocollo runtime ufficiale e rende i lab
+  trasparenti e deterministici senza introdurre un secondo runner.
+- **Alternative:** grading geometrico fittizio o un runtime distinto per rete.
+- **Conseguenze:** i marker offrono feedback formativo; verifiche ad alto impatto
+  devono aggiungere test riservati nel sandbox TheBitLab.
+
+## ADR-011 — M12 resta opzionale e non altera il percorso 2D
+
+- **Stato:** accettata, 2026-08-21.
+- **Decisione:** non introdurre ora 3D, WebRTC, computer vision, nuovi sensori o
+  Webots. Il protocollo stato/eventi consente renderer futuri senza cambiare API.
+- **Motivazione:** il criterio di successo è già soddisfatto dal simulatore 2D
+  deterministico; le alternative aumentano hardware, privacy e dipendenze.
+- **Conseguenze:** ogni estensione M12 richiederà un caso didattico verificato e,
+  se cambia hardware/licenza/distribuzione, una decisione di prodotto esplicita.

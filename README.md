@@ -1,4 +1,61 @@
-<h1>Romeo</h1>
+# Romeo
+
+Romeo è una piattaforma didattica di Python e robotica per il primo biennio delle
+scuole secondarie di secondo grado. Lo stesso programma usa un backend simulato,
+mock o CRICKIT senza esporre agli studenti i dettagli dell'hardware.
+
+```python
+from time import sleep
+
+from romeo.easy import forward, left, stop
+
+forward()
+sleep(2)
+left()
+sleep(0.6)
+stop()
+```
+
+## Avvio rapido
+
+Richiede Python 3.10 o successivo.
+
+```console
+python -m pip install -e ".[dev]"
+python -m pytest
+```
+
+Il backend predefinito è il mock, quindi il primo programma è sicuro su un PC.
+Per il simulatore interattivo:
+
+```console
+python -m pip install -e ".[web]"
+romeo-tcp-server --backend sim
+```
+
+Il plugin TheBitLab è scoperto come runtime `romeo-sim`. Le attività in
+[`course/`](course/) possono essere lanciate o corrette headless e producono
+risultato, traiettoria, event log e stato finale.
+
+## Mappa del progetto
+
+- `src/romeo/easy.py`: API a funzioni per il primo approccio;
+- `src/romeo/robot.py`: API a oggetti e controllo diretto delle ruote;
+- `src/romeo/simulation/`: motore 2D deterministico e grading;
+- `src/romeo/web/`: REST, WebSocket e viewer Canvas;
+- `src/romeo/network/`: protocollo TCP, server, client e tastiera;
+- `src/romeo/camera/`: servizio camera, mock e adapter Picamera2;
+- `course/`: Course Bundle TheBitLab con 20 unità del primo anno e 23 del secondo;
+- `docs/`: audit, architettura, decisioni e guide tecniche.
+
+L'accesso CRICKIT è isolato nell'extra `hardware`; i test CI non richiedono un
+Raspberry Pi. Prima di usare il robot fisico leggere la
+[checklist safety](docs/hardware/safety.md) e calibrare polarità, velocità e servo
+su un'area libera.
+
+---
+
+## Guida di assemblaggio storica
 
 <h2>Documentazione</h2>
 

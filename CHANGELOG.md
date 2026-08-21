@@ -25,6 +25,10 @@ Le modifiche rilevanti del progetto sono registrate qui.
   headless deterministico, grading e manifest artifact.
 - Course Bundle del primo anno con 20 attività, scenari, starter, hint, soluzioni,
   materiali studente/docente, handout, rubriche e validazione CI.
+- Estensione del bundle con 23 unità del secondo anno: socket, protocollo,
+  JSON, HTTP/REST, FastAPI, WebSocket, camera, gamepad, telemetria, safety e
+  capstone telepresenza.
+- Grading runtime dichiarativo dell'output per laboratori di rete deterministici.
 - Primitive didattiche LED e ruote indipendenti, con check di grading dedicati.
 - Test unitari, simulation/safety/protocol test, lint, typing e CI Python 3.10/3.12.
 - Audit iniziale dei repository Romeo, `marwano/robo`, `2cornot2c` e

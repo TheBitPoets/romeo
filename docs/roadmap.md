@@ -16,8 +16,8 @@ hardware non bloccano lo sviluppo delle parti verificabili in CI.
 | M8 — Gamepad | Completata | Client pygame, mapping configurabile e stop su disconnessione. |
 | M9 — Runtime TheBitLab | Completata | Plugin `romeo-sim`, lifecycle ABI, run headless, grading e artefatti. |
 | M10 — Bundle primo anno | Completata | 20 attività Python/robotica, materiali studente/docente, handout e capstone verificati. |
-| M11 — Bundle secondo anno | Pianificata | Socket, REST, WebSocket, camera, gamepad e telepresenza. |
-| M12 — Evoluzione opzionale | Pianificata | Solo dopo validazione: 3D, sensori, visione e navigazione. |
+| M11 — Bundle secondo anno | Completata | 23 attività verificate su socket, REST, WebSocket, camera, gamepad e telepresenza. |
+| M12 — Evoluzione opzionale | Valutata, differita | 3D, sensori, visione e navigazione restano estensioni opt-in dopo sperimentazione del percorso 2D. |
 
 ## Gate trasversali
 
