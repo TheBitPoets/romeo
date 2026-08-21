@@ -1,0 +1,14 @@
+{
+  "schema_version": "romeo.thebitlab.v1",
+  "scenario": "scenario.json",
+  "submission_artifact_id": "main",
+  "max_simulation_seconds": 20,
+  "stdout_checks": [],
+  "behavioral_tests": {
+    "path": "behavioral_tests.py",
+    "entrypoints": [
+      "create_status_app"
+    ],
+    "execution_boundary": "thebitlab-sandbox-broker"
+  }
+}

@@ -1,0 +1,1173 @@
+{
+  "units": [
+    {
+      "id": "y1-u01-introduzione",
+      "title": "Conosci Romeo",
+      "order": 1,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u01-introduzione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u01-introduzione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u01-introduzione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u01-introduzione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u01-introduzione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u02-componenti",
+      "title": "Dai componenti ai comandi",
+      "order": 2,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u02-componenti/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u02-componenti.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u02-componenti.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u02-componenti-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u02-componenti-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u03-repl",
+      "title": "Esplora con il REPL",
+      "order": 3,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u03-repl/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u03-repl.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u03-repl.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u03-repl-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u03-repl-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u04-chiamate-funzione",
+      "title": "Chiama una funzione",
+      "order": 4,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u04-chiamate-funzione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u04-chiamate-funzione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u04-chiamate-funzione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u04-chiamate-funzione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u04-chiamate-funzione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u05-led",
+      "title": "Comunica con il LED",
+      "order": 5,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u05-led/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u05-led.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u05-led.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u05-led-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u05-led-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u06-motore-singolo",
+      "title": "Controlla una ruota",
+      "order": 6,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u06-motore-singolo/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u06-motore-singolo.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u06-motore-singolo.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u06-motore-singolo-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u06-motore-singolo-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u07-due-motori",
+      "title": "Coordina due ruote",
+      "order": 7,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u07-due-motori/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u07-due-motori.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u07-due-motori.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u07-due-motori-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u07-due-motori-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u08-avanti-indietro",
+      "title": "Avanti e indietro",
+      "order": 8,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u08-avanti-indietro/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u08-avanti-indietro.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u08-avanti-indietro.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u08-avanti-indietro-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u08-avanti-indietro-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u09-curve-rotazioni",
+      "title": "Curve e rotazioni",
+      "order": 9,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u09-curve-rotazioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u09-curve-rotazioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u09-curve-rotazioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u09-curve-rotazioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u09-curve-rotazioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u10-stop-safety",
+      "title": "Stop e sicurezza",
+      "order": 10,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u10-stop-safety/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u10-stop-safety.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u10-stop-safety.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u10-stop-safety-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u10-stop-safety-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u11-velocita",
+      "title": "Scegli la velocità",
+      "order": 11,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u11-velocita/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u11-velocita.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u11-velocita.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u11-velocita-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u11-velocita-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u12-funzioni",
+      "title": "Crea una funzione",
+      "order": 12,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u12-funzioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u12-funzioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u12-funzioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u12-funzioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u12-funzioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u13-sequenze",
+      "title": "Progetta una sequenza",
+      "order": 13,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u13-sequenze/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u13-sequenze.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u13-sequenze.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u13-sequenze-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u13-sequenze-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u14-condizioni",
+      "title": "Decidi con if",
+      "order": 14,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u14-condizioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u14-condizioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u14-condizioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u14-condizioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u14-condizioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u15-ciclo-for",
+      "title": "Ripeti con for",
+      "order": 15,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u15-ciclo-for/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u15-ciclo-for.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u15-ciclo-for.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u15-ciclo-for-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u15-ciclo-for-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u16-ciclo-while",
+      "title": "Controlla un ciclo while",
+      "order": 16,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u16-ciclo-while/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u16-ciclo-while.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u16-ciclo-while.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u16-ciclo-while-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u16-ciclo-while-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u17-simulazione",
+      "title": "Osserva il simulatore",
+      "order": 17,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u17-simulazione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u17-simulazione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u17-simulazione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u17-simulazione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u17-simulazione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u18-coordinate",
+      "title": "Raggiungi una coordinata",
+      "order": 18,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u18-coordinate/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u18-coordinate.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u18-coordinate.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u18-coordinate-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u18-coordinate-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u19-missioni",
+      "title": "Completa una missione",
+      "order": 19,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u19-missioni/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u19-missioni.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u19-missioni.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u19-missioni-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u19-missioni-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y1-u20-capstone",
+      "title": "Capstone: consegna robotica",
+      "order": 20,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y1-u20-capstone/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y1-u20-capstone.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y1-u20-capstone.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-assessment.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y1-u20-capstone-rubric.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u01-rete",
+      "title": "Una rete di nodi",
+      "order": 21,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u01-rete/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u01-rete.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u01-rete.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u01-rete-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u01-rete-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u02-indirizzi-ip",
+      "title": "Indirizzi IP",
+      "order": 22,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u02-indirizzi-ip/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u02-indirizzi-ip.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u02-indirizzi-ip.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u02-indirizzi-ip-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u02-indirizzi-ip-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u03-porte",
+      "title": "Porte e servizi",
+      "order": 23,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u03-porte/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u03-porte.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u03-porte.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u03-porte-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u03-porte-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u04-client-server",
+      "title": "Client e server",
+      "order": 24,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u04-client-server/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u04-client-server.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u04-client-server.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u04-client-server-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u04-client-server-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u05-socket",
+      "title": "Un vero socket TCP",
+      "order": 25,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u05-socket/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u05-socket.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u05-socket.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u05-socket-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u05-socket-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u06-protocollo-testuale",
+      "title": "Il protocollo Romeo/1",
+      "order": 26,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u06-protocollo-testuale/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u06-protocollo-testuale.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u06-protocollo-testuale.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u06-protocollo-testuale-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u06-protocollo-testuale-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u07-json",
+      "title": "Dati JSON",
+      "order": 27,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u07-json/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u07-json.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u07-json.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u07-json-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u07-json-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u08-http",
+      "title": "Una richiesta HTTP",
+      "order": 28,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u08-http/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u08-http.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u08-http.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u08-http-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u08-http-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u09-rest",
+      "title": "REST: leggere lo stato",
+      "order": 29,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u09-rest/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u09-rest.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u09-rest.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u09-rest-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u09-rest-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u10-fastapi",
+      "title": "Costruisci una API FastAPI",
+      "order": 30,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u10-fastapi/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u10-fastapi.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u10-fastapi.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u10-fastapi-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u10-fastapi-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u11-websocket",
+      "title": "WebSocket bidirezionale",
+      "order": 31,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u11-websocket/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u11-websocket.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u11-websocket.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u11-websocket-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u11-websocket-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u12-web-controller",
+      "title": "Controller web",
+      "order": 32,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u12-web-controller/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u12-web-controller.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u12-web-controller.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u12-web-controller-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u12-web-controller-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u13-tastiera-remota",
+      "title": "Tastiera remota sicura",
+      "order": 33,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u13-tastiera-remota/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u13-tastiera-remota.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u13-tastiera-remota.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u13-tastiera-remota-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u13-tastiera-remota-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u14-camera",
+      "title": "Camera come servizio",
+      "order": 34,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u14-camera/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u14-camera.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u14-camera.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u14-camera-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u14-camera-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u15-pan-tilt",
+      "title": "Pan e tilt",
+      "order": 35,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u15-pan-tilt/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u15-pan-tilt.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u15-pan-tilt.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u15-pan-tilt-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u15-pan-tilt-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u16-fotografia",
+      "title": "Fotografia REST",
+      "order": 36,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u16-fotografia/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u16-fotografia.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u16-fotografia.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u16-fotografia-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u16-fotografia-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u17-video",
+      "title": "Stream MJPEG",
+      "order": 37,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u17-video/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u17-video.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u17-video.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u17-video-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u17-video-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u18-eventi",
+      "title": "Programmazione a eventi",
+      "order": 38,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u18-eventi/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u18-eventi.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u18-eventi.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u18-eventi-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u18-eventi-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u19-gamepad",
+      "title": "Controller analogico",
+      "order": 39,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u19-gamepad/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u19-gamepad.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u19-gamepad.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u19-gamepad-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u19-gamepad-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u20-telemetria",
+      "title": "Telemetria versionata",
+      "order": 40,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u20-telemetria/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u20-telemetria.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u20-telemetria.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u20-telemetria-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u20-telemetria-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u21-safety",
+      "title": "Safety di rete",
+      "order": 41,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u21-safety/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u21-safety.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u21-safety.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u21-safety-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u21-safety-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u22-integrazione",
+      "title": "Integra controllo e stato",
+      "order": 42,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u22-integrazione/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u22-integrazione.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u22-integrazione.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u22-integrazione-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u22-integrazione-assessment.md"
+        }
+      ]
+    },
+    {
+      "id": "y2-u23-capstone-telepresence",
+      "title": "Capstone telepresenza",
+      "order": 43,
+      "items": [
+        {
+          "type": "activity",
+          "path": "activities/y2-u23-capstone-telepresence/activity.json"
+        },
+        {
+          "type": "material",
+          "path": "materials/student/y2-u23-capstone-telepresence.md"
+        },
+        {
+          "type": "material",
+          "path": "materials/teacher/y2-u23-capstone-telepresence.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u23-capstone-telepresence-worksheet.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u23-capstone-telepresence-assessment.md"
+        },
+        {
+          "type": "handout",
+          "path": "handouts/y2-u23-capstone-rubric.md"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,74 @@
-<h1>Romeo</h1>
+# Romeo
+
+Romeo è una piattaforma didattica di Python e robotica per il primo biennio delle
+scuole secondarie di secondo grado. Lo stesso programma usa un backend simulato,
+mock o CRICKIT senza esporre agli studenti i dettagli dell'hardware.
+
+```python
+from time import sleep
+
+from romeo.easy import forward, left, stop
+
+forward()
+sleep(2)
+left()
+sleep(0.6)
+stop()
+```
+
+## Avvio rapido
+
+Richiede Python 3.10 o successivo.
+
+```console
+python -m pip install -e ".[dev]"
+python -m pytest
+```
+
+Il backend predefinito è il mock, quindi il primo programma è sicuro su un PC.
+Per il simulatore interattivo:
+
+```console
+python -m pip install -e ".[web]"
+python -m uvicorn romeo.web.app:create_app --factory --host 127.0.0.1 --port 8000
+```
+
+Apri quindi `http://127.0.0.1:8000/`. Per il laboratorio TCP separato usa
+`romeo-tcp-server --backend sim` e collega `romeo-keyboard 127.0.0.1`.
+
+Il plugin TheBitLab è scoperto come runtime `romeo-sim`. Le attività in
+[`course/`](course/) possono essere lanciate o corrette headless e producono
+risultato, traiettoria, event log e stato finale.
+
+## Licenze
+
+Il software è distribuito con licenza Apache-2.0 (`LICENSE`). I materiali
+didattici in [`course/`](course/) sono distribuiti con licenza CC BY-SA 4.0. Le
+53 immagini in [`images/`](images/) sono escluse dalla distribuzione finché
+provenienza e licenza non vengono attestate nel repository. Consulta
+`NOTICE`, gli avvisi nelle rispettive directory e
+[`docs/assets.md`](docs/assets.md) per confini e attribuzione. Nomi e loghi Romeo
+e TheBitLab non sono concessi in licenza come marchi.
+
+## Mappa del progetto
+
+- `src/romeo/easy.py`: API a funzioni per il primo approccio;
+- `src/romeo/robot.py`: API a oggetti e controllo diretto delle ruote;
+- `src/romeo/simulation/`: motore 2D deterministico e grading;
+- `src/romeo/web/`: REST, WebSocket e viewer Canvas;
+- `src/romeo/network/`: protocollo TCP, server, client e tastiera;
+- `src/romeo/camera/`: servizio camera, mock e adapter Picamera2;
+- `course/`: Course Bundle TheBitLab con 20 unità del primo anno e 23 del secondo;
+- `docs/`: audit, architettura, decisioni e guide tecniche.
+
+L'accesso CRICKIT è isolato nell'extra `hardware`; i test CI non richiedono un
+Raspberry Pi. Prima di usare il robot fisico leggere la
+[checklist safety](docs/hardware/safety.md) e calibrare polarità, velocità e servo
+su un'area libera.
+
+---
+
+## Guida di assemblaggio storica
 
 <h2>Documentazione</h2>
 
@@ -10,7 +80,7 @@
   <li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Crickit/blob/main/examples/crickit_touch_simpletest.py">Esempio uso tasti</a></li>
 </ul>
 
-<h2>Installare Raspberry Pi Os e Configurazione del sistema</h4> 
+<h2>Installare Raspberry Pi OS e configurare il sistema</h2>
 
 <p align="justify">
   La pagina della documentazione ufficiale di Raspberry Pi ( https://raspberrypi.com/documentation/ ) è un'ottima fonte per chi lavora con il Raspberry Pi.
@@ -160,7 +230,7 @@
   </li>
 </ol>
 
-<h2>Configurazione dell'Adafruit CRICKIT HAT</h4> 
+<h2>Configurazione dell'Adafruit CRICKIT HAT</h2>
 
 <p align="justify">
   Per completare la configurazione hardware e software dell'Adafruit CRICKIT HAT, seguire questi passaggi:
@@ -313,7 +383,7 @@ Avvitare l'ultimo strato del telaio. CE L'HAI FATTA! Ora è il momento di aggiun
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/45_build_robot.png">
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/46_build_robot.png">
       <p align="justify">
-Fissare il Raspberry Pi con il suo case allo strato superiore del telaio. Le porte USB del Raspberry Pi devono essere rivolte verso il retro del robot. In questo modo, i connettori di alimentazione del CRICKIT HAT e del Raspberry Pi rimangono più vicini alcavi di alimentazione per power bank.
+Fissare il Raspberry Pi con il suo case allo strato superiore del telaio. Le porte USB del Raspberry Pi devono essere rivolte verso il retro del robot. In questo modo, i connettori di alimentazione del CRICKIT HAT e del Raspberry Pi rimangono più vicini ai cavi di alimentazione del power bank.
       </p>
       <img width="60%" src="https://github.com/TheBitPoets/romeo/blob/main/images/47_build_robot.png">
       <p align="justify">
@@ -344,12 +414,7 @@ Il kit è dotato di due linguette laterali in nylon morbido che possono essere r
   </li>
   <li>
   <p align="justify">
-Il passaggio successivo dell'assemblaggio consiste nel collegare il Pan-Tilt Kit al Raspberry Pi. La documentazione ufficiale sul modulo fotocamera Raspberry Pi ( http://mng.bz/6nYo ) offre informazioni eccellenti su come collegare il cavo della fotocamera al Raspberry Pi.
-  </p>
-  </li>
-  <li>
-  <p align="justify">
-Il passaggio successivo dell'assemblaggio consiste nel collegare il Pan-Tilt Kit al Raspberry Pi. La documentazione ufficiale sul modulo fotocamera Raspberry Pi ( http://mng.bz/6nYo ) offre informazioni eccellenti su come collegare il cavo della fotocamera al Raspberry Pi.
+Il passaggio successivo consiste nel collegare il Pan-Tilt Kit al Raspberry Pi. Consulta la <a href="https://www.raspberrypi.com/documentation/computers/camera_software.html">documentazione ufficiale Raspberry Pi sulla camera</a> per il collegamento e l'uso con libcamera/Picamera2.
   </p>
   </li>
     <li>

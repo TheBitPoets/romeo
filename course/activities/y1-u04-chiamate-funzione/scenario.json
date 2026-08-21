@@ -1,0 +1,32 @@
+{
+  "schema_version": "romeo.scenario.v1",
+  "id": "y1-u04-chiamate-funzione",
+  "world_width": 3.0,
+  "world_height": 2.0,
+  "start_x": 0.5,
+  "start_y": 0.5,
+  "start_heading_degrees": 0,
+  "robot_radius": 0.1,
+  "wheel_base": 0.18,
+  "max_wheel_speed": 0.5,
+  "obstacles": [],
+  "checks": [
+    {
+      "id": "commands",
+      "name": "Comandi motore eseguiti",
+      "type": "minimum_motor_commands",
+      "parameters": {
+        "count": 1,
+        "points": 2
+      }
+    },
+    {
+      "id": "stop",
+      "name": "Arresto finale",
+      "type": "is_stopped",
+      "parameters": {
+        "points": 1
+      }
+    }
+  ]
+}

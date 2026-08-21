@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "id": "romeo-y2-u11-websocket",
+  "title": "WebSocket bidirezionale",
+  "titolo": "WebSocket bidirezionale",
+  "kind": "laboratorio",
+  "tipo": "laboratorio",
+  "language": "python",
+  "linguaggio": "python",
+  "difficulty": "B",
+  "difficolta": "B",
+  "topics": [
+    "upgrade",
+    "frame",
+    "ack"
+  ],
+  "argomenti": [
+    "upgrade",
+    "frame",
+    "ack"
+  ],
+  "objective": "mantenere una connessione per comandi realtime",
+  "prerequisites": [
+    "romeo-y2-u10-fastapi"
+  ],
+  "instructions": "Completa `request_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: mantenere una connessione per comandi realtime.",
+  "consegna": "Completa `request_stop` nello starter senza rinominare le funzioni. Rispetta parametri, valore restituito e cleanup descritti nella docstring: TheBitLab importerà le funzioni e le proverà con input diversi. Obiettivo: mantenere una connessione per comandi realtime.",
+  "student_support_mode": "hint-progressivi",
+  "grading_policy": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "correzione": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "metriche": {
+    "tempo_stimato_minuti": 75,
+    "traccia_tempo_dichiarato": true,
+    "traccia_sessioni_thebitlab": true,
+    "traccia_eventi_didattici": true,
+    "traccia_errori_compilazione": true
+  },
+  "rubrica": [
+    {
+      "criterio": "Dimostrazione osservabile: mantenere una connessione per comandi realtime",
+      "punti": 5
+    },
+    {
+      "criterio": "Uso e validazione di upgrade, frame, ack",
+      "punti": 2
+    },
+    {
+      "criterio": "Cleanup e safety",
+      "punti": 2
+    },
+    {
+      "criterio": "Spiegazione",
+      "punti": 1
+    }
+  ],
+  "assets": [
+    {
+      "type": "starter",
+      "path": "starter.py",
+      "target_path": "main.py",
+      "visibility": "student",
+      "description": "Codice iniziale"
+    },
+    {
+      "type": "fixture",
+      "path": "scenario.json",
+      "visibility": "grading",
+      "description": "Scenario headless"
+    },
+    {
+      "type": "fixture",
+      "path": "runtime-config.json",
+      "visibility": "grading",
+      "description": "Check deterministici"
+    },
+    {
+      "type": "fixture",
+      "path": "behavioral_tests.py",
+      "visibility": "grading",
+      "description": "Test comportamentali eseguiti dal sandbox broker TheBitLab"
+    },
+    {
+      "type": "teacher_only",
+      "path": "solution.py",
+      "visibility": "teacher",
+      "description": "Soluzione verificata"
+    },
+    {
+      "type": "example",
+      "path": "hints.md",
+      "visibility": "student",
+      "description": "Hint progressivi"
+    }
+  ],
+  "extensions": {
+    "thebitlab.runtime": {
+      "schema_version": "runtime_activity.v1",
+      "runtime_id": "romeo-sim",
+      "config": {
+        "path": "runtime-config.json",
+        "media_type": "application/json"
+      },
+      "required_capabilities": [
+        "headless-run",
+        "deterministic-grade",
+        "artifact-collect",
+        "sandbox-plan.v1"
+      ],
+      "submission": {
+        "artifacts": [
+          {
+            "id": "main",
+            "path": "main.py",
+            "media_type": "text/x-python",
+            "required": true
+          }
+        ]
+      }
+    }
+  }
+}
