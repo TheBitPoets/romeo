@@ -2,6 +2,8 @@ ARG PYTHON_BASE_IMAGE
 FROM ${PYTHON_BASE_IMAGE}
 
 LABEL org.opencontainers.image.title="Romeo untrusted submission runner" \
+      org.opencontainers.image.source="https://github.com/TheBitPoets/romeo" \
+      org.opencontainers.image.licenses="Apache-2.0" \
       io.thebitlab.runtime-id="romeo-sim" \
       io.thebitlab.worker-schemas="romeo.command_trace.v1,romeo.behavioural_result.v1"
 
