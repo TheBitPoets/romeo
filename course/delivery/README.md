@@ -16,6 +16,10 @@ Questo indice collega il Course Bundle Romeo ai manuali Sphinx, alle slide docen
 - Slide: [`slides/romeo/README.md`](../../slides/romeo/README.md).
 - Revisioni in-year: [`course/delivery/DELIVERY_CHANGELOG.md`](DELIVERY_CHANGELOG.md).
 
+## Mappa del corso
+
+Prima di entrare nei due anni usa [00 — Architettura didattica e workflow](../../slides/romeo/modules/00_COURSE_MAP.md) per presentare il modello backend-sostituibile, il flusso TheBitLab/simulatore e il ruolo distinto del robot reale.
+
 ## Regola fondamentale: stesso programma, backend diverso
 
 Il flusso didattico normale è:
