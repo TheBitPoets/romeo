@@ -35,7 +35,7 @@ missione verificata in simulazione
 - sapere dove serve conferma umana;
 - preparare una prova fisica a velocità/limiti conservativi;
 - raccogliere evidenze senza usare il robot come debugger primario;
-- non assumere che `romeo-doctor` esista finché non è implementato e validato.
+- verificare la capability `romeo-doctor` contro lo SHA/versione realmente installato.
 
 ---
 
@@ -103,15 +103,31 @@ Non è necessario muovere motori ogni volta.
 
 ---
 
-# `romeo-doctor`
+# `romeo-doctor`: capability versionata
 
-È **previsto**, ma non va documentato come comando disponibile finché il coding agent non lo implementa e non viene collaudato nello SHA installato.
-
-Fino ad allora:
+Non assumere il comando dalla documentazione o dalla memoria della chat.
 
 ```text
-documentazione hardware + checklist = autorità operativa
+SHA/versione installato
+→ il doctor è presente e validato?
+   sì → usa i check passivi previsti
+   no → usa le checklist hardware
 ```
+
+La disponibilità è una proprietà dell'installazione reale, non del piano futuro.
+
+---
+
+# Doctor ≠ commissioning
+
+Anche quando `romeo-doctor` è disponibile:
+
+- il preflight resta prevalentemente passivo;
+- il doctor non certifica da solo il verso meccanico delle ruote;
+- il commissioning supervisionato conserva i test di movimento attivo;
+- calibrazioni e misure fisiche devono restare associate al singolo esemplare.
+
+Automatizzare un check non elimina il boundary fisico.
 
 ---
 
@@ -186,7 +202,7 @@ Classifica ogni operazione:
 4. misurare latenza watchdog;
 5. verificare la logica di stop su disconnect.
 
-Scelte: simulatore, commissioning, preflight, test software.
+Scelte: simulatore, commissioning, preflight/doctor, test software.
 
 ---
 
@@ -208,6 +224,7 @@ La velocità di apprendimento viene dalla ripetibilità del simulatore; il robot
 - commissioning = collaudo dell'esemplare;
 - preflight = prontezza della sessione;
 - parte della verifica fisica richiede feedback umano;
-- `romeo-doctor` resta pending finché non è realmente disponibile;
+- `romeo-doctor` si usa solo se presente e validato nello SHA/versione installato;
+- le checklist restano il fallback autorevole;
 - stessa missione simulata→reale è il confronto didattico corretto;
 - safety e STOP precedono ogni movimento.
