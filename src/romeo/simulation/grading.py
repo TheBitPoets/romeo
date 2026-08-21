@@ -55,6 +55,9 @@ def _evaluate(check: ScenarioCheck, engine: SimulationEngine) -> CheckResult:
         "stop_in_zone": _stop_in_zone,
         "max_time": _max_time,
         "checkpoints": _checkpoints,
+        "minimum_motor_commands": _minimum_motor_commands,
+        "final_led_color": _final_led_color,
+        "is_stopped": _is_stopped,
     }
     try:
         evaluator = evaluators[check.type]
@@ -97,6 +100,27 @@ def _stop_in_zone(parameters: Mapping[str, object], engine: SimulationEngine) ->
 def _max_time(parameters: Mapping[str, object], engine: SimulationEngine) -> tuple[bool, str]:
     maximum = _number(parameters, "seconds")
     return engine.time <= maximum, f"elapsed: {engine.time:.4f} s (maximum {maximum:.4f} s)"
+
+
+def _minimum_motor_commands(
+    parameters: Mapping[str, object], engine: SimulationEngine
+) -> tuple[bool, str]:
+    minimum = int(_number(parameters, "count", default=1.0))
+    count = sum(event.type == "motors_changed" for event in engine.events)
+    return count >= minimum, f"motor commands: {count} (minimum {minimum})"
+
+
+def _final_led_color(
+    parameters: Mapping[str, object], engine: SimulationEngine
+) -> tuple[bool, str]:
+    expected = tuple(int(_number(parameters, name)) for name in ("red", "green", "blue"))
+    passed = engine.led_color == expected
+    return passed, f"final LED: {engine.led_color}; expected: {expected}"
+
+
+def _is_stopped(parameters: Mapping[str, object], engine: SimulationEngine) -> tuple[bool, str]:
+    del parameters
+    return engine.stopped, f"stopped: {engine.stopped}"
 
 
 def _checkpoints(parameters: Mapping[str, object], engine: SimulationEngine) -> tuple[bool, str]:

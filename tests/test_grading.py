@@ -86,3 +86,27 @@ def test_repeated_headless_runs_are_identical() -> None:
 
     assert first.state() == second.state()
     assert first.event_log() == second.event_log()
+
+
+def test_introductory_commands_can_be_graded_without_motion_geometry() -> None:
+    scenario = Scenario(
+        schema_version="romeo.scenario.v1",
+        id="intro",
+        checks=(
+            ScenarioCheck("motor", "Comando motore", "minimum_motor_commands", {"count": 1}),
+            ScenarioCheck(
+                "led",
+                "LED blu",
+                "final_led_color",
+                {"red": 0, "green": 0, "blue": 255},
+            ),
+            ScenarioCheck("stop", "Arresto finale", "is_stopped", {}),
+        ),
+    )
+    engine = SimulationEngine(scenario)
+
+    engine.set_motor_speeds(0.3, 0.3)
+    engine.stop()
+    engine.set_led_color(0, 0, 255)
+
+    assert grade(engine).passed
