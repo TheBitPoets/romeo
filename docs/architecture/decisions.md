@@ -75,3 +75,16 @@
 Nessuna blocca M0-M3. Una decisione di prodotto sarà richiesta solo se una futura
 necessità impone di cambiare significativamente l'API studente, abbandonare la
 roadmap 2D o modificare hardware/licenza/distribuzione.
+
+## ADR-009 — Un bundle progressivo e generabile
+
+- **Stato:** accettata, 2026-08-21.
+- **Problema:** attività, materiali e indici devono restare coerenti mentre il
+  corso cresce da primo a secondo anno.
+- **Decisione:** un solo Course Bundle TheBitLab contiene entrambe le annualità;
+  script deterministici generano i file ripetitivi e un validatore offline
+  controlla manifest, Activity, runtime, asset, scenari e indice.
+- **Motivazione:** evita due cataloghi divergenti e rende le modifiche ripetibili.
+- **Alternative:** bundle separati per anno o file mantenuti soltanto a mano.
+- **Conseguenze:** i generatori sono sorgenti autoritative e ogni soluzione
+  docente viene eseguita nel simulatore in CI.

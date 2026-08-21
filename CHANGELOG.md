@@ -23,6 +23,9 @@ Le modifiche rilevanti del progetto sono registrate qui.
   STOP garantito alla disconnessione.
 - Plugin TheBitLab `romeo-sim` con lifecycle ABI, launch interattivo, worker
   headless deterministico, grading e manifest artifact.
+- Course Bundle del primo anno con 20 attività, scenari, starter, hint, soluzioni,
+  materiali studente/docente, handout, rubriche e validazione CI.
+- Primitive didattiche LED e ruote indipendenti, con check di grading dedicati.
 - Test unitari, simulation/safety/protocol test, lint, typing e CI Python 3.10/3.12.
 - Audit iniziale dei repository Romeo, `marwano/robo`, `2cornot2c` e
   `thebitlab-hardware`, con riferimenti riproducibili e rischi aperti.
