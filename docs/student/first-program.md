@@ -6,15 +6,12 @@ Questa pagina accompagna il primo programma senza dare per scontato che tu conos
 
 Fare una cosa semplice e verificabile: muovere Romeo, aspettare un momento e fermarlo.
 
-```python
-from time import sleep
-
-from romeo.easy import forward, stop
-
-forward(0.3)
-sleep(1)
-stop()
+```{literalinclude} ../../examples/first_move.py
+:language: python
+:linenos:
 ```
+
+Questo non è uno snippet copiato nella documentazione: è un vero file del repository e la suite di test lo esegue sul backend mock. Se l'esempio smette di funzionare, la CI deve segnalarlo.
 
 ## Leggiamolo una riga alla volta
 
