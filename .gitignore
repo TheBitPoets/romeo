@@ -36,3 +36,5 @@ Thumbs.db
 artifacts/
 .worktrees/
 docker/runtime-runner/wheelhouse/
+docs/_build/
+docs/course/generated/
