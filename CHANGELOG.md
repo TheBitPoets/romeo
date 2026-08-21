@@ -6,6 +6,9 @@ Le modifiche rilevanti del progetto sono registrate qui.
 
 ### Added
 
+- `romeo-doctor` con preflight passivo per studenti, commissioning attivo
+  supervisionato, calibrazione JSON versionata, output didattico/JSON e stop
+  fail-safe verificato senza hardware tramite fake.
 - Licenze esplicite: Apache-2.0 per il software e CC BY-SA 4.0 per Course Bundle
   e immagini originali, con avvisi, inventario asset e validazione del manifest.
 - API studente `romeo.easy` e classe `Robot`, con backend mock e adapter CRICKIT.

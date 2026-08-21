@@ -42,6 +42,7 @@ class SafetyBackend:
         self._lock = threading.RLock()
         self._shutdown = threading.Event()
         self._deadline: float | None = None
+        self._last_watchdog_stop_at: float | None = None
         self._active_controller: str | None = None
         self._closed = False
         self._watchdog: threading.Thread | None = None
@@ -57,6 +58,33 @@ class SafetyBackend:
     def active_controller(self) -> str | None:
         with self._lock:
             return self._active_controller
+
+    @property
+    def last_watchdog_stop_at(self) -> float | None:
+        """Monotonic timestamp of the last completed watchdog stop."""
+
+        with self._lock:
+            return self._last_watchdog_stop_at
+
+    def configure_command_timeout(self, command_timeout: float) -> None:
+        """Stop first, then apply a validated timeout for supervised commissioning."""
+
+        if not math.isfinite(command_timeout) or command_timeout <= 0.0:
+            raise ValueError("command_timeout must be a positive finite number")
+        with self._lock:
+            self._ensure_open()
+            self._stop_locked()
+            self.command_timeout = command_timeout
+
+    def configure_max_speed(self, max_speed: float) -> None:
+        """Stop first, then apply a validated speed ceiling."""
+
+        if not math.isfinite(max_speed) or not 0.0 < max_speed <= 1.0:
+            raise ValueError("max_speed must be greater than 0 and at most 1")
+        with self._lock:
+            self._ensure_open()
+            self._stop_locked()
+            self.max_speed = max_speed
 
     def claim_controller(self, controller_id: str) -> None:
         """Acquire the exclusive remote-control lease."""
@@ -147,6 +175,8 @@ class SafetyBackend:
             if self._deadline is None or self._clock() < self._deadline:
                 return False
             self._stop_locked()
+            # Record completion, including latency in the physical stop call.
+            self._last_watchdog_stop_at = self._clock()
             return True
 
     def close(self) -> None:
@@ -196,8 +226,7 @@ class SafetyBackend:
             self.backend.stop()
 
     def _watchdog_loop(self) -> None:
-        interval = min(0.1, self.command_timeout / 4.0)
-        while not self._shutdown.wait(interval):
+        while not self._shutdown.wait(min(0.1, self.command_timeout / 4.0)):
             try:
                 self.poll()
             except Exception:

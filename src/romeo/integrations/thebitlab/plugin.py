@@ -25,7 +25,7 @@ from romeo.simulation.grading import grade
 from romeo.simulation.scenario import Scenario
 
 RUNTIME_ID = "romeo-sim"
-PLUGIN_VERSION = "0.1.0"
+PLUGIN_VERSION = "0.2.0"
 MAX_SUBMISSION_BYTES = 1_000_000
 MAX_CAPTURE_CHARS = 100_000
 SANDBOX_PLAN_SCHEMA = "runtime_sandbox_plan.v1"

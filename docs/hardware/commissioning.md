@@ -42,7 +42,11 @@ Registra valori osservati, non solo checkbox:
 
 Il commissioning può includere movimenti attivi e deve essere supervisionato. Il preflight quotidiano deve invece essere rapido e prevalentemente passivo, verificando configurazione/device/stato prima di autorizzare una sessione reale.
 
-Il progetto prevede uno strumento diagnostico riutilizzabile (`romeo-doctor`) come evoluzione del collaudo. Finché tale comando non è presente e validato nello SHA installato, questa procedura e la checklist restano l'autorità operativa.
+`romeo-doctor --commission` rende ripetibili i controlli supportati dalle
+astrazioni Romeo e conserva calibrazione e misure watchdog. I test restano
+supervisionati: lo strumento non sostituisce osservazione fisica, checklist o
+possibilità immediata di togliere alimentazione. Consulta [Romeo Doctor](doctor.md)
+prima dell'uso.
 
 ## Evidenza
 

@@ -1,5 +1,6 @@
 """Adapter for the Adafruit CRICKIT HAT used by the physical Romeo robot."""
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -10,10 +11,33 @@ class CrickitConfig:
 
     left_motor_inverted: bool = False
     right_motor_inverted: bool = False
+    left_trim: float = 0.0
+    right_trim: float = 0.0
+    max_speed: float = 1.0
     pan_min: float = 0.0
     pan_max: float = 180.0
     tilt_min: float = 0.0
     tilt_max: float = 180.0
+
+    def __post_init__(self) -> None:
+        for name in ("left_trim", "right_trim"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not math.isfinite(value) or not -1.0 <= value <= 1.0:
+                raise ValueError(f"{name} must be finite and between -1 and 1")
+        if (
+            isinstance(self.max_speed, bool)
+            or not math.isfinite(self.max_speed)
+            or not 0.0 < self.max_speed <= 1.0
+        ):
+            raise ValueError("max_speed must be finite, greater than 0 and at most 1")
+        for minimum, maximum, name in (
+            (self.pan_min, self.pan_max, "pan"),
+            (self.tilt_min, self.tilt_max, "tilt"),
+        ):
+            if not math.isfinite(minimum) or not math.isfinite(maximum):
+                raise ValueError(f"{name} limits must be finite")
+            if not 0.0 <= minimum < maximum <= 180.0:
+                raise ValueError(f"{name} limits must satisfy 0 <= min < max <= 180")
 
 
 class CrickitBackend:
@@ -34,10 +58,19 @@ class CrickitBackend:
         self.config = config or CrickitConfig()
         self._closed = False
 
+    def configure(self, config: CrickitConfig) -> None:
+        """Stop, then apply one validated physical-unit configuration."""
+
+        self._ensure_open()
+        self.stop()
+        self.config = config
+
     def set_motor_speeds(self, left: float, right: float) -> None:
         self._ensure_open()
-        left_value = -left if self.config.left_motor_inverted else left
-        right_value = -right if self.config.right_motor_inverted else right
+        left_value = self._trimmed(left, self.config.left_trim, self.config.max_speed)
+        right_value = self._trimmed(right, self.config.right_trim, self.config.max_speed)
+        left_value = -left_value if self.config.left_motor_inverted else left_value
+        right_value = -right_value if self.config.right_motor_inverted else right_value
         try:
             self._board.dc_motor_2.throttle = left_value
             self._board.dc_motor_1.throttle = right_value
@@ -76,3 +109,9 @@ class CrickitBackend:
     def _ensure_open(self) -> None:
         if self._closed:
             raise RuntimeError("backend is closed")
+
+    @staticmethod
+    def _trimmed(value: float, trim: float, max_speed: float) -> float:
+        """Apply proportional trim without exceeding the effective safety limit."""
+
+        return max(-max_speed, min(max_speed, float(value) * (1.0 + trim)))
