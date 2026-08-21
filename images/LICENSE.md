@@ -1,15 +1,11 @@
-# Licenza delle immagini
+# Stato di licenza delle immagini
 
-Copyright 2026 TheBitPoets contributors.
+La repository history dimostra che i 53 PNG erano presenti nei primi commit,
+ma non contiene sorgenti, metadati EXIF utili o un'attestazione firmata che
+dimostri autore e licenza. Una conferma conversazionale dell'autore non viene
+trasformata in una dichiarazione legale a suo nome.
 
-Le 53 immagini PNG presenti in questa directory sono fotografie e schermate
-originali realizzate per il progetto Romeo. Sono distribuite con licenza
-**Creative Commons Attribuzione - Condividi allo stesso modo 4.0 Internazionale
-(CC BY-SA 4.0)**:
-
-https://creativecommons.org/licenses/by-sa/4.0/deed.it
-
-Attribuzione suggerita: `Immagine del progetto Romeo — TheBitPoets — CC BY-SA 4.0`.
-
-I marchi e i loghi eventualmente visibili nelle schermate appartengono ai
-rispettivi titolari e non sono concessi in licenza come marchi.
+Di conseguenza questi file **non sono inclusi nella concessione CC BY-SA del
+Course Bundle e devono essere esclusi dagli artefatti di distribuzione** finché
+il titolare non aggiunge nel repository una dichiarazione di provenienza e una
+licenza esplicita. Restano inoltre esclusi eventuali diritti sui marchi visibili.

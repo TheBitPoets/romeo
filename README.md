@@ -43,8 +43,9 @@ risultato, traiettoria, event log e stato finale.
 ## Licenze
 
 Il software è distribuito con licenza Apache-2.0 (`LICENSE`). I materiali
-didattici in [`course/`](course/) e le 53 immagini originali in
-[`images/`](images/) sono distribuiti con licenza CC BY-SA 4.0. Consulta
+didattici in [`course/`](course/) sono distribuiti con licenza CC BY-SA 4.0. Le
+53 immagini in [`images/`](images/) sono escluse dalla distribuzione finché
+provenienza e licenza non vengono attestate nel repository. Consulta
 `NOTICE`, gli avvisi nelle rispettive directory e
 [`docs/assets.md`](docs/assets.md) per confini e attribuzione. Nomi e loghi Romeo
 e TheBitLab non sono concessi in licenza come marchi.

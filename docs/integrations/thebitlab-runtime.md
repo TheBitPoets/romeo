@@ -71,5 +71,5 @@ nascosta dietro una falsa garanzia del plugin.
 Il 21 agosto 2026 discovery, inventory e probe sono stati provati contro
 `TheBitPoets/2cornot2c` al commit
 `5472eef86568a4e7ce59ad34ba937220df27efd7`. La suite mirata upstream ha prodotto
-32 test passati. Il package usa Hatchling affinché un editable install esponga un
+33 test passati. Il package usa Hatchling affinché un editable install esponga un
 solo entry point, come richiesto dal registry.

@@ -27,7 +27,7 @@ Matrice aggiornata il 21 agosto 2026. I path indicano l'evidenza autoritativa;
 | Secondo anno | 23 unità rete/telepresenza e check sul comportamento osservabile | plugin completo per ogni soluzione, piano secondo anno |
 | Qualità e CI | packaging Hatchling, Ruff, mypy strict, pytest su 3.10/3.12 | `.github/workflows/quality.yml`, wheel build |
 | Git e decision log | branch dedicato e commit incrementali; ADR-001–ADR-012 | `git log main..feat/platform-foundation` |
-| Licenze e asset | software Apache-2.0; corso e 53 immagini originali CC BY-SA 4.0 | `LICENSE`, `NOTICE`, avvisi di directory, manifest e `docs/assets.md` |
+| Licenze e asset | software Apache-2.0; corso CC BY-SA 4.0; 53 immagini escluse in attesa di attestazione | `LICENSE`, `NOTICE`, `images/LICENSE.md`, issue #1 e `docs/assets.md` |
 | Evoluzione M12 | confini compatibili con renderer/backend futuri; feature complesse differite | ADR-011, nessuna dipendenza 3D/WebRTC introdotta |
 
 ## Limiti dichiarati

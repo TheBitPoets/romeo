@@ -99,8 +99,9 @@ roadmap 2D o modificare hardware/licenza/distribuzione.
 - **Motivazione:** mantiene il protocollo runtime ufficiale e rende i lab
   trasparenti e deterministici senza introdurre un secondo runner.
 - **Alternative:** grading geometrico fittizio o un runtime distinto per rete.
-- **Conseguenze:** i marker offrono feedback formativo; verifiche ad alto impatto
-  devono aggiungere test riservati nel sandbox TheBitLab.
+- **Conseguenze:** i marker offrono solo feedback formativo. Verifiche ad alto
+  impatto restano bloccate finché il runtime non entra nel boundary ufficiale
+  TheBitLab con grader fidato separato.
 
 ## ADR-011 — M12 resta opzionale e non altera il percorso 2D
 
@@ -112,17 +113,18 @@ roadmap 2D o modificare hardware/licenza/distribuzione.
 - **Conseguenze:** ogni estensione M12 richiederà un caso didattico verificato e,
   se cambia hardware/licenza/distribuzione, una decisione di prodotto esplicita.
 
-## ADR-012 — Licenze separate per software e corso
+## ADR-012 — Licenze separate e immagini in quarantena
 
 - **Stato:** accettata, 2026-08-21.
 - **Problema:** codice, materiali didattici e fotografie richiedono permessi e
   obblighi adatti alla loro natura; il repository iniziale non li dichiarava.
-- **Decisione:** software Apache-2.0; Course Bundle e 53 immagini originali CC
-  BY-SA 4.0; nomi e loghi esclusi dalle concessioni sui marchi.
+- **Decisione:** software Apache-2.0 e Course Bundle CC BY-SA 4.0. Le 53 immagini
+  sono escluse dalla distribuzione finché l'autore non registra provenienza e
+  licenza nel repository; nomi e loghi restano fuori dalle concessioni.
 - **Motivazione:** Apache-2.0 mantiene il runtime permissivo con una concessione
   esplicita sui brevetti; CC BY-SA consente riuso e adattamento del corso facendo
   restare condivisibili gli adattamenti.
 - **Alternative:** MIT con CC BY (massima permissività, senza reciprocità sui
   materiali) e corso proprietario (maggiore controllo, minore collaborazione).
-- **Conseguenze:** manifest, avvisi e inventario asset devono restare coerenti;
-  ogni nuovo contenuto di terzi richiede provenienza e licenza esplicite.
+- **Conseguenze:** issue #1 resta aperta; manifest, avvisi e inventario devono
+  impedire che assenza di evidenza venga scambiata per originalità.

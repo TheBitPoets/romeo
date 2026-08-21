@@ -12,7 +12,7 @@ Audit finale eseguito il 21 agosto 2026 sul branch `feat/platform-foundation`.
 - viewer, REST, WebSocket, protocollo TCP, client, tastiera, camera mock e
   gamepad verificati automaticamente;
 - runtime `romeo-sim` scoperto dall'entry point ufficiale e conforme alla suite
-  mirata `2cornot2c` (32 test upstream);
+  mirata `2cornot2c` (33 test upstream);
 - Course Bundle 1.0.0 e 43 Activity validati anche con i validator upstream;
 - tutte le 43 soluzioni docente eseguite; i 23 lab di rete passano attraverso il
   plugin completo e i relativi check di output;
@@ -28,10 +28,10 @@ risultato. Queste prove non impediscono simulazione, corso o grading headless.
 
 ## Licenze e provenienza degli asset
 
-Il blocco di distribuzione è risolto: software Apache-2.0, Course Bundle e 53
-immagini originali CC BY-SA 4.0. `LICENSE`, `NOTICE`, gli avvisi nelle directory
-e `docs/assets.md` rendono espliciti confini, attribuzione e provenienza. Il
-manifest del bundle dichiara `CC-BY-SA-4.0` ed è verificato dal validatore CI.
+Il Course Bundle è CC BY-SA 4.0, ma il blocco sulle 53 immagini resta aperto:
+la history non dimostra paternità e concessione. I PNG sono esclusi dalla
+distribuzione finché issue #1 non contiene un'attestazione committata. Il
+manifest del bundle non include queste immagini.
 
 ## M12
 
