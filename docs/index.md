@@ -34,6 +34,7 @@ architecture/decisions
 integrations/thebitlab-runtime
 security/submission-threat-model
 hardware/safety
+hardware/pre-merge-checklist
 hardware/camera
 network/gamepad
 release/runtime-image
