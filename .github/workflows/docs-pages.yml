@@ -13,7 +13,7 @@ on:
       - "pyproject.toml"
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -62,6 +62,40 @@ jobs:
     needs: build
 
     steps:
+      - name: Check out main for deployment record
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Persist successful Pages deployment
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${PAGE_URL}" ]]; then
+            echo "deploy-pages did not return a page URL" >&2
+            exit 1
+          fi
+
+          {
+            echo "# Generated only after a successful GitHub Pages deployment; do not edit manually."
+            echo "ROMEO_DOCS_URL=${PAGE_URL}"
+            echo "ROMEO_DOCS_SOURCE_SHA=${GITHUB_SHA}"
+            echo "ROMEO_DOCS_WORKFLOW_RUN=${GITHUB_RUN_ID}"
+          } > .github/docs-site-current.env
+
+          git add -- .github/docs-site-current.env
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(docs): record Pages deployment [skip ci]"
+          git push origin HEAD:main
