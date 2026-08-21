@@ -38,11 +38,15 @@ course/index
 architecture/target
 architecture/decisions
 integrations/thebitlab-runtime
+integrations/thebitlab-deployment
+integrations/thebitlab-hardware-preflight-proposal
 security/submission-threat-model
 hardware/safety
 hardware/commissioning
 hardware/preflight
+hardware/doctor
 hardware/pre-merge-checklist
+hardware/physical-validation-2026-08-21
 hardware/camera
 network/gamepad
 release/runtime-image
