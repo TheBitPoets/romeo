@@ -1,0 +1,65 @@
+name: Slides
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "course/delivery/**"
+      - "slides/**"
+      - "scripts/build_slides.py"
+      - "tests/test_slide_delivery.py"
+      - ".github/workflows/slides.yml"
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "course/delivery/**"
+      - "slides/**"
+      - "scripts/build_slides.py"
+      - "tests/test_slide_delivery.py"
+      - ".github/workflows/slides.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  build-slides:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Romeo
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Validate Romeo delivery contract
+        run: python scripts/build_slides.py --check-only
+
+      - name: Check Chrome
+        run: google-chrome --version
+
+      - name: Build HTML, PDF and PPTX
+        run: >-
+          python scripts/build_slides.py
+          --formats html,pdf,pptx
+          --browser chrome
+          --output build/romeo-slides
+
+      - name: Upload slide bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: romeo-slides-${{ env.SOURCE_SHA }}
+          path: build/romeo-slides
+          if-no-files-found: error
+          retention-days: 30
