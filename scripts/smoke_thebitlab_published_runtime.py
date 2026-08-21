@@ -12,7 +12,7 @@ import sys
 import tempfile
 
 
-BROKER_COMMIT = "dcb76f600fa951ba94fffbd355a6c13dfcbfb424"
+BROKER_COMMIT = "ec60eaca11da481a8510ec67255abaf76ac5b23e"
 ACTIVITIES = (
     "y1-u08-avanti-indietro",
     "y2-u07-json",
@@ -49,11 +49,12 @@ def _run_activity(
         "activity": {"path": f"activities/{slug}/activity.json"},
         "workspace": {"path": f"workspaces/{slug}"},
     }
+    # Deliberately omit backend="docker": this exercises the real historical
+    # student default. TheBitLab must promote sandbox-capable runtimes to Docker.
     report = student_runtime.run_runtime_assignment(
         assignment,
         root=temporary_root,
         timeout_seconds=30,
-        backend="docker",
     )
     if not report.get("passed"):
         raise RuntimeError(
@@ -63,7 +64,12 @@ def _run_activity(
 
     runtime = report.get("runtime")
     if not isinstance(runtime, dict) or runtime.get("backend") != "docker":
-        raise RuntimeError(f"TheBitLab did not report Docker backend for {slug}")
+        raise RuntimeError(f"TheBitLab did not promote runtime grading to Docker for {slug}")
+    if runtime.get("requested_backend") != "local":
+        raise RuntimeError(
+            "TheBitLab smoke did not exercise the historical local default "
+            f"for {slug}"
+        )
     metadata = runtime.get("metadata")
     if not isinstance(metadata, dict):
         raise RuntimeError(f"TheBitLab runtime metadata missing for {slug}")
