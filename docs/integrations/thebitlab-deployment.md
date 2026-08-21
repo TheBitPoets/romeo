@@ -13,12 +13,13 @@ rollback. Non assumere che una shell amministrativa sia l'ambiente del servizio.
 
 ## Artefatto certificato
 
-Per la release runtime certificata:
+Per la release runtime certificata corrente:
 
 ```text
-Romeo source SHA: b6bb70fef89fcf539fbf087cd26ca80f203fc7cb
-package: thebitlab-romeo 0.1.0
-image: ghcr.io/thebitpoets/romeo-runtime@sha256:3d854fb99d2d1f4b7264c87fcce550dd5e3e739de055c73325609893a088d997
+Romeo source SHA: 0c99ce67b31c482bb777b3a6acb4b08f37bd2158
+package: thebitlab-romeo 0.2.0
+wheel SHA-256: f9325a2699defcdfcf3cd604f24ac99f1778e4020717ea7842ddc994f8d4c873
+image: ghcr.io/thebitpoets/romeo-runtime@sha256:063ba8a6e99db7c8cbd4094c16cca3784bb01c30d791570d639d2a47ca431632
 TheBitLab broker SHA: ec60eaca11da481a8510ec67255abaf76ac5b23e
 ```
 
@@ -28,11 +29,16 @@ Costruisci da un worktree detached dello SHA, non da un checkout successivo:
 python -m venv .venv-build
 .venv-build/bin/python -m pip install build
 .venv-build/bin/python -m build --wheel
-sha256sum dist/thebitlab_romeo-0.1.0-py3-none-any.whl
+sha256sum dist/thebitlab_romeo-0.2.0-py3-none-any.whl
 ```
 
-Conserva wheel, SHA-256, source SHA e digest OCI nello stesso registro di
-rilascio. Non usare editable install fuori dallo sviluppo.
+L'hash della wheel deve corrispondere al valore certificato sopra prima
+dell'installazione. Conserva wheel, SHA-256, source SHA e digest OCI nello stesso
+registro di rilascio. Non usare editable install fuori dallo sviluppo.
+
+Il record `docs/hardware/physical-validation-2026-08-21.md` conserva anche le
+prove effettuate sulla precedente release 0.1.0: è evidenza storica di collaudo,
+non la versione da installare per un nuovo deployment.
 
 ## Installazione e rollback
 
@@ -40,7 +46,7 @@ Usa esattamente il Python che avvia TheBitLab:
 
 ```text
 /path/to/thebitlab-venv/bin/python -m pip install --no-deps \
-  /path/to/thebitlab_romeo-0.1.0-py3-none-any.whl
+  /path/to/thebitlab_romeo-0.2.0-py3-none-any.whl
 ```
 
 Per aggiornare, conserva prima la wheel precedente e il suo hash. Per rollback,
