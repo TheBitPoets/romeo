@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT / "src"))
 project = "Romeo"
 copyright = "2026, TheBitPoets"
 author = "TheBitPoets"
+language = "it"
 
 extensions = [
     "myst_parser",
