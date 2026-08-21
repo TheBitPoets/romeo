@@ -38,4 +38,4 @@ def test_image_rights_are_separate_from_course_license() -> None:
     assert "Apache-2.0" in license_notice
     assert "CC BY-SA 4.0" in license_notice
     assert "53 immagini PNG" in provenance
-    assert "non deve essere rimossa" in provenance
+    assert "Nessuna delle 53 immagini PNG storiche deve essere rimossa" in provenance
