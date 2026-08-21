@@ -1,0 +1,11 @@
+**
+!README.md
+!pyproject.toml
+!src/
+!src/**
+!docker/
+!docker/runtime-runner/
+!docker/runtime-runner/Dockerfile
+!docker/runtime-runner/requirements.lock
+!docker/runtime-runner/wheelhouse/
+!docker/runtime-runner/wheelhouse/**
