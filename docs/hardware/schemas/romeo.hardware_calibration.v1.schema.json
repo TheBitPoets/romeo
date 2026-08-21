@@ -33,7 +33,10 @@
           ]
         },
         "package_version": {"type": ["string", "null"]},
-        "hardware_fingerprint": {"type": ["string", "null"]},
+        "hardware_fingerprint": {
+          "type": ["string", "null"],
+          "description": "For commissioned units: sha256:<64 lowercase hex> derived from a stable Raspberry identifier; the raw identifier is never stored. Legacy or null values fail unit_identity preflight."
+        },
         "watchdog_samples_ms": {
           "type": "array",
           "maxItems": 20,

@@ -8,8 +8,13 @@ import pytest
 from romeo.backends.mock import MockBackend
 from romeo.doctor.checks import run_preflight
 from romeo.doctor.config import save_config
+from romeo.doctor.identity import fingerprint_unit_identifier
 from romeo.doctor.models import CalibrationValues, CommissioningRecord, DoctorConfig
+from romeo.doctor.render import render_json, render_text
 from romeo.safety import SafetyBackend
+
+UNIT_A = "raw-raspberry-serial-unit-a"
+UNIT_B = "raw-raspberry-serial-unit-b"
 
 
 class FakeCamera:
@@ -39,6 +44,7 @@ def commissioned_config(version: str = "0.1.0") -> DoctorConfig:
             status="commissioned",
             timestamp="2026-08-21T12:00:00Z",
             package_version=version,
+            hardware_fingerprint=fingerprint_unit_identifier(UNIT_A),
             watchdog_samples_ms=(505.0, 510.0, 508.0),
         ),
     )
@@ -57,6 +63,7 @@ def run_ready(path: Path, **overrides: object):  # type: ignore[no-untyped-def]
         "camera_factory": FakeCamera,
         "network_probe": lambda: ["192.0.2.10"],
         "i2c_exists": lambda _path: True,
+        "unit_identifier_provider": lambda: UNIT_A,
     }
     arguments.update(overrides)
     return run_preflight(path, **arguments)  # type: ignore[arg-type]
@@ -72,6 +79,85 @@ def test_everything_ok_is_ready_and_server_is_skipped(tmp_path: Path) -> None:
     assert report.status == "ready"
     assert {check.id: check.status for check in report.checks}["server"] == "skipped"
     assert report.to_dict()["schema_version"] == "romeo.hardware_diagnostic.v1"
+    identity = next(check for check in report.checks if check.id == "unit_identity")
+    assert identity.status == "passed"
+    assert identity.measured == {"fingerprint": fingerprint_unit_identifier(UNIT_A)}
+
+
+def test_copied_calibration_is_rejected_on_another_unit(tmp_path: Path) -> None:
+    path = tmp_path / "copied-from-unit-a.json"
+    save_config(path, commissioned_config())
+
+    report = run_ready(path, unit_identifier_provider=lambda: UNIT_B)
+
+    identity = next(check for check in report.checks if check.id == "unit_identity")
+    assert identity.status == "failed"
+    assert not report.ready
+    assert identity.measured == {
+        "recorded_fingerprint": fingerprint_unit_identifier(UNIT_A),
+        "current_fingerprint": fingerprint_unit_identifier(UNIT_B),
+    }
+
+
+def test_missing_unit_fingerprint_fails_closed(tmp_path: Path) -> None:
+    path = tmp_path / "legacy.json"
+    config = commissioned_config()
+    save_config(
+        path,
+        DoctorConfig(
+            unit_calibration=config.unit_calibration,
+            commissioning=CommissioningRecord(
+                status="commissioned",
+                timestamp="2026-08-21T12:00:00Z",
+                package_version="0.1.0",
+                watchdog_samples_ms=(505.0, 510.0, 508.0),
+            ),
+        ),
+    )
+
+    report = run_ready(path)
+
+    assert not report.ready
+    assert next(check for check in report.checks if check.id == "unit_identity").status == (
+        "failed"
+    )
+
+
+@pytest.mark.parametrize(
+    "provider",
+    [
+        lambda: "",
+        lambda: (_ for _ in ()).throw(OSError("raw-raspberry-serial-unit-a")),
+    ],
+    ids=["identifier-unavailable", "provider-error"],
+)
+def test_unverifiable_unit_identity_fails_without_raw_output(
+    tmp_path: Path, provider
+) -> None:  # type: ignore[no-untyped-def]
+    path = tmp_path / "hardware.json"
+    save_config(path, commissioned_config())
+
+    report = run_ready(path, unit_identifier_provider=provider)
+    json_output = render_json(report)
+    text_output = render_text(report)
+
+    assert not report.ready
+    assert next(check for check in report.checks if check.id == "unit_identity").status == (
+        "failed"
+    )
+    assert UNIT_A not in json_output
+    assert UNIT_A not in text_output
+
+
+def test_matching_raw_identifier_is_never_exposed(tmp_path: Path) -> None:
+    path = tmp_path / "hardware.json"
+    save_config(path, commissioned_config())
+
+    report = run_ready(path)
+
+    assert report.ready
+    assert UNIT_A not in render_json(report)
+    assert UNIT_A not in render_text(report)
 
 
 @pytest.mark.parametrize(

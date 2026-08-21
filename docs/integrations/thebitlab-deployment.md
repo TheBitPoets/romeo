@@ -11,24 +11,28 @@ SHA TheBitLab, interprete e venv effettivi, modalità di avvio, nodo del broker,
 Docker/permessi, file persistente delle environment variable, aggiornamento e
 rollback. Non assumere che una shell amministrativa sia l'ambiente del servizio.
 
-## Artefatto certificato
+## Record autorevole della release
 
-Per la release runtime certificata:
+Non copiare un digest da questa guida. Leggi sempre
+[`docs/release/runtime-image-current.env`](../release/runtime-image-current.env),
+record generato dopo publish GHCR, smoke diretto e smoke attraverso il broker.
+Contiene insieme:
 
-```text
-Romeo source SHA: b6bb70fef89fcf539fbf087cd26ca80f203fc7cb
-package: thebitlab-romeo 0.1.0
-image: ghcr.io/thebitpoets/romeo-runtime@sha256:3d854fb99d2d1f4b7264c87fcce550dd5e3e739de055c73325609893a088d997
-TheBitLab broker SHA: ec60eaca11da481a8510ec67255abaf76ac5b23e
-```
+- `ROMEO_SANDBOX_IMAGE`, riferimento GHCR immutabile `@sha256:`;
+- `ROMEO_RUNTIME_SOURCE_SHA`, sorgente del worker pubblicato;
+- `ROMEO_THEBITLAB_BROKER_SHA`, broker usato per la certificazione.
 
-Costruisci da un worktree detached dello SHA, non da un checkout successivo:
+Prima dell'installazione verifica che il riferimento corrisponda esattamente a
+`ghcr.io/...@sha256:<64 cifre esadecimali>`. Tag come `latest` non sono validi.
+
+Costruisci da un worktree detached dello SHA letto dal record, non da un
+checkout successivo:
 
 ```text
 python -m venv .venv-build
 .venv-build/bin/python -m pip install build
 .venv-build/bin/python -m build --wheel
-sha256sum dist/thebitlab_romeo-0.1.0-py3-none-any.whl
+sha256sum dist/thebitlab_romeo-*.whl
 ```
 
 Conserva wheel, SHA-256, source SHA e digest OCI nello stesso registro di
@@ -40,7 +44,7 @@ Usa esattamente il Python che avvia TheBitLab:
 
 ```text
 /path/to/thebitlab-venv/bin/python -m pip install --no-deps \
-  /path/to/thebitlab_romeo-0.1.0-py3-none-any.whl
+  /path/to/thebitlab_romeo-<version>-py3-none-any.whl
 ```
 
 Per aggiornare, conserva prima la wheel precedente e il suo hash. Per rollback,
@@ -58,7 +62,7 @@ adattare alla topologia osservata:
 - servizio Windows: environment del service wrapper, non della shell corrente;
 - launcher shell: file environment letto dal launcher amministrativo.
 
-Il valore deve contenere il digest completo sopra. Un semplice `export` o
+Il valore deve essere copiato dal record autorevole. Un semplice `export` o
 `$env:` in una console di collaudo non configura un servizio separato.
 
 ## Probe e percorso studente
