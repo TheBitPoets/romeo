@@ -5,10 +5,10 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import pathlib
 import shutil
 import sys
 import tempfile
-from pathlib import Path
 
 
 BROKER_COMMIT = "dcb76f600fa951ba94fffbd355a6c13dfcbfb424"
@@ -18,7 +18,7 @@ ACTIVITIES = (
 )
 
 
-def _load_student_runtime(thebitlab_root: Path):
+def _load_student_runtime(thebitlab_root: pathlib.Path):
     root = thebitlab_root.resolve(strict=True)
     sys.path.insert(0, str(root))
     from scripts import student_runtime
@@ -29,8 +29,8 @@ def _load_student_runtime(thebitlab_root: Path):
 def _run_activity(
     student_runtime,
     *,
-    romeo_root: Path,
-    temporary_root: Path,
+    romeo_root: pathlib.Path,
+    temporary_root: pathlib.Path,
     slug: str,
 ):
     source = romeo_root / "course" / "activities" / slug
@@ -75,12 +75,12 @@ def _run_activity(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--thebitlab-root", type=Path, required=True)
+    parser.add_argument("--thebitlab-root", type=pathlib.Path, required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument(
         "--romeo-root",
-        type=Path,
-        default=Path(__file__).resolve().parents[1],
+        type=pathlib.Path,
+        default=pathlib.Path(__file__).resolve().parents[1],
     )
     arguments = parser.parse_args()
 
@@ -90,7 +90,7 @@ def main() -> None:
 
     student_runtime = _load_student_runtime(arguments.thebitlab_root)
     with tempfile.TemporaryDirectory(prefix="romeo-thebitlab-smoke-") as temporary:
-        temporary_root = Path(temporary)
+        temporary_root = pathlib.Path(temporary)
         reports = [
             _run_activity(
                 student_runtime,
