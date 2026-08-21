@@ -51,6 +51,23 @@
           <p id="action-status" class="action-status" aria-live="polite"></p>
         </section>
 
+        <section class="panel drive" aria-labelledby="drive-title">
+          <p class="label">WebSocket</p>
+          <h2 id="drive-title">Guida Romeo</h2>
+          <div class="drive-grid" aria-label="Comandi di movimento">
+            <button class="button drive-button drive-forward" data-command="forward" type="button">W · Avanti</button>
+            <button class="button drive-button" data-command="left" type="button">A · Sinistra</button>
+            <button class="button button--danger drive-button" data-command="stop" type="button">STOP</button>
+            <button class="button drive-button" data-command="right" type="button">D · Destra</button>
+            <button class="button drive-button drive-backward" data-command="backward" type="button">S · Indietro</button>
+          </div>
+          <label class="speed-control" for="drive-speed">
+            Velocità <output id="drive-speed-value" for="drive-speed">0,50</output>
+          </label>
+          <input id="drive-speed" type="range" min="0" max="1" step="0.05" value="0.5">
+          <p class="hint">Tieni premuto un pulsante oppure usa W/A/S/D. Spazio ferma subito.</p>
+        </section>
+
         <section class="panel" aria-labelledby="telemetry-title">
           <p class="label">Tempo reale</p>
           <h2 id="telemetry-title">Telemetria</h2>

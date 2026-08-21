@@ -7,10 +7,14 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 
+from romeo.network.control import execute_command
+from romeo.network.protocol import Command, ProtocolError, parse_command
+from romeo.safety import ControllerAccessError, ControllerBusyError, SafetyBackend
 from romeo.simulation.engine import SimulationEngine
 from romeo.simulation.scenario import SCENARIO_SCHEMA, Scenario
 
@@ -64,12 +68,14 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
 
     active_engine = engine or _default_engine()
     session = SimulationSession(active_engine)
+    control = SafetyBackend(active_engine, max_speed=1.0, command_timeout=0.75)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         del app
         yield
         await session.pause()
+        control.close()
 
     app = FastAPI(
         title="Romeo Simulator",
@@ -77,6 +83,7 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
         lifespan=lifespan,
     )
     app.state.simulation = session
+    app.state.control = control
 
     @app.get("/", include_in_schema=False)
     async def viewer() -> FileResponse:
@@ -91,6 +98,27 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
     @app.get("/api/state")
     async def state() -> dict[str, Any]:
         return _session_state(session)
+
+    @app.get("/api/status")
+    async def status() -> dict[str, Any]:
+        return {
+            "status": "ok",
+            "simulation_running": session.running,
+            "moving": not active_engine.stopped,
+            "controller_active": control.active_controller is not None,
+            "time": active_engine.time,
+            "collisions": active_engine.collisions,
+        }
+
+    @app.get("/api/info")
+    async def info() -> dict[str, Any]:
+        return {
+            "name": "Romeo",
+            "version": "0.1.0",
+            "backend": "simulation",
+            "state_schema": SimulationEngine.STATE_SCHEMA,
+            "commands": ["forward", "backward", "left", "right", "stop", "look"],
+        }
 
     @app.post("/api/simulation/start")
     async def start() -> dict[str, Any]:
@@ -123,6 +151,44 @@ def create_app(engine: SimulationEngine | None = None) -> FastAPI:
         except (WebSocketDisconnect, RuntimeError):
             return
 
+    @app.websocket("/ws/control")
+    async def websocket_control(websocket: WebSocket) -> None:
+        await websocket.accept()
+        controller_id = f"web-{uuid4().hex}"
+        try:
+            control.claim_controller(controller_id)
+        except ControllerBusyError:
+            await websocket.send_json(
+                {"type": "error", "code": "controller_busy", "detail": "Romeo è già controllato"}
+            )
+            await websocket.close(code=1013)
+            return
+        try:
+            await websocket.send_json({"type": "ready", "controller_id": controller_id})
+            while True:
+                try:
+                    payload = await websocket.receive_json()
+                    command = _command_from_payload(payload)
+                    execute_command(control, controller_id, command)
+                    if command.name in {"FORWARD", "BACKWARD", "LEFT", "RIGHT"}:
+                        await session.start()
+                    await websocket.send_json(
+                        {
+                            "type": "ack",
+                            "command": command.name.lower(),
+                            "state": _session_state(session),
+                        }
+                    )
+                except (ProtocolError, TypeError, ValueError) as error:
+                    await websocket.send_json(
+                        {"type": "error", "code": "invalid_command", "detail": str(error)}
+                    )
+        except (WebSocketDisconnect, RuntimeError):
+            return
+        finally:
+            with suppress(ControllerAccessError):
+                control.release_controller(controller_id)
+
     return app
 
 
@@ -131,6 +197,32 @@ def _session_state(session: SimulationSession) -> dict[str, Any]:
     state["session_running"] = session.running
     state["events"] = session.engine.event_log()[-20:]
     return state
+
+
+def _command_from_payload(payload: object) -> Command:
+    if not isinstance(payload, dict):
+        raise TypeError("control message must be an object")
+    raw_name = payload.get("command")
+    if not isinstance(raw_name, str):
+        raise TypeError("command must be a string")
+    name = raw_name.strip().upper()
+    if name in {"FORWARD", "BACKWARD", "LEFT", "RIGHT"}:
+        speed = payload.get("speed", 0.5)
+        if isinstance(speed, bool) or not isinstance(speed, (int, float)):
+            raise TypeError("speed must be a number")
+        return parse_command(f"{name} {speed}")
+    if name == "LOOK":
+        pan = payload.get("pan")
+        tilt = payload.get("tilt")
+        if (
+            isinstance(pan, bool)
+            or not isinstance(pan, (int, float))
+            or isinstance(tilt, bool)
+            or not isinstance(tilt, (int, float))
+        ):
+            raise TypeError("look requires numeric pan and tilt")
+        return parse_command(f"LOOK {pan} {tilt}")
+    return parse_command(name)
 
 
 def _default_engine() -> SimulationEngine:

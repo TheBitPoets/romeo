@@ -22,6 +22,11 @@ const fields = {
 let simulationState = null;
 let reconnectDelay = 500;
 let reconnectTimer = null;
+let controlSocket = null;
+let controlReconnectDelay = 500;
+let controlReconnectTimer = null;
+let heartbeatTimer = null;
+let activeMovement = null;
 
 function finiteNumber(value, fallback = 0) {
   const number = Number(value);
@@ -76,6 +81,62 @@ function connect() {
   });
 
   socket.addEventListener("error", () => socket.close());
+}
+
+function connectControl() {
+  window.clearTimeout(controlReconnectTimer);
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  controlSocket = new WebSocket(`${protocol}//${window.location.host}/ws/control`);
+
+  controlSocket.addEventListener("open", () => {
+    controlReconnectDelay = 500;
+  });
+  controlSocket.addEventListener("message", (event) => {
+    const message = JSON.parse(event.data);
+    if (message.type === "error") {
+      actionStatus.classList.add("is-error");
+      actionStatus.textContent = message.detail || "Comando di guida non valido.";
+    }
+  });
+  controlSocket.addEventListener("close", () => {
+    stopHeartbeat();
+    controlReconnectTimer = window.setTimeout(connectControl, controlReconnectDelay);
+    controlReconnectDelay = Math.min(controlReconnectDelay * 2, 8000);
+  });
+  controlSocket.addEventListener("error", () => controlSocket.close());
+}
+
+function sendControl(payload) {
+  if (!controlSocket || controlSocket.readyState !== WebSocket.OPEN) {
+    actionStatus.classList.add("is-error");
+    actionStatus.textContent = "Controllo non ancora connesso.";
+    return false;
+  }
+  controlSocket.send(JSON.stringify(payload));
+  return true;
+}
+
+function selectedSpeed() {
+  return finiteNumber(document.querySelector("#drive-speed").value, 0.5);
+}
+
+function startMovement(command) {
+  if (activeMovement === command) return;
+  stopHeartbeat();
+  if (!sendControl({ command, speed: selectedSpeed() })) return;
+  activeMovement = command;
+  heartbeatTimer = window.setInterval(() => sendControl({ command: "ping" }), 250);
+}
+
+function stopHeartbeat() {
+  window.clearInterval(heartbeatTimer);
+  heartbeatTimer = null;
+  activeMovement = null;
+}
+
+function stopMovement() {
+  stopHeartbeat();
+  sendControl({ command: "stop" });
 }
 
 function updateTelemetry(state) {
@@ -315,6 +376,46 @@ document.querySelector("#reset-button").addEventListener("click", (event) => {
   simulationAction("reset", event.currentTarget);
 });
 
+for (const button of document.querySelectorAll(".drive-button")) {
+  const command = button.dataset.command;
+  if (command === "stop") {
+    button.addEventListener("click", stopMovement);
+    continue;
+  }
+  button.addEventListener("pointerdown", () => startMovement(command));
+  button.addEventListener("pointerup", stopMovement);
+  button.addEventListener("pointercancel", stopMovement);
+  button.addEventListener("pointerleave", () => {
+    if (activeMovement === command) stopMovement();
+  });
+}
+
+const keyboardCommands = { KeyW: "forward", KeyA: "left", KeyS: "backward", KeyD: "right" };
+window.addEventListener("keydown", (event) => {
+  if (event.target instanceof HTMLInputElement && event.target.type !== "range") return;
+  if (event.code === "Space") {
+    event.preventDefault();
+    stopMovement();
+    return;
+  }
+  const command = keyboardCommands[event.code];
+  if (command) {
+    event.preventDefault();
+    startMovement(command);
+  }
+});
+window.addEventListener("keyup", (event) => {
+  if (keyboardCommands[event.code] && activeMovement === keyboardCommands[event.code]) {
+    stopMovement();
+  }
+});
+window.addEventListener("blur", stopMovement);
+
+const speedInput = document.querySelector("#drive-speed");
+speedInput.addEventListener("input", () => {
+  document.querySelector("#drive-speed-value").textContent = formatNumber(speedInput.value);
+});
+
 if ("ResizeObserver" in window) {
   new ResizeObserver(resizeCanvas).observe(canvasWrap);
 } else {
@@ -323,3 +424,4 @@ if ("ResizeObserver" in window) {
 
 resizeCanvas();
 connect();
+connectControl();

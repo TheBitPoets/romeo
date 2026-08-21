@@ -1,8 +1,9 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from romeo.simulation.engine import SimulationEngine
 from romeo.simulation.scenario import SCENARIO_SCHEMA, Scenario
-from romeo.web.app import create_app
+from romeo.web.app import _command_from_payload, create_app
 
 
 def engine() -> SimulationEngine:
@@ -52,3 +53,53 @@ def test_websocket_publishes_versioned_state() -> None:
 
     assert state["schema_version"] == "romeo.simulation.state.v1"
     assert state["scenario_id"] == "web-test"
+
+
+def test_status_info_and_openapi_are_documented() -> None:
+    app = create_app(engine())
+
+    with TestClient(app) as client:
+        status = client.get("/api/status").json()
+        info = client.get("/api/info").json()
+        openapi = client.get("/openapi.json").json()
+
+    assert status["status"] == "ok"
+    assert not status["controller_active"]
+    assert info["commands"] == ["forward", "backward", "left", "right", "stop", "look"]
+    assert "/api/status" in openapi["paths"]
+
+
+def test_control_websocket_drives_and_stops_on_disconnect() -> None:
+    simulation = engine()
+    app = create_app(simulation)
+
+    with TestClient(app) as client:
+        with client.websocket_connect("/ws/control") as websocket:
+            assert websocket.receive_json()["type"] == "ready"
+            websocket.send_json({"command": "forward", "speed": 0.4})
+            acknowledgement = websocket.receive_json()
+            assert acknowledgement["type"] == "ack"
+            assert acknowledgement["command"] == "forward"
+            assert (simulation.left_speed, simulation.right_speed) == (0.4, 0.4)
+
+            with client.websocket_connect("/ws/control") as second:
+                error = second.receive_json()
+                assert error["code"] == "controller_busy"
+
+        assert simulation.stopped
+        assert not client.get("/api/status").json()["controller_active"]
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        None,
+        {},
+        {"command": "forward", "speed": True},
+        {"command": "look", "pan": 90},
+        {"command": "dance"},
+    ],
+)
+def test_invalid_websocket_commands_are_rejected(payload: object) -> None:
+    with pytest.raises((TypeError, ValueError)):
+        _command_from_payload(payload)

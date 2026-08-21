@@ -7,7 +7,8 @@ import asyncio
 import itertools
 from contextlib import suppress
 
-from romeo.network.protocol import Command, ProtocolError, error_response, parse_command
+from romeo.network.control import execute_command
+from romeo.network.protocol import ProtocolError, error_response, parse_command
 from romeo.safety import ControllerAccessError, ControllerBusyError, SafetyBackend
 
 MAX_COMMAND_BYTES = 1024
@@ -102,7 +103,7 @@ class TcpRobotServer:
                 try:
                     line = raw_line.decode("ascii").rstrip("\r\n")
                     command = parse_command(line)
-                    self._execute(controller_id, command)
+                    execute_command(self.backend, controller_id, command)
                 except (UnicodeDecodeError, ProtocolError, ControllerAccessError) as error:
                     await self._send(writer, error_response(error))
                     continue
@@ -115,27 +116,6 @@ class TcpRobotServer:
             writer.close()
             with suppress(ConnectionError):
                 await writer.wait_closed()
-
-    def _execute(self, controller_id: str, command: Command) -> None:
-        if command.name == "PING":
-            self.backend.heartbeat(controller_id)
-            return
-        if command.name == "LOOK":
-            pan, tilt = command.arguments
-            self.backend.set_camera_angles_for(controller_id, pan, tilt)
-            return
-        if command.name == "STOP":
-            self.backend.set_motor_speeds_for(controller_id, 0.0, 0.0)
-            return
-        speed = command.arguments[0]
-        wheel_speeds = {
-            "FORWARD": (speed, speed),
-            "BACKWARD": (-speed, -speed),
-            "LEFT": (-speed, speed),
-            "RIGHT": (speed, -speed),
-        }
-        left, right = wheel_speeds[command.name]
-        self.backend.set_motor_speeds_for(controller_id, left, right)
 
     @staticmethod
     async def _send(writer: asyncio.StreamWriter, line: str) -> None:
