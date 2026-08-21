@@ -81,7 +81,9 @@ def _unit_page(unit: dict[str, Any], activity: dict[str, Any]) -> str:
     ]
     lines.extend(f"- {item}" for item in prerequisites)
     if not prerequisites:
-        lines.append("- Nessun prerequisito specifico oltre alle unità precedenti indicate dal corso.")
+        lines.append(
+            "- Nessun prerequisito specifico oltre alle unità precedenti indicate dal corso."
+        )
 
     lines.extend(["", "## Concetti", ""])
     lines.extend(f"- {item}" for item in topics)
@@ -116,8 +118,8 @@ def _unit_page(unit: dict[str, Any], activity: dict[str, Any]) -> str:
             "",
             "```{admonition} Fonte autorevole",
             ":class: note",
-            "Questa pagina è generata dai manifest del Course Bundle. Soluzioni docente, hidden test "
-            "e asset di grading non vengono renderizzati nel catalogo pubblico.",
+            "Questa pagina è generata dai manifest del Course Bundle. Soluzioni docente, "
+            "hidden test e asset di grading non vengono renderizzati nel catalogo pubblico.",
             "```",
             "",
         ]
