@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "id": "romeo-y2-u22-integrazione",
+  "title": "Integra controllo e stato",
+  "titolo": "Integra controllo e stato",
+  "kind": "laboratorio",
+  "tipo": "laboratorio",
+  "language": "python",
+  "linguaggio": "python",
+  "difficulty": "C",
+  "difficolta": "C",
+  "topics": [
+    "WebSocket",
+    "stato",
+    "stop"
+  ],
+  "argomenti": [
+    "WebSocket",
+    "stato",
+    "stop"
+  ],
+  "objective": "collegare comando realtime e telemetria",
+  "prerequisites": [
+    "romeo-y2-u21-safety"
+  ],
+  "instructions": "Invia un comando, leggi lo stato e chiudi lasciando Romeo fermo.",
+  "consegna": "Invia un comando, leggi lo stato e chiudi lasciando Romeo fermo.",
+  "student_support_mode": "hint-progressivi",
+  "grading_policy": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "correzione": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "metriche": {
+    "tempo_stimato_minuti": 90,
+    "traccia_tempo_dichiarato": true,
+    "traccia_sessioni_thebitlab": true,
+    "traccia_eventi_didattici": true,
+    "traccia_errori_compilazione": true
+  },
+  "rubrica": [
+    {
+      "criterio": "Comportamento di rete verificato",
+      "punti": 5
+    },
+    {
+      "criterio": "Protocollo e validazione",
+      "punti": 2
+    },
+    {
+      "criterio": "Cleanup e safety",
+      "punti": 2
+    },
+    {
+      "criterio": "Spiegazione",
+      "punti": 1
+    }
+  ],
+  "assets": [
+    {
+      "type": "starter",
+      "path": "starter.py",
+      "target_path": "main.py",
+      "visibility": "student",
+      "description": "Codice iniziale"
+    },
+    {
+      "type": "fixture",
+      "path": "scenario.json",
+      "visibility": "grading",
+      "description": "Scenario headless"
+    },
+    {
+      "type": "fixture",
+      "path": "runtime-config.json",
+      "visibility": "grading",
+      "description": "Check deterministici"
+    },
+    {
+      "type": "teacher_only",
+      "path": "solution.py",
+      "visibility": "teacher",
+      "description": "Soluzione verificata"
+    },
+    {
+      "type": "example",
+      "path": "hints.md",
+      "visibility": "student",
+      "description": "Hint progressivi"
+    }
+  ],
+  "extensions": {
+    "thebitlab.runtime": {
+      "schema_version": "runtime_activity.v1",
+      "runtime_id": "romeo-sim",
+      "config": {
+        "path": "runtime-config.json",
+        "media_type": "application/json"
+      },
+      "required_capabilities": [
+        "headless-run",
+        "deterministic-grade",
+        "artifact-collect"
+      ],
+      "submission": {
+        "artifacts": [
+          {
+            "id": "main",
+            "path": "main.py",
+            "media_type": "text/x-python",
+            "required": true
+          }
+        ]
+      }
+    }
+  }
+}

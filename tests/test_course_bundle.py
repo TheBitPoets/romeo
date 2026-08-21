@@ -1,9 +1,11 @@
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 
+from romeo.integrations.thebitlab import create_plugin
 from romeo.integrations.thebitlab.worker import execute_submission
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,15 +22,50 @@ def test_first_year_bundle_validates_offline() -> None:
     )
 
     assert completed.returncode == 0, completed.stderr
-    assert "20 units and 20 activities" in completed.stdout
+    assert "43 units and 43 activities" in completed.stdout
 
 
 @pytest.mark.parametrize(
     "activity_directory",
-    sorted((COURSE / "activities").glob("y1-*")),
+    sorted((COURSE / "activities").glob("y*-*")),
     ids=lambda path: path.name,
 )
-def test_teacher_solution_passes_deterministic_grading(activity_directory: Path) -> None:
+def test_teacher_solution_passes_deterministic_grading(
+    activity_directory: Path, tmp_path: Path
+) -> None:
+    if activity_directory.name.startswith("y2-"):
+        workspace = tmp_path / "workspace"
+        workspace.mkdir()
+        shutil.copyfile(activity_directory / "solution.py", workspace / "main.py")
+        request = {
+            "schema_version": "runtime_request.v1",
+            "runtime_id": "romeo-sim",
+            "activity_id": activity_directory.name,
+            "assignment_id": "teacher-solution",
+            "student_id": "ci",
+            "paths": {
+                "activity": str(activity_directory.resolve()),
+                "workspace": str(workspace.resolve()),
+                "config": str((activity_directory / "runtime-config.json").resolve()),
+            },
+            "submission_artifacts": [
+                {
+                    "id": "main",
+                    "path": "main.py",
+                    "media_type": "text/x-python",
+                    "required": True,
+                }
+            ],
+            "timeout_seconds": 10,
+            "metadata": {},
+        }
+
+        result = create_plugin().run(request)
+
+        assert result["status"] == "passed", result
+        assert result["metadata"]["score"] == 10.0
+        return
+
     result = execute_submission(
         activity_directory / "solution.py",
         activity_directory / "scenario.json",

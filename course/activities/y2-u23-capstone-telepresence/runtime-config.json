@@ -1,0 +1,23 @@
+{
+  "schema_version": "romeo.thebitlab.v1",
+  "scenario": "scenario.json",
+  "submission_artifact_id": "main",
+  "max_simulation_seconds": 20,
+  "stdout_checks": [
+    {
+      "name": "FOTO OK",
+      "contains": "FOTO OK",
+      "points": 1
+    },
+    {
+      "name": "CONTROLLO WS OK",
+      "contains": "CONTROLLO WS OK",
+      "points": 1
+    },
+    {
+      "name": "TELEMETRIA STOP OK",
+      "contains": "TELEMETRIA STOP OK",
+      "points": 1
+    }
+  ]
+}

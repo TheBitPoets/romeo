@@ -1,0 +1,13 @@
+{
+  "schema_version": "romeo.thebitlab.v1",
+  "scenario": "scenario.json",
+  "submission_artifact_id": "main",
+  "max_simulation_seconds": 20,
+  "stdout_checks": [
+    {
+      "name": "INTEGRAZIONE OK",
+      "contains": "INTEGRAZIONE OK",
+      "points": 1
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "id": "romeo-y2-u04-client-server",
+  "title": "Client e server",
+  "titolo": "Client e server",
+  "kind": "laboratorio",
+  "tipo": "laboratorio",
+  "language": "python",
+  "linguaggio": "python",
+  "difficulty": "B",
+  "difficolta": "B",
+  "topics": [
+    "client",
+    "server",
+    "send",
+    "recv"
+  ],
+  "argomenti": [
+    "client",
+    "server",
+    "send",
+    "recv"
+  ],
+  "objective": "scambiare byte tra due endpoint",
+  "prerequisites": [
+    "romeo-y2-u03-porte"
+  ],
+  "instructions": "Invia PING su una coppia di socket e rispondi PONG.",
+  "consegna": "Invia PING su una coppia di socket e rispondi PONG.",
+  "student_support_mode": "hint-progressivi",
+  "grading_policy": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "correzione": {
+    "compila": true,
+    "test": true,
+    "sandbox": true,
+    "ai_feedback": false
+  },
+  "metriche": {
+    "tempo_stimato_minuti": 60,
+    "traccia_tempo_dichiarato": true,
+    "traccia_sessioni_thebitlab": true,
+    "traccia_eventi_didattici": true,
+    "traccia_errori_compilazione": true
+  },
+  "rubrica": [
+    {
+      "criterio": "Comportamento di rete verificato",
+      "punti": 5
+    },
+    {
+      "criterio": "Protocollo e validazione",
+      "punti": 2
+    },
+    {
+      "criterio": "Cleanup e safety",
+      "punti": 2
+    },
+    {
+      "criterio": "Spiegazione",
+      "punti": 1
+    }
+  ],
+  "assets": [
+    {
+      "type": "starter",
+      "path": "starter.py",
+      "target_path": "main.py",
+      "visibility": "student",
+      "description": "Codice iniziale"
+    },
+    {
+      "type": "fixture",
+      "path": "scenario.json",
+      "visibility": "grading",
+      "description": "Scenario headless"
+    },
+    {
+      "type": "fixture",
+      "path": "runtime-config.json",
+      "visibility": "grading",
+      "description": "Check deterministici"
+    },
+    {
+      "type": "teacher_only",
+      "path": "solution.py",
+      "visibility": "teacher",
+      "description": "Soluzione verificata"
+    },
+    {
+      "type": "example",
+      "path": "hints.md",
+      "visibility": "student",
+      "description": "Hint progressivi"
+    }
+  ],
+  "extensions": {
+    "thebitlab.runtime": {
+      "schema_version": "runtime_activity.v1",
+      "runtime_id": "romeo-sim",
+      "config": {
+        "path": "runtime-config.json",
+        "media_type": "application/json"
+      },
+      "required_capabilities": [
+        "headless-run",
+        "deterministic-grade",
+        "artifact-collect"
+      ],
+      "submission": {
+        "artifacts": [
+          {
+            "id": "main",
+            "path": "main.py",
+            "media_type": "text/x-python",
+            "required": true
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,3 +1,3 @@
 # Course Bundle Romeo
 
-Bundle TheBitLab per il biennio. I contenuti sono originali e separano materiali studente, guide docente, handout e asset di grading. Rigenera il primo anno con `python scripts/build_first_year_bundle.py` e valida con `python scripts/validate_course.py`.
+Course Bundle TheBitLab originale per il primo e secondo anno. Contiene attività, scenari, starter, hint, soluzioni verificate, materiali studente/docente e handout. Rigenera tutto con `python scripts/build_second_year_bundle.py`; valida con `python scripts/validate_course.py`.
