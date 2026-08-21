@@ -662,7 +662,7 @@ documentazione. Il docente conserva il controllo dell'alimentazione e verifica c
     )
     write(
         COURSE / "scripts" / "README.md",
-        "# Script del bundle\n\nGli script autoritativi sono nella radice del repository: `scripts/build_first_year_bundle.py` e `scripts/validate_course.py`.\n",
+        "# Script del bundle\n\nGli script autoritativi sono nella radice del repository. `build_first_year_bundle.py` genera soltanto M10; `build_second_year_bundle.py` rigenera l'intero corso M10–M11. `validate_course.py` controlla il risultato offline.\n",
     )
     write(
         COURSE / "README.md",

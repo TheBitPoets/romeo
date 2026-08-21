@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import time
 import urllib.request
+from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any
 
@@ -102,6 +103,18 @@ def test_descriptor_and_probe_follow_runtime_v1() -> None:
     }
     assert probe["schema_version"] == "runtime_probe.v1"
     assert probe["available"] is True
+
+
+def test_installed_package_exposes_official_thebitlab_entry_point() -> None:
+    discovered = [
+        entry_point
+        for entry_point in entry_points(group="thebitlab.runtimes")
+        if entry_point.name == "romeo-sim"
+    ]
+
+    assert len(discovered) == 1
+    plugin = discovered[0].load()()
+    assert plugin.describe()["runtime_id"] == "romeo-sim"
 
 
 @pytest.mark.parametrize(
