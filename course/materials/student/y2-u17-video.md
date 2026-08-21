@@ -1,33 +1,82 @@
 # Secondo anno 17. Stream MJPEG
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a riconoscere frame e boundary. Userai frame, multipart, MJPEG. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a riconoscere frame e boundary.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai leggere byte JPEG e una response HTTP; conosci iteratori e `next` grazie a uno scaffold guidato.
+
+## Modello mentale
+
+MJPEG invia una sequenza di immagini JPEG dentro una response HTTP multipart. Un boundary separa i frame, come un divisore etichettato. Lo scaffold costruisce server e generatore: lo studente osserva due parti e verifica la struttura, senza implementare streaming o concorrenza da zero.
+
+## Esempio minimo commentato
+
+```text
+--frame
+Content-Type: image/jpeg
+
+<byte JPEG>
+--frame
+Content-Type: image/jpeg
+
+<byte JPEG>
+```
+
+```python
+primo = next(camera.frames(frames_per_second=10))
+assert primo.startswith(b"ÿØ")
+```
+
+Il secondo frammento controlla il JPEG; il boundary appartiene al livello HTTP multipart.
+
+## Prova guidata
+
+1. Evidenzia testualmente i due boundary nell'esempio.
+2. Distingui header della parte e byte del frame.
+3. Leggi due frame dal generatore mock fornito.
+4. Verifica marker JPEG per entrambi.
+5. Ispeziona una response MJPEG scaffolded e controlla il parametro boundary.
+
+## Esercizio base
+
+Leggi e valida due frame consecutivi dal mock.
+
+## Esercizio intermedio
+
+Verifica Content-Type multipart e presenza del boundary in una response fornita.
+
+## Mini-sfida
+
+Interrompi la lettura dopo tre frame e dimostra che camera e stream vengono chiusi.
+
+## Consegna valutata
 
 Leggi il primo frame del mock e verifica i marker JPEG.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Chiamare MJPEG un singolo byte array JPEG.
+- Confondere boundary e marker interni JPEG.
+- Creare un ciclo infinito senza condizione di arresto o cleanup.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So spiegare perché MJPEG contiene più JPEG?
+- So trovare il boundary?
+- Il mio lettore può terminare in modo pulito?
+
+## Accessibilità
+
+Fornisci frame campione e struttura testuale; il risultato può essere verificato con contatori e status senza dover vedere il video.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `MJPEG` | stream formato da immagini JPEG successive |
+| `multipart` | body HTTP composto da più parti |
+| `boundary` | sequenza che separa le parti |
+| `frame` | una singola immagine dello stream |

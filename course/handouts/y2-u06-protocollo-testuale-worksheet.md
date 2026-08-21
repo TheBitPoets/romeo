@@ -1,9 +1,17 @@
 # Traccia di rete — Il protocollo Romeo/1
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So scrivere la grammatica dei due comandi?
+- So spiegare perché serve una whitelist?
+- Il mio codice rifiuta dati invalidi prima dell'azione?

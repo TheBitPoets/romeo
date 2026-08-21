@@ -1,33 +1,72 @@
 # Secondo anno 13. Tastiera remota sicura
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a separare la mappa dei tasti dal trasporto e garantire lo stop finale. Userai WASD, client, timeout, stop. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a separare la mappa dei tasti dal trasporto e garantire lo stop finale.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai gestire un evento con una funzione e conosci il protocollo testuale e lo STOP WebSocket.
+
+## Modello mentale
+
+La tastiera produce tasti, ma il robot accetta comandi. Una funzione pura converte W/A/S/D/SPACE; un client separato trasporta il comando. Lo scaffold gestisce le differenze del terminale e la connessione: lo studente non deve leggere direttamente caratteri grezzi dal sistema operativo.
+
+## Esempio minimo commentato
+
+```python
+from romeo.network.keyboard import command_for_key
+
+comando = command_for_key("w")
+print(comando.name)  # FORWARD
+```
+
+Lo STOP va inviato anche in `finally`, perché un errore o la chiusura non devono lasciare Romeo in movimento.
+
+## Prova guidata
+
+1. Compila la tabella W/A/S/D/SPACE.
+2. Prova ogni tasto con la funzione pura.
+3. Verifica maiuscole, minuscole e tasto sconosciuto.
+4. Collega il mapping al client fornito.
+5. Simula un errore e osserva lo STOP nel blocco `finally`.
+
+## Esercizio base
+
+Trasforma W e SPACE in FORWARD e STOP.
+
+## Esercizio intermedio
+
+Gestisci tutti i tasti previsti e ignora in modo esplicito quelli sconosciuti.
+
+## Mini-sfida
+
+Crea una sequenza controllata che invia STOP dopo un periodo senza nuovi tasti.
+
+## Consegna valutata
 
 Trasforma W e spazio nei comandi remoti FORWARD e STOP.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Inviare il tasto grezzo invece del comando di protocollo.
+- Dimenticare SPACE o lo STOP finale.
+- Dipendere da una API terminal-specific non presente sul computer dello studente.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So separare mapping e trasporto?
+- Ogni uscita dal programma invia STOP?
+- Esiste un'alternativa ai tasti per chi non può usarli?
+
+## Accessibilità
+
+Mantieni anche pulsanti cliccabili e rimappabili; stampa il comando riconosciuto e non richiedere pressioni simultanee.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `mapping` | corrispondenza fra tasto e comando |
+| `timeout` | tempo massimo senza un nuovo evento |
+| `finally` | blocco eseguito anche quando avviene un errore |

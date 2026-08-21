@@ -2,35 +2,70 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a garantire l'arresto anche al termine di una sequenza. Le parole chiave sono: stop, watchdog, fail-safe.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a garantire l'arresto anche al termine di una sequenza.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper costruire una breve sequenza temporizzata e terminarla con `stop()`.
 
-## Consegna
+## Modello mentale
+
+Lo stop scritto nel programma è la regola principale. Il watchdog è una seconda rete di sicurezza: se per troppo tempo non arrivano comandi validi, ordina lo stop. Non sostituisce il nostro `stop()`; protegge da un programma o collegamento interrotto.
+
+## Esempio minimo commentato
+
+```python
+from romeo.easy import forward, stop
+
+forward(0.2)
+# Anche una prova brevissima dichiara esplicitamente lo stato sicuro.
+stop()
+```
+
+## Prova guidata
+
+1. Individua l'ultima istruzione motore dello starter.
+2. Prevedi lo stato finale se il programma terminasse in quel punto.
+3. Aggiungi `stop()` e verifica che entrambe le ruote valgano zero.
+4. Spiega a un compagno la differenza tra stop esplicito e watchdog.
+5. Compila la scheda di sicurezza prima di provare lo stesso codice sul robot fisico.
+
+## Esercizio base
+
+Invia un comando motore e lascia Romeo esplicitamente fermo.
+
+## Esercizio intermedio
+
+Confronta l'event log di un programma con e senza stop esplicito, usando solo il simulatore.
+
+## Mini-sfida
+
+Scrivi in tre passi la procedura umana da seguire se il robot fisico non risponde ai comandi.
+
+## Consegna valutata
 
 Invia almeno un comando motore e lascia Romeo fermo.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Credere che la fine del file equivalga sempre a uno stop immediato.
+- Usare il watchdog come scusa per omettere `stop()`.
+- Provare un caso di errore direttamente sull'hardware prima del simulatore.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So mostrare nel codice lo stop esplicito?
+- So spiegare il ruolo di riserva del watchdog?
+- So indicare un'evidenza che entrambe le ruote siano a zero?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+La checklist di sicurezza deve essere disponibile in testo ad alta leggibilità e letta ad alta voce prima della prova fisica.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `watchdog` | controllo che ferma il robot quando i comandi non arrivano in tempo |
+| `fail-safe` | comportamento che porta il sistema in uno stato sicuro |
+| `stop esplicito` | istruzione `stop()` scritta nel programma |

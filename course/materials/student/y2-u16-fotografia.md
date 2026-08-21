@@ -1,33 +1,72 @@
 # Secondo anno 16. Fotografia REST
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a ricevere JPEG con media type corretto. Userai JPEG, Content-Type, endpoint. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a ricevere JPEG con media type corretto.
 
-## Laboratorio
+## Che cosa sai già
+
+Conosci REST, TestClient, JSON, byte JPEG e CameraService mock.
+
+## Modello mentale
+
+Una foto REST è una risorsa binaria: la response contiene byte JPEG invece di JSON. Status e Content-Type dicono al client se e come interpretarla. `create_app(camera=mock)` passa alla app una camera prevedibile; questa iniezione evita hardware reale durante il test.
+
+## Esempio minimo commentato
+
+```python
+with TestClient(create_app(camera=MockCameraService())) as client:
+    response = client.get("/api/camera/photo")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/jpeg"
+```
+
+Solo dopo questi controlli usiamo `response.content` come JPEG.
+
+## Prova guidata
+
+1. Confronta una response JSON e una JPEG.
+2. Individua dove il mock viene passato alla app.
+3. Richiedi la foto e controlla lo status.
+4. Controlla Content-Type e marker JPEG.
+5. Simula camera indisponibile e verifica una risposta d'errore.
+
+## Esercizio base
+
+Valida status, media type e contenuto della foto mock.
+
+## Esercizio intermedio
+
+Salva i byte soltanto dopo la validazione e verifica che il file non sia vuoto.
+
+## Mini-sfida
+
+Definisci il comportamento REST per camera non disponibile, motivando status e body d'errore.
+
+## Consegna valutata
 
 Inietta MockCameraService e verifica /api/camera/photo.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Chiamare `.json()` su una foto.
+- Accettare qualsiasi contenuto con status 200.
+- Usare la camera reale nei test automatici.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So distinguere response JSON e binaria?
+- Controllo il Content-Type?
+- Il test è ripetibile senza hardware?
+
+## Accessibilità
+
+L'esito della foto è descritto anche con testo, dimensione e status; nessuno deve essere ripreso per completare il laboratorio.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `Content-Type` | header che descrive il formato del body |
+| `iniezione` | passaggio esplicito di un collaboratore alla app |
+| `binario` | dati composti da byte, non testo JSON |

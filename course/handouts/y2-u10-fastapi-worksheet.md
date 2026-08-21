@@ -1,9 +1,17 @@
 # Traccia di rete — Costruisci una API FastAPI
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So indicare quale riga registra la route?
+- So spiegare chi converte il dizionario in JSON?
+- So trovare la route nello schema OpenAPI?

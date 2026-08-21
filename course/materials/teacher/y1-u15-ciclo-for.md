@@ -2,10 +2,16 @@
 
 Durata prevista: 55 minuti. Difficoltà: B.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper riconoscere un blocco rientrato e chiamare più volte la stessa funzione.
+
+Un ciclo `for` ripete un blocco un numero già noto di volte. `range(4)` fornisce quattro giri; a ogni giro il nome `passo` riceve il numero corrente. Le righe fuori dal rientro, come lo stop finale, vengono eseguite una sola volta.
+
 ## Evidenze osservabili
 
-Lo studente sa ripetere un numero noto di azioni, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Usa un ciclo for per inviare quattro comandi di movimento, poi stop.
+Lo studente sa ripetere un numero noto di azioni. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Usa un ciclo for per inviare quattro comandi di movimento, poi stop.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Credere che `range(4)` produca cinque valori da 0 a 4.
+- Non rientrare il comando da ripetere.
+- Rientrare anche `stop()` e fermare Romeo a ogni giro senza averlo previsto.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare for, range, iterazione alla prossima unità, evitando dettagli interni del backend.
+Accompagna il blocco rientrato con una lista dei quattro giri; usa il nome esplicito `passo` invece di simboli convenzionali non spiegati.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

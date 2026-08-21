@@ -1,33 +1,76 @@
 # Secondo anno 5. Un vero socket TCP
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a aprire server e client sul loopback. Userai listen, accept, connect. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a aprire server e client sul loopback.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai scambiare byte su una coppia locale e conosci indirizzo, porta, client e server.
+
+## Modello mentale
+
+Un server TCP prepara un punto di ascolto con `bind` e `listen`; `accept` crea un nuovo socket dedicato a un client. Il client usa `connect`. Per far avanzare server e client nello stesso programma lo scaffold avvia il server in un thread: la concorrenza è fornita, non è l'obiettivo da implementare oggi.
+
+## Esempio minimo commentato
+
+Lo scaffold contiene `serve_once` e il thread. Tu completi il client.
+
+```python
+with socket.create_connection(("127.0.0.1", porta), timeout=2) as client:
+    client.sendall(b"HELLO
+")
+    risposta = client.recv(32)
+    assert risposta == b"WELCOME
+"
+```
+
+Il timeout impedisce un'attesa infinita; non garantisce che la rete risponda in tempo.
+
+## Prova guidata
+
+1. Ordina le tessere bind, listen, connect, accept, send, recv.
+2. Segui nel diagramma il socket di ascolto e il nuovo socket restituito da `accept`.
+3. Avvia lo scaffold e completa soltanto il blocco client.
+4. Aggiungi timeout e verifica la risposta prima del marker.
+5. Esegui due volte e controlla che thread e socket vengano sempre chiusi.
+
+## Esercizio base
+
+Completa il client che saluta il server fornito e valida `WELCOME`.
+
+## Esercizio intermedio
+
+Completa il corpo di `serve_once` nello scaffold, mantenendo timeout e context manager.
+
+## Mini-sfida
+
+Gestisci un saluto errato restituendo `ERROR` senza lasciare thread o socket aperti.
+
+## Consegna valutata
 
 Avvia un piccolo server in thread, collega il client e verifica la risposta.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Chiamare `connect` prima che il listener sia pronto.
+- Confondere il socket listener con quello della connessione accettata.
+- Usare `recv` senza timeout durante il debug.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So raccontare l'ordine di apertura della connessione?
+- So indicare i due socket lato server?
+- Il programma termina anche con input errato?
+
+## Accessibilità
+
+Fornisci anche una sequenza numerata testuale del diagramma temporale. Lo scaffold evita che difficoltà con i thread oscurino il concetto di TCP.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `listen` | mette il socket in attesa di connessioni |
+| `accept` | accetta un client e restituisce il socket della connessione |
+| `thread` | flusso concorrente fornito qui dallo scaffold |

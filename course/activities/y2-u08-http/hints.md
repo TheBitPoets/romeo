@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica GET, status code, header e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Interroga il server locale fornito dallo scaffold.
+2. Verifica status e Content-Type prima di leggere il JSON.
+3. Richiedi un path inesistente e osserva la risposta d'errore.
+
+## Se qualcosa non funziona
+
+- Guardare soltanto il body e ignorare lo status.
+- Confondere metodo HTTP e nome della funzione Python.
+- Costruire subito server, thread e handler senza isolare il concetto HTTP.

@@ -2,35 +2,69 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a scomporre un percorso in segmenti verificabili. Le parole chiave sono: checkpoint, collisione, debug.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a scomporre un percorso in segmenti verificabili.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper leggere coordinate, pianificare segmenti e usare traiettoria ed eventi per correggerli.
 
-## Consegna
+## Modello mentale
+
+Una missione lunga diventa gestibile dividendola in checkpoint ordinati. Ogni checkpoint è una prova intermedia: prima raggiungiamo il primo, poi aggiungiamo il tratto successivo. Passare vicino ai punti nell'ordine conta più che indovinare subito l'intero programma.
+
+## Esempio minimo commentato
+
+```text
+Partenza → checkpoint 1 → checkpoint 2 → checkpoint 3/parcheggio
+
+Per ogni freccia annota:
+1. posa di partenza; 2. rotazione; 3. tratto; 4. prova osservabile.
+```
+
+## Prova guidata
+
+1. Leggi lo scenario e trascrivi nell'ordine tutti i checkpoint, contando quelli effettivamente presenti.
+2. Disegna un segmento tra partenza e primo checkpoint e prevedi la posa raggiunta.
+3. Implementa soltanto il primo segmento e verifica la traiettoria.
+4. Aggiungi un checkpoint alla volta, conservando una versione funzionante.
+5. Esegui la missione completa e controlla ordine, parcheggio finale, collisioni e stop.
+
+## Esercizio base
+
+Attraversa nell'ordine i checkpoint dello scenario e fermati sul target finale.
+
+## Esercizio intermedio
+
+Raggruppa almeno un tratto in una funzione con un nome che descriva lo scopo.
+
+## Mini-sfida
+
+Ottieni lo stesso percorso con una seconda combinazione di velocità e durate, mantenendo tutti i check verdi.
+
+## Consegna valutata
 
 Attraversa nell'ordine due checkpoint e fermati sul target finale.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Saltare direttamente al target finale senza attraversare i checkpoint in ordine.
+- Aggiungere tutti i segmenti prima di aver verificato il primo.
+- Contare checkpoint diversi da quelli realmente dichiarati nello scenario.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So elencare i checkpoint nell'ordine corretto?
+- So mostrare sulla traiettoria dove viene superato ciascun punto?
+- So indicare quale segmento correggere quando un checkpoint fallisce?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Fornisci la sequenza dei checkpoint come elenco numerato con coordinate, non soltanto come marcatori sulla mappa.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `checkpoint` | punto intermedio da raggiungere nell'ordine stabilito |
+| `collisione` | contatto del robot con ostacolo o bordo |
+| `missione` | insieme completo di obiettivi e vincoli |

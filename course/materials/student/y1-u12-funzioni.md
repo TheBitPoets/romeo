@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a racchiudere una sequenza in una funzione con parametro. Le parole chiave sono: def, parametro, corpo.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a racchiudere una sequenza in una funzione con parametro.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper scrivere e verificare una sequenza con movimento, durata e stop.
 
-## Consegna
+## Modello mentale
+
+Definire una funzione significa dare un nome a una piccola ricetta. Le righe rientrate sono il corpo della ricetta e non partono finché la funzione non viene chiamata. Un parametro è un posto vuoto che riceve un valore diverso a ogni chiamata.
+
+## Esempio minimo commentato
+
+```python
+from romeo.easy import stop
+
+def arresta():       # Definiamo la ricetta.
+    stop()            # Corpo: è rientrato di quattro spazi.
+
+arresta()             # Ora eseguiamo la ricetta.
+```
+
+## Prova guidata
+
+1. Cerchia il nome `arresta` nella definizione e nella chiamata.
+2. Esegui il file senza la chiamata finale e osserva che il corpo non viene eseguito.
+3. Ripristina la chiamata e verifica l'evento di stop.
+4. Completa il corpo di `avanza_per(secondi)` con movimento, `sleep(secondi)` e stop.
+5. Chiama `avanza_per(2)` e verifica posizione e stato finali.
+
+## Esercizio base
+
+Definisci `avanza_per(secondi)` e usala con il valore 2.
+
+## Esercizio intermedio
+
+Chiama la stessa funzione prima con 1 e poi con 2; confronta le distanze in due run separati.
+
+## Mini-sfida
+
+Definisci una seconda funzione senza parametri che accenda un LED e lasci Romeo fermo.
+
+## Consegna valutata
 
 Definisci avanza_per(secondi), chiamala con 2 e raggiungi il target.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Dimenticare i due punti dopo la riga `def`.
+- Non rientrare il corpo di quattro spazi.
+- Definire la funzione ma non chiamarla.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So distinguere definizione e chiamata?
+- So indicare quali righe appartengono al corpo?
+- So spiegare quale valore riceve il parametro `secondi`?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Evidenzia il rientro anche con una guida verticale e descrivilo come «quattro spazi»; non comunicarlo soltanto con il colore dell'editor.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `def` | parola che avvia la definizione di una funzione |
+| `corpo` | righe rientrate eseguite dalla funzione |
+| `parametro` | nome che riceve il valore fornito alla chiamata |

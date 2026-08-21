@@ -1,33 +1,74 @@
 # Secondo anno 1. Una rete di nodi
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a distinguere host, rete e servizio. Userai host, loopback, indirizzo. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a distinguere host, rete e servizio.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai eseguire un programma Python, usare variabili e leggere un semplice diagramma con frecce.
+
+## Modello mentale
+
+Una rete è un insieme di dispositivi che possono scambiarsi dati. Immagina una scuola: l'host è una persona, la rete è il sistema di corridoi e il servizio è lo sportello a cui la persona si rivolge. L'analogia aiuta a separare i ruoli, ma i dati viaggiano in piccoli blocchi e non come persone intere. `127.0.0.1` è il percorso speciale con cui un host parla a sé stesso.
+
+## Esempio minimo commentato
+
+Il primo esperimento non usa Internet: riconosce il percorso locale.
+
+```python
+from ipaddress import ip_address
+
+indirizzo = ip_address("127.0.0.1")
+print(indirizzo.is_loopback)  # True: il messaggio resta su questo computer
+```
+
+Lo scaffold importa `ip_address`: in questa unità non dobbiamo ancora conoscere i socket.
+
+## Prova guidata
+
+1. Disegna due host come rettangoli e una rete come linea fra loro; aggiungi un servizio dentro ogni host.
+2. Esegui l'esempio e osserva che il risultato è un valore booleano.
+3. Scrivi accanto a ogni elemento del disegno se è host, rete o servizio.
+4. Sostituisci l'indirizzo con `192.0.2.10` e prevedi il risultato prima di eseguire.
+5. Ripristina il loopback e usa un `assert` prima del messaggio finale.
+
+## Esercizio base
+
+Riconosci `127.0.0.1` come loopback e stampa il risultato soltanto dopo la verifica.
+
+## Esercizio intermedio
+
+Classifica sei esempi dati dal docente come host, collegamento di rete o servizio e motiva due risposte.
+
+## Mini-sfida
+
+Disegna il percorso concettuale computer studente → rete locale → Romeo → servizio di controllo, senza indicare ancora porte.
+
+## Consegna valutata
 
 Valida l'indirizzo di loopback e stampa il marker solo dopo l'assert.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Confondere la rete con Internet: una rete può esistere anche senza accesso esterno.
+- Chiamare servizio l'intero Raspberry Pi: il Raspberry Pi è l'host che ospita uno o più servizi.
+- Pensare che loopback indichi Romeo: indica sempre il computer che esegue il programma.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So indicare host, rete e servizio in un disegno?
+- So spiegare dove resta un messaggio inviato a loopback?
+- Il mio programma verifica il dato prima di dichiarare successo?
+
+## Accessibilità
+
+Usa etichette e forme oltre ai colori nel diagramma. È possibile descrivere a voce il percorso come elenco ordinato.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `host` | dispositivo collegato alla rete |
+| `servizio` | funzione offerta da un programma |
+| `loopback` | percorso con cui un host comunica con sé stesso |

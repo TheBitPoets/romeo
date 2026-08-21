@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica decorator, route, OpenAPI e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Usa TestClient per verificare status e JSON.
+2. Apri `/openapi.json` e trova il path registrato.
+3. Aggiungi una seconda route semplice senza copiare tutta l'app.
+
+## Se qualcosa non funziona
+
+- Dimenticare `@` davanti al decorator.
+- Restituire testo che sembra JSON invece di un dizionario Python.
+- Confondere il path della route con il nome della funzione.

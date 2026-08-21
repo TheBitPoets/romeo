@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica client, server, send, recv e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Aggiungi la risposta `PONG` nella direzione opposta.
+2. Verifica entrambi i byte ricevuti con `assert`.
+3. Rimuovi temporaneamente l'invio di PONG e prevedi perché il client rimarrebbe in attesa.
+
+## Se qualcosa non funziona
+
+- Inviare una stringa invece di byte.
+- Leggere prima che l'altra estremità abbia inviato.
+- Credere che `recv(16)` restituisca sempre esattamente 16 byte.

@@ -1,33 +1,74 @@
 # Secondo anno 23. Capstone telepresenza
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a integrare video, controllo, telemetria e safety. Userai architettura, camera, realtime, fail-safe. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a integrare video, controllo, telemetria e safety.
 
-## Laboratorio
+## Che cosa sai già
+
+Hai completato foto/video, controller, telemetria, safety e integrazione e sai documentare test e failure.
+
+## Modello mentale
+
+La telepresenza è un sistema a strati: input → controllo sicuro → Robot API → backend, mentre camera e telemetria riportano ciò che accade. Il capstone non richiede di riscrivere server o framework: lo scaffold fornisce infrastruttura, e il gruppo integra, verifica e spiega i confini. Ogni incremento deve lasciare Romeo fermo.
+
+## Esempio minimo commentato
+
+```text
+1. status e foto funzionano con mock
+2. controllo produce ack e stato coerente
+3. stream può essere aperto e chiuso
+4. timeout/disconnect producono STOP
+5. demo ripetibile e log registrato
+```
+
+Questo è un piano di verifica, non codice da copiare: ogni riga diventa un checkpoint osservabile.
+
+## Prova guidata
+
+1. Disegna l'architettura con API, protocolli e backend separati.
+2. Completa checkpoint status+camera con mock.
+3. Aggiungi controllo e telemetria senza hardware.
+4. Inietta payload invalido, timeout e disconnect e registra l'esito.
+5. Esegui la demo completa due volte lasciando motori a zero.
+6. Solo dopo la checklist docente, ripeti una prova breve sull'hardware reale.
+
+## Esercizio base
+
+Integra foto, un comando WebSocket, ack, stato versionato e STOP finale nel simulatore.
+
+## Esercizio intermedio
+
+Aggiungi stream e input accessibile, mantenendo separati UI, trasporto e Robot API.
+
+## Mini-sfida
+
+Dimostra con log automatico che disconnect, timeout e camera indisponibile degradano in modo sicuro e comprensibile.
+
+## Consegna valutata
 
 Verifica foto, stato, controllo WebSocket e stop alla fine della sessione.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Assemblare componenti senza verificare ogni incremento.
+- Mostrare movimento e video ma non i failure mode.
+- Usare il robot reale prima di superare mock, simulazione e checklist safety.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- Ogni requisito ha un'evidenza osservabile?
+- La stessa logica funziona con simulatore e backend reale?
+- Ogni uscita o errore lascia i motori a zero e chiude camera/connessioni?
+
+## Accessibilità
+
+La demo offre pulsanti, tastiera rimappabile e log testuale; video e colore non sono l'unica evidenza. Definire ruoli di gruppo ruotabili e consenso camera.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `telepresenza` | controllo remoto accompagnato da percezione e stato |
+| `fail-safe` | comportamento che porta a uno stato sicuro in caso di guasto |
+| `checkpoint` | risultato intermedio verificabile |

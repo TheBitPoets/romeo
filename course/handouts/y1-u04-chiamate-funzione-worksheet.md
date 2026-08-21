@@ -1,9 +1,17 @@
 # Scheda operativa — Chiama una funzione
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So indicare nome, parentesi e argomento in una chiamata?
+- So spiegare che cosa cambia modificando soltanto l'argomento?
+- So riconoscere un numero e una stringa?

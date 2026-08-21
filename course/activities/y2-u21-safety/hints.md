@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica lease, watchdog, disconnect e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Tenta il claim da un secondo controller e osserva il rifiuto.
+2. Rilascia nel `finally` e verifica zero.
+3. Avanza il clock scaffolded senza comandi e verifica lo stop del watchdog.
+
+## Se qualcosa non funziona
+
+- Disattivare il watchdog proprio nel test che dovrebbe verificarlo.
+- Fermare solo un motore.
+- Affidarsi allo STOP manuale come unico percorso sicuro.

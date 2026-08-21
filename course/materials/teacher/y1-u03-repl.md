@@ -2,10 +2,16 @@
 
 Durata prevista: 50 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Aver completato U02 e saper eseguire un file con Run.
+
+Il REPL è un banco prova: mostra `>>>`, riceve una sola istruzione e risponde subito. Un file conserva invece una sequenza da rieseguire. Prima proviamo un comando nel REPL, poi trasferiamo la sequenza riuscita in `main.py`.
+
 ## Evidenze osservabili
 
-Lo studente sa provare una chiamata alla volta e leggere gli errori, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Trasferisci in main.py la sequenza provata nel REPL: LED rosso, movimento, stop.
+Lo studente sa provare una chiamata alla volta e leggere gli errori. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Trasferisci in main.py la sequenza provata nel REPL: LED rosso, movimento, stop.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Copiare anche i caratteri `>>>`: sono il prompt, non parte del codice.
+- Dimenticare l'import prima della chiamata e ricevere `NameError`.
+- Leggere tutto il traceback insieme invece di partire dall'ultima riga.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare REPL, import, chiamata alla prossima unità, evitando dettagli interni del backend.
+La trascrizione testuale accompagna ogni cambiamento visivo; chi usa uno screen reader può seguire prompt, comando e risposta in ordine lineare.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

@@ -2,35 +2,72 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a collegare API, motori, ruote e LED. Le parole chiave sono: Raspberry Pi, CRICKIT, backend.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a collegare API, motori, ruote e LED.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Aver eseguito U01 e saper riconoscere un'istruzione e lo stato finale fermo.
 
-## Consegna
+## Modello mentale
+
+Pensa a una catena di messaggi: il programma chiede un'azione, il Raspberry Pi la interpreta, la scheda CRICKIT fornisce energia ai motori e le ruote si muovono. Il LED è un'uscita separata: comunica uno stato senza muovere il robot.
+
+## Esempio minimo commentato
+
+```python
+from romeo.easy import led, stop
+
+# Il messaggio "pronto" usa il LED, non i motori.
+led("green")
+stop()
+```
+
+Nel pannello di stato cerca sia il nome del colore sia le due velocità delle ruote.
+
+## Prova guidata
+
+1. Ordina le quattro schede: programma, Raspberry Pi, CRICKIT, motori.
+2. Indica quale componente calcola e quale componente fornisce energia ai motori.
+3. Esegui l'esempio e controlla separatamente LED, ruota sinistra e ruota destra.
+4. Completa lo starter con il segnale verde, un comando avanti e lo stop finale.
+5. Racconta il viaggio del comando dal codice alle ruote senza usare abbreviazioni.
+
+## Esercizio base
+
+Associa ciascun comando della consegna al componente che cambia stato.
+
+## Esercizio intermedio
+
+Esegui LED verde, movimento e stop; annota tre eventi nell'ordine osservato.
+
+## Mini-sfida
+
+Disegna la catena dei componenti e aggiungi una freccia di ritorno per il feedback del simulatore.
+
+## Consegna valutata
 
 Usa il LED verde come segnale di pronto, aziona entrambi i motori e fermati.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Confondere Raspberry Pi e CRICKIT: il primo esegue il programma, la seconda pilota i carichi elettrici.
+- Pensare che cambiare il LED fermi i motori: sono due uscite indipendenti.
+- Osservare solo l'animazione e non lo stato numerico delle ruote.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So descrivere il ruolo di Raspberry Pi, CRICKIT e motori con una frase ciascuno?
+- So dire quale istruzione cambia il LED?
+- So verificare che entrambe le ruote siano ferme alla fine?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Affianca ai componenti reali etichette grandi e numerate; descrivi sempre a parole LED e velocità, senza affidarti soltanto a colori o animazioni.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `Raspberry Pi` | il piccolo computer che esegue Python |
+| `CRICKIT` | la scheda che comanda motori, servo e LED |
+| `uscita` | una parte del robot che il programma può modificare |

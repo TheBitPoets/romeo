@@ -27,13 +27,13 @@
   "grading_policy": {
     "compila": true,
     "test": true,
-    "sandbox": true,
+    "sandbox": false,
     "ai_feedback": false
   },
   "correzione": {
     "compila": true,
     "test": true,
-    "sandbox": true,
+    "sandbox": false,
     "ai_feedback": false
   },
   "metriche": {

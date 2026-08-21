@@ -1,9 +1,17 @@
 # Scheda operativa — Ripeti con for
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So prevedere quanti giri produce `range(4)`?
+- So indicare quali righe sono dentro e fuori dal ciclo?
+- So verificare il numero di ripetizioni negli eventi?

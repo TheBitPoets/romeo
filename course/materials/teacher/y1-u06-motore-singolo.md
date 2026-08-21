@@ -2,10 +2,16 @@
 
 Durata prevista: 50 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper chiamare funzioni con argomenti numerici e leggere lo stato di un'uscita.
+
+`robot` è il nome della plancia di comando di Romeo. Il punto in `robot.drive(...)` sceglie il comando `drive` di quella plancia. I due numeri indicano nell'ordine ruota sinistra e ruota destra; zero significa ruota ferma. Non occorre ancora studiare le classi.
+
 ## Evidenze osservabili
 
-Lo studente sa comandare separatamente la ruota sinistra, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Con Robot.drive fai girare solo la ruota sinistra, poi ferma Romeo.
+Lo studente sa comandare separatamente la ruota sinistra. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Con Robot.drive fai girare solo la ruota sinistra, poi ferma Romeo.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Invertire l'ordine sinistra/destra degli argomenti.
+- Scrivere `Robot.drive(...)` invece di usare il nome `robot` preparato.
+- Dimenticare `robot.stop()` perché l'animazione sembra già terminata.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare Robot, drive, velocità con segno alla prossima unità, evitando dettagli interni del backend.
+Affianca ai valori le parole sinistra/destra e usa lo stato numerico; non richiedere di dedurre la ruota attiva soltanto dall'animazione.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

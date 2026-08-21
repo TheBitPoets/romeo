@@ -1,9 +1,17 @@
 # Traccia di rete — Un vero socket TCP
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So raccontare l'ordine di apertura della connessione?
+- So indicare i due socket lato server?
+- Il programma termina anche con input errato?

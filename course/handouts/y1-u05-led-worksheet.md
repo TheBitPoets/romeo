@@ -1,9 +1,17 @@
 # Scheda operativa — Comunica con il LED
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So spiegare perché il colore è tra virgolette?
+- So trovare lo stato del LED anche senza distinguere il colore nell'immagine?
+- So prevedere quale di più chiamate determina il colore finale?

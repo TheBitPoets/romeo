@@ -2,35 +2,70 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a tradurre metri e orientamento in comandi. Le parole chiave sono: x, y, angolo, tolleranza.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a tradurre metri e orientamento in comandi.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper leggere una posa del simulatore e costruire una sequenza di tratti e rotazioni.
 
-## Consegna
+## Modello mentale
+
+La posa di Romeo contiene posizione `(x, y)` e orientamento. `x` cresce andando verso destra nella mappa, `y` cresce andando verso l'alto; l'orientamento dice dove punta il robot. Per raggiungere un punto, confrontiamo partenza e target e pianifichiamo i segmenti.
+
+## Esempio minimo commentato
+
+```text
+Partenza: (0.5, 0.5), orientamento 0°
+Target:   (1.0, 0.5)
+
+La y non cambia e Romeo punta già verso x crescente:
+serve un solo tratto diritto lungo 0.5 m.
+```
+
+## Prova guidata
+
+1. Copia partenza e target in una tabella con colonne x e y.
+2. Calcola separatamente quanto cambia x e quanto cambia y.
+3. Controlla se l'orientamento iniziale punta già verso la prima direzione utile.
+4. Traduci il piano in rotazione eventuale, avanzamento e stop.
+5. Esegui e confronta distanza dal target e tolleranza, poi correggi un solo segmento.
+
+## Esercizio base
+
+Dalla posa iniziale raggiungi `(1.0, 0.5)` e fermati.
+
+## Esercizio intermedio
+
+Disegna il piano per un target con la stessa x ma y maggiore, indicando prima la rotazione necessaria.
+
+## Mini-sfida
+
+Pianifica su carta un target in cui cambiano sia x sia y usando due tratti e una rotazione.
+
+## Consegna valutata
 
 Dalla posa iniziale raggiungi il target (1.0, 0.5) e fermati.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Confondere distanza da percorrere con coordinata finale.
+- Ignorare l'orientamento iniziale e avanzare nella direzione sbagliata.
+- Scambiare x e y leggendo la posa.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So indicare il verso positivo degli assi x e y?
+- So calcolare la differenza tra partenza e target?
+- So spiegare quando serve una rotazione prima di avanzare?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Descrivi la mappa anche come coordinate e direzioni testuali; una griglia tattile o una tabella può sostituire la sola rappresentazione grafica.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `coordinata` | numero che indica una posizione lungo un asse |
+| `posa` | posizione x/y più orientamento |
+| `tolleranza` | distanza massima dal target ancora accettata |

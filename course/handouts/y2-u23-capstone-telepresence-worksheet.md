@@ -1,9 +1,17 @@
 # Traccia di rete — Capstone telepresenza
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- Ogni requisito ha un'evidenza osservabile?
+- La stessa logica funziona con simulatore e backend reale?
+- Ogni uscita o errore lascia i motori a zero e chiude camera/connessioni?

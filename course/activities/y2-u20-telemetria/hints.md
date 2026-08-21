@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica schema, pose, motors, clock e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Leggi pose e unità documentate.
+2. Confronta due snapshot dopo un passo simulato.
+3. Simula una versione sconosciuta e rifiutala con un errore chiaro.
+
+## Se qualcosa non funziona
+
+- Leggere campi prima di controllare la versione.
+- Confondere tempo simulato e ora del computer.
+- Dipendere da coordinate o elementi HTML del viewer.

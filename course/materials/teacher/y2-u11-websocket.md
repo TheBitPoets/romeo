@@ -3,6 +3,12 @@
 Durata: 75 minuti. Difficoltà: B. Obiettivo osservabile: lo studente sa
 mantenere una connessione per comandi realtime e giustifica protocollo, validazione e cleanup.
 
+## Prerequisiti e modello mentale
+
+Conosci HTTP, JSON e FastAPI; sai usare un context manager.
+
+HTTP normale apre uno scambio request/response; WebSocket mantiene un canale aperto in cui entrambe le parti possono inviare messaggi. Lo scaffold fornisce server e gestione asincrona: il client didattico usa TestClient sincrono, così il nuovo concetto è soltanto la conversazione persistente.
+
 ## Conduzione
 
 - 0–10 min: mappa alla lavagna di client, server, request e response.
@@ -10,20 +16,19 @@ mantenere una connessione per comandi realtime e giustifica protocollo, validazi
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–75 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+- Inviare prima di leggere il messaggio ready previsto.
+- Confondere WebSocket con una serie di GET HTTP.
+- Uscire senza verificare lo STOP alla disconnessione.
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+La sequenza dei messaggi è disponibile come elenco testuale oltre alle frecce; gli ack sono leggibili e non dipendono da animazioni.
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.

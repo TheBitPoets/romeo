@@ -1,9 +1,17 @@
 # Traccia di rete — Tastiera remota sicura
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So separare mapping e trasporto?
+- Ogni uscita dal programma invia STOP?
+- Esiste un'alternativa ai tasti per chi non può usarli?

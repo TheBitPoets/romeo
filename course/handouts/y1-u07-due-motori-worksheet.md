@@ -1,9 +1,17 @@
 # Scheda operativa — Coordina due ruote
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So prevedere l'effetto di due valori uguali?
+- So distinguere una curva da un movimento diritto usando i numeri?
+- So verificare che entrambe le ruote siano state comandate nello stesso evento?

@@ -36,6 +36,39 @@ def test_first_year_bundle_validates_offline() -> None:
     assert "43 units and 43 activities" in completed.stdout
 
 
+def test_all_student_lessons_have_specific_scaffolded_depth() -> None:
+    required_sections = {
+        "## Che cosa sai già",
+        "## Modello mentale",
+        "## Esempio minimo commentato",
+        "## Prova guidata",
+        "## Esercizio base",
+        "## Esercizio intermedio",
+        "## Mini-sfida",
+        "## Errori tipici",
+        "## Autoverifica",
+        "## Accessibilità",
+    }
+    lessons = sorted((COURSE / "materials" / "student").glob("y*-*.md"))
+    bodies = []
+    assert len(lessons) == 43
+    for lesson in lessons:
+        body = lesson.read_text(encoding="utf-8")
+        assert required_sections <= set(body.splitlines()), lesson
+        assert len(body.split()) >= 300, lesson
+        assert "```" in body, lesson
+        bodies.append(body)
+    assert len(set(bodies)) == 43
+
+
+def test_course_does_not_claim_a_submission_sandbox() -> None:
+    activities = sorted((COURSE / "activities").glob("y*-*/activity.json"))
+    for path in activities:
+        activity = json.loads(path.read_text(encoding="utf-8"))
+        assert activity["grading_policy"]["sandbox"] is False
+        assert activity["correzione"]["sandbox"] is False
+
+
 @pytest.mark.parametrize(
     "activity_directory",
     sorted((COURSE / "activities").glob("y*-*")),
@@ -55,7 +88,7 @@ def test_teacher_solution_passes_deterministic_grading(
             "assignment_id": "teacher-solution",
             "student_id": "ci",
             "paths": {
-                "activity": str(activity_directory.resolve()),
+                "activity": str((activity_directory / "activity.json").resolve()),
                 "workspace": str(workspace.resolve()),
                 "config": str((activity_directory / "runtime-config.json").resolve()),
             },

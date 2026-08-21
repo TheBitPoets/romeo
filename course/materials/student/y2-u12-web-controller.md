@@ -1,33 +1,74 @@
 # Secondo anno 12. Controller web
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a tradurre input UI in messaggi validi. Userai evento, payload, feedback. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a tradurre input UI in messaggi validi.
 
-## Laboratorio
+## Che cosa sai già
+
+Conosci eventi semplici, payload JSON e conversazione WebSocket ready/comando/ack.
+
+## Modello mentale
+
+Il controller web ha due responsabilità separate: un evento dell'interfaccia sceglie un comando; il trasporto lo invia. Lo scaffold fornisce pagina, connessione e listener del browser. Tu completi una funzione pura che traduce azione in payload, così puoi testarla senza clic reali.
+
+## Esempio minimo commentato
+
+```javascript
+function payloadFor(action) {
+  if (action === "forward") {
+    return {command: "FORWARD", speed: 0.25};
+  }
+  return {command: "STOP"};
+}
+```
+
+Il pulsante e la tastiera possono chiamare la stessa funzione; il feedback mostra l'ultimo ack anche come testo.
+
+## Prova guidata
+
+1. Associa ogni pulsante a un'azione scritta.
+2. Prevedi il payload di avanti e stop.
+3. Completa la funzione di traduzione nello scaffold.
+4. Verifica i payload senza rete.
+5. Collega la funzione al WebSocket fornito e osserva ack ed errore.
+
+## Esercizio base
+
+Traduci pulsanti avanti e stop in payload validi.
+
+## Esercizio intermedio
+
+Aggiungi indietro, sinistra e destra mantenendo una sola funzione di mapping.
+
+## Mini-sfida
+
+Disabilita i comandi di movimento quando la connessione non è pronta e lascia STOP sempre disponibile.
+
+## Consegna valutata
 
 Invia FORWARD via WebSocket, controlla ack, quindi STOP.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Mescolare selezione del comando e dettagli del WebSocket in ogni pulsante.
+- Inviare stringhe diverse dal protocollo documentato.
+- Mostrare stato soltanto tramite colore senza testo.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So testare il mapping senza browser?
+- Tutti i controlli producono payload validi?
+- L'interfaccia mostra connessione e ack in testo?
+
+## Accessibilità
+
+Ogni pulsante ha etichetta, focus da tastiera e stato testuale; non usare soltanto colore, hover o posizione per comunicare il comando.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `evento UI` | azione prodotta da pulsante o tastiera |
+| `payload` | dati contenuti nel messaggio |
+| `feedback` | informazione visibile sul risultato del comando |

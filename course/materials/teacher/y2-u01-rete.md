@@ -3,6 +3,12 @@
 Durata: 60 minuti. Difficoltà: B. Obiettivo osservabile: lo studente sa
 distinguere host, rete e servizio e giustifica protocollo, validazione e cleanup.
 
+## Prerequisiti e modello mentale
+
+Sai eseguire un programma Python, usare variabili e leggere un semplice diagramma con frecce.
+
+Una rete è un insieme di dispositivi che possono scambiarsi dati. Immagina una scuola: l'host è una persona, la rete è il sistema di corridoi e il servizio è lo sportello a cui la persona si rivolge. L'analogia aiuta a separare i ruoli, ma i dati viaggiano in piccoli blocchi e non come persone intere. `127.0.0.1` è il percorso speciale con cui un host parla a sé stesso.
+
 ## Conduzione
 
 - 0–10 min: mappa alla lavagna di client, server, request e response.
@@ -10,20 +16,19 @@ distinguere host, rete e servizio e giustifica protocollo, validazione e cleanup
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–60 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+- Confondere la rete con Internet: una rete può esistere anche senza accesso esterno.
+- Chiamare servizio l'intero Raspberry Pi: il Raspberry Pi è l'host che ospita uno o più servizi.
+- Pensare che loopback indichi Romeo: indica sempre il computer che esegue il programma.
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+Usa etichette e forme oltre ai colori nel diagramma. È possibile descrivere a voce il percorso come elenco ordinato.
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.

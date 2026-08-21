@@ -2,35 +2,73 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a ordinare azioni e durate per una missione. Le parole chiave sono: algoritmo, ordine, stato.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a ordinare azioni e durate per una missione.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper costruire movimenti temporizzati e racchiudere una piccola ricetta in una funzione.
 
-## Consegna
+## Modello mentale
+
+Una sequenza è un algoritmo espresso come passi ordinati. Ogni movimento ha tre parti: avvio, durata, cambiamento successivo. Prima di scrivere Python possiamo disegnare frecce e numerare i segmenti; poi traduciamo un segmento alla volta.
+
+## Esempio minimo commentato
+
+```python
+from time import sleep
+from romeo.easy import forward, left, stop
+
+forward(0.4)  # Segmento 1: avanza.
+sleep(1)
+left(0.5)     # Segmento 2: cambia orientamento.
+sleep(0.5)
+stop()
+```
+
+## Prova guidata
+
+1. Disegna la missione con tre frecce numerate: avanti, sinistra, avanti.
+2. Per ogni freccia scrivi comando e durata previsti.
+3. Implementa ed esegui soltanto il primo segmento, terminando temporaneamente con stop.
+4. Aggiungi la rotazione e confronta posa prevista e osservata.
+5. Aggiungi l'ultimo avanzamento e lascia un solo stop finale.
+
+## Esercizio base
+
+Esegui avanti, rotazione a sinistra, avanti e stop nell'ordine richiesto.
+
+## Esercizio intermedio
+
+Racchiudi il tratto rettilineo in una funzione già nota e usala due volte.
+
+## Mini-sfida
+
+Inverti l'ordine dei primi due segmenti, prevedi la posa diversa e poi verifica.
+
+## Consegna valutata
 
 Avanza, ruota a sinistra, avanza ancora e fermati.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Scrivere tutti i comandi prima di aggiungere le durate.
+- Correggere più segmenti insieme e non sapere quale modifica ha funzionato.
+- Confondere ordine del disegno e ordine delle righe Python.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So numerare e descrivere i segmenti prima di programmare?
+- So collegare ogni `sleep` al comando che resta attivo?
+- So testare un segmento alla volta?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Offri sia una mappa a frecce sia una lista numerata equivalente; la missione deve essere comprensibile senza interpretare solo il disegno.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `algoritmo` | serie ordinata di passi per ottenere un risultato |
+| `segmento` | una parte della missione verificabile da sola |
+| `sequenza` | azioni eseguite in un ordine preciso |

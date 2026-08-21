@@ -2,35 +2,72 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a eseguire il primo programma e fermare il robot. Le parole chiave sono: programma, istruzione, simulatore.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a eseguire il primo programma e fermare il robot.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Nessuna esperienza di programmazione. È sufficiente saper usare mouse e tastiera.
 
-## Consegna
+## Modello mentale
+
+Un programma è una lista di istruzioni che Romeo esegue dall'alto verso il basso. Il pulsante Run avvia la lista; `stop()` lascia le ruote ferme alla fine. Oggi non serve capire ogni simbolo: prima osserviamo che una riga di codice produce un effetto.
+
+## Esempio minimo commentato
+
+```python
+# Questa riga rende disponibile il comando stop.
+from romeo.easy import stop
+
+# Questa istruzione ferma entrambe le ruote.
+stop()
+```
+
+Premendo Run, la riga con `stop()` viene eseguita e lo stato finale mostra entrambe le ruote ferme.
+
+## Prova guidata
+
+1. Apri lo starter e individua le righe che iniziano con `from` e quelle che terminano con le parentesi `()`.
+2. Indica con il dito la prima istruzione che Romeo eseguirà e poi la seconda.
+3. Prima di premere Run, scrivi: «alla fine le ruote saranno ferme».
+4. Premi Run e cerca nel feedback lo stato finale dei motori.
+5. Aggiungi i comandi richiesti dalla consegna, uno per riga, mantenendo `stop()` come ultima azione.
+
+## Esercizio base
+
+Esegui un programma che accende il LED blu e termina con `stop()`.
+
+## Esercizio intermedio
+
+Inserisci un breve comando `forward(0.2)` prima di `stop()` e prevedi l'ordine degli eventi mostrati dal simulatore.
+
+## Mini-sfida
+
+Scambia due istruzioni, prevedi cosa cambia e poi verifica. Ripristina `stop()` come ultima azione.
+
+## Consegna valutata
 
 Accendi il LED blu, invia un breve comando avanti e termina con stop.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Scrivere `stop` senza parentesi: il comando viene nominato ma non eseguito.
+- Scrivere `Stop()` con la maiuscola: Python distingue maiuscole e minuscole.
+- Eliminare `stop()` finale: lo stato sicuro non è più espresso chiaramente dal programma.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So indicare l'ordine in cui vengono eseguite tre istruzioni?
+- So trovare nel feedback se le ruote sono ferme?
+- So spiegare perché `stop()` deve restare alla fine?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Leggi ad alta voce l'ordine delle istruzioni e usa anche lo stato testuale dei motori: il colore e il movimento sullo schermo non sono le sole evidenze.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `programma` | una lista ordinata di istruzioni |
+| `istruzione` | un'azione scritta su una riga |
+| `Run` | il comando che avvia il programma |

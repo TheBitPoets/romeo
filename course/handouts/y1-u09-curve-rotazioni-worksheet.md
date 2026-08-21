@@ -1,9 +1,17 @@
 # Scheda operativa — Curve e rotazioni
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So distinguere curva e rotazione usando il movimento del centro?
+- So leggere l'errore di orientamento in gradi?
+- So descrivere una calibrazione cambiando una variabile alla volta?

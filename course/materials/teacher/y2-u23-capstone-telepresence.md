@@ -3,6 +3,12 @@
 Durata: 120 minuti. Difficoltà: C. Obiettivo osservabile: lo studente sa
 integrare video, controllo, telemetria e safety e giustifica protocollo, validazione e cleanup.
 
+## Prerequisiti e modello mentale
+
+Hai completato foto/video, controller, telemetria, safety e integrazione e sai documentare test e failure.
+
+La telepresenza è un sistema a strati: input → controllo sicuro → Robot API → backend, mentre camera e telemetria riportano ciò che accade. Il capstone non richiede di riscrivere server o framework: lo scaffold fornisce infrastruttura, e il gruppo integra, verifica e spiega i confini. Ogni incremento deve lasciare Romeo fermo.
+
 ## Conduzione
 
 - 0–10 min: mappa alla lavagna di client, server, request e response.
@@ -10,20 +16,19 @@ integrare video, controllo, telemetria e safety e giustifica protocollo, validaz
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–120 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+- Assemblare componenti senza verificare ogni incremento.
+- Mostrare movimento e video ma non i failure mode.
+- Usare il robot reale prima di superare mock, simulazione e checklist safety.
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+La demo offre pulsanti, tastiera rimappabile e log testuale; video e colore non sono l'unica evidenza. Definire ruoli di gruppo ruotabili e consenso camera.
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.

@@ -2,10 +2,16 @@
 
 Durata prevista: 55 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper usare `forward`, `sleep` e `stop` e leggere posizione e tempo finali.
+
+La velocità richiesta è un numero tra 0 e 1: zero significa fermo, uno è il limite configurato, e 0.5 è metà comando. A parità di scenario, distanza significa velocità per tempo. Cambiamo un solo valore alla volta per confrontare due prove.
+
 ## Evidenze osservabili
 
-Lo studente sa confrontare valori normalizzati tra 0 e 1, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Raggiungi il target a x=1.0 usando velocità 0.5 per due secondi.
+Lo studente sa confrontare valori normalizzati tra 0 e 1. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Raggiungi il target a x=1.0 usando velocità 0.5 per due secondi.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Usare un valore fuori dall'intervallo da 0 a 1.
+- Dimenticare che la partenza è x=0.5 e calcolare tutta la coordinata come distanza.
+- Cambiare contemporaneamente velocità e target senza poter confrontare i run.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare float, intervallo, limite alla prossima unità, evitando dettagli interni del backend.
+Mostra valori e distanze in una tabella testuale; accompagna la traiettoria con coordinate numeriche e unità di misura.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

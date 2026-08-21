@@ -8,6 +8,9 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from lessons_year1 import LESSONS_Y1
+from pedagogy_content import bullets, glossary_table, numbered
+
 ROOT = Path(__file__).resolve().parents[1]
 COURSE = ROOT / "course"
 
@@ -345,54 +348,79 @@ def scenario(index: int, unit: Unit) -> dict[str, object]:
 
 
 def student_material(index: int, unit: Unit) -> str:
+    lesson = LESSONS_Y1[unit.slug]
     return f"""# {index}. {unit.title}
 
 ## Obiettivo
 
-In questo laboratorio imparerai a {unit.objective}. Le parole chiave sono: {unit.concepts}.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a {unit.objective}.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+{lesson.prerequisites}
 
-## Consegna
+## Modello mentale
+
+{lesson.mental_model}
+
+## Esempio minimo commentato
+
+{lesson.example}
+
+## Prova guidata
+
+{numbered(lesson.guided_practice)}
+
+## Esercizio base
+
+{lesson.base_exercise}
+
+## Esercizio intermedio
+
+{lesson.intermediate_exercise}
+
+## Mini-sfida
+
+{lesson.challenge}
+
+## Consegna valutata
 
 {unit.task}
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+{bullets(lesson.common_errors)}
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+{bullets(lesson.self_check)}
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+{lesson.accessibility}
+
+## Parole nuove
+
+{glossary_table(lesson.glossary)}
 """
 
 
 def teacher_material(index: int, unit: Unit) -> str:
+    lesson = LESSONS_Y1[unit.slug]
     return f"""# Guida docente — {index}. {unit.title}
 
 Durata prevista: {unit.minutes} minuti. Difficoltà: {unit.difficulty}.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: {lesson.prerequisites}
+
+{lesson.mental_model}
+
 ## Evidenze osservabili
 
-Lo studente sa {unit.objective}, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: {unit.task}
+Lo studente sa {unit.objective}. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: {unit.task}
 
 ## Sequenza proposta
 
@@ -405,18 +433,16 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+{bullets(lesson.common_errors)}
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare {unit.concepts} alla prossima unità, evitando dettagli interni del backend.
+{lesson.accessibility}
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.
 """
 
 
@@ -442,8 +468,8 @@ def activity(index: int, unit: Unit) -> dict[str, object]:
         "instructions": unit.task,
         "consegna": unit.task,
         "student_support_mode": "hint-progressivi",
-        "grading_policy": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
-        "correzione": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
+        "grading_policy": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
+        "correzione": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
         "metriche": {
             "tempo_stimato_minuti": unit.minutes,
             "traccia_tempo_dichiarato": True,
@@ -518,6 +544,7 @@ def build() -> None:
     units_manifest = []
     curriculum_units = []
     for index, unit in enumerate(UNITS, start=1):
+        lesson = LESSONS_Y1[unit.slug]
         unit_id = f"y1-u{index:02d}-{unit.slug}"
         base = COURSE / "activities" / unit_id
         dump(base / "activity.json", activity(index, unit))
@@ -535,7 +562,11 @@ def build() -> None:
         write(base / "solution.py", unit.solution)
         write(
             base / "hints.md",
-            f"# Hint progressivi\n\n1. Rileggi l'obiettivo: {unit.objective}.\n2. Controlla import, parentesi, indentazione e valori.\n3. Parti da questa idea senza copiarla interamente: `{unit.solution.splitlines()[-1]}`\n",
+            "# Hint progressivi\n\n"
+            + numbered(lesson.guided_practice[-3:])
+            + "\n\n## Se qualcosa non funziona\n\n"
+            + bullets(lesson.common_errors)
+            + "\n",
         )
         student = f"materials/student/{unit_id}.md"
         teacher = f"materials/teacher/{unit_id}.md"
@@ -548,7 +579,7 @@ def build() -> None:
         write(COURSE / teacher, teacher_material(index, unit))
         write(
             COURSE / worksheet,
-            f"# Scheda operativa — {unit.title}\n\nPrevisione: ____________________\n\nComandi in ordine: ____________________\n\nStato finale atteso: ____________________\n\nEsito dei check e correzione effettuata: ____________________\n",
+            f"# Scheda operativa — {unit.title}\n\nPrerequisito che ricordo: __________\n\nPrevisione prima del Run: __________\n\nProva guidata completata: __________\n\nEvidenza osservata: __________\n\nErrore trovato e correzione: __________\n\n## Mi controllo\n\n{bullets(lesson.self_check)}\n",
         )
         write(
             COURSE / assessment,

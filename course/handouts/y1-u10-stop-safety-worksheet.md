@@ -1,9 +1,17 @@
 # Scheda operativa — Stop e sicurezza
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So mostrare nel codice lo stop esplicito?
+- So spiegare il ruolo di riserva del watchdog?
+- So indicare un'evidenza che entrambe le ruote siano a zero?

@@ -2,10 +2,16 @@
 
 Durata prevista: 50 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper provare una riga nel REPL e riconoscere un `NameError`.
+
+Una funzione è un comando con un nome. Le parentesi chiedono a Python di eseguirlo; il valore dentro le parentesi è un argomento che precisa come eseguirlo. `forward(0.3)` significa quindi: esegui `forward` usando velocità 0.3.
+
 ## Evidenze osservabili
 
-Lo studente sa riconoscere nome, parentesi e argomento, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Chiama forward con velocità 0.3, quindi stop.
+Lo studente sa riconoscere nome, parentesi e argomento. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Chiama forward con velocità 0.3, quindi stop.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Omettere le parentesi e quindi non eseguire la funzione.
+- Usare la virgola al posto del punto in `0.3`.
+- Mettere il numero tra virgolette e trasformarlo in testo.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare funzione, argomento, valore predefinito alla prossima unità, evitando dettagli interni del backend.
+Usa marcatori diversi anche nel testo — «nome», «parentesi», «argomento» — senza affidare le tre parti soltanto a colori.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

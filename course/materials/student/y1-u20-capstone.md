@@ -2,35 +2,76 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a progettare, testare e spiegare una missione completa. Le parole chiave sono: funzioni, cicli, condizioni, grading.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a progettare, testare e spiegare una missione completa.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Aver completato U01–U19 e saper usare funzioni, condizioni, cicli, coordinate, grading e stop sicuro.
 
-## Consegna
+## Modello mentale
+
+Il capstone è un piccolo progetto, non un unico tentativo. Prima definiamo criteri di successo, poi dividiamo la missione in funzioni, proviamo segmenti, leggiamo le evidenze e documentiamo una correzione. Il grader misura il comportamento; la spiegazione mostra il metodo.
+
+## Esempio minimo commentato
+
+```python
+from romeo.easy import stop
+
+def parcheggia():
+    # Aggiungi qui soltanto i passi del parcheggio finale.
+    stop()
+
+# Le altre funzioni della missione verranno chiamate prima.
+parcheggia()
+```
+
+L'esempio mostra la struttura, non rivela il percorso o i valori della soluzione.
+
+## Prova guidata
+
+1. Trascrivi i criteri: checkpoint, collisioni, parcheggio, orientamento, tempo e stop presenti nello scenario.
+2. Disegna il percorso e assegna un nome a ogni segmento o fase.
+3. Implementa funzioni piccole e verifica ciascuna fase con una posa attesa.
+4. Usa una condizione o un ciclo soltanto dove rende il piano più chiaro, poi prova entrambi i casi necessari.
+5. Esegui il grader completo e correggi un check alla volta.
+6. Consegna codice, previsione, una correzione documentata e una breve spiegazione della safety.
+
+## Esercizio base
+
+Completa la missione con funzioni nominate e stop finale, superando tutti i check comportamentali.
+
+## Esercizio intermedio
+
+Riduci una ripetizione con un ciclo già conosciuto e dimostra che la traiettoria resta corretta.
+
+## Mini-sfida
+
+Trova una seconda strategia valida e confrontala con la prima per chiarezza, tempo simulato e margine dagli ostacoli.
+
+## Consegna valutata
 
 Raggiungi i checkpoint, evita collisioni, fermati nel parcheggio e consegna una breve spiegazione.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Scrivere l'intera missione come una lunga sequenza prima di provare i segmenti.
+- Aggiungere funzioni o cicli decorativi che non rendono il piano più chiaro.
+- Considerare sufficiente il punteggio automatico senza consegnare spiegazione ed evidenze di debug.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- Ogni funzione ha un nome che descrive una fase della missione?
+- Posso mostrare un'evidenza per ogni criterio della rubrica?
+- Romeo resta fermo anche alla conclusione dell'ultima fase?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+La consegna e la rubrica devono essere disponibili come checklist testuale; coordinate, eventi e risultati accompagnano sempre la mappa visiva.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `capstone` | progetto finale che combina le competenze del corso |
+| `rubrica` | criteri trasparenti usati per valutare il lavoro |
+| `evidenza` | dato, evento o spiegazione che dimostra un risultato |

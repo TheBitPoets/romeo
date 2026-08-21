@@ -1,33 +1,74 @@
 # Secondo anno 14. Camera come servizio
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a usare una camera sostituibile. Userai CameraService, mock, isolamento. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a usare una camera sostituibile.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai usare oggetti, chiamare metodi e chiudere risorse con `try/finally`.
+
+## Modello mentale
+
+CameraService è una presa comune: il codice chiede una foto senza sapere se dietro c'è Picamera2 o un mock. Il mock restituisce dati prevedibili in classe e CI. La camera reale richiede hardware, permesso e segnalazione chiara; questi dettagli restano nell'implementazione del servizio.
+
+## Esempio minimo commentato
+
+```python
+camera = MockCameraService()
+try:
+    foto = camera.capture_photo()
+    assert foto.startswith(b"ÿØ")
+finally:
+    camera.close()
+```
+
+I byte non vengono visualizzati: controlliamo soltanto il contratto minimo del servizio.
+
+## Prova guidata
+
+1. Individua chiamante, interfaccia e implementazione nel diagramma.
+2. Cattura una foto dal mock.
+3. Osserva tipo e lunghezza senza stampare tutti i byte.
+4. Sposta `close` in `finally`.
+5. Simula camera non disponibile e produci un messaggio comprensibile.
+
+## Esercizio base
+
+Acquisisci e valida una foto dal mock senza importare Picamera2.
+
+## Esercizio intermedio
+
+Scrivi una funzione che riceve un CameraService come parametro e restituisce la dimensione della foto.
+
+## Mini-sfida
+
+Gestisci `available == False` senza tentare la cattura e garantendo cleanup.
+
+## Consegna valutata
 
 Acquisisci una foto dal mock senza importare Picamera2.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Importare direttamente Picamera2 nel programma applicativo.
+- Stampare migliaia di byte della foto.
+- Dimenticare privacy e chiusura della camera su errore.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- Il mio codice funziona con un mock?
+- La camera viene sempre chiusa?
+- So spiegare perché l'hardware è isolato?
+
+## Accessibilità
+
+Descrivi testualmente stato camera e risultato; prevedi attività completa col mock per chi non può usare o essere ripreso dalla camera.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `CameraService` | contratto comune per le operazioni della camera |
+| `mock` | sostituto prevedibile usato nei test |
+| `JPEG` | formato compresso dei byte della foto |

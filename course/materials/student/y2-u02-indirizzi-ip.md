@@ -1,33 +1,76 @@
 # Secondo anno 2. Indirizzi IP
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a risolvere un nome e riconoscere IPv4. Userai DNS, localhost, IPv4. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a risolvere un nome e riconoscere IPv4.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai distinguere host, rete e servizio e sai usare stringhe e confronti in Python.
+
+## Modello mentale
+
+Un indirizzo IP identifica un'interfaccia di rete, come un numero civico identifica una destinazione. Un nome come `localhost` è più facile da ricordare e viene risolto in un indirizzo. Il paragone postale non è perfetto: un host può avere più indirizzi e un indirizzo può cambiare.
+
+## Esempio minimo commentato
+
+Risolviamo un nome e poi controlliamo il risultato.
+
+```python
+import socket
+from ipaddress import ip_address
+
+testo = socket.gethostbyname("localhost")  # nome → testo IPv4
+indirizzo = ip_address(testo)              # testo → oggetto verificabile
+print(testo, indirizzo.version)
+```
+
+`gethostbyname` è fornita da Python: in questa lezione osserviamo la risoluzione, non la implementiamo.
+
+## Prova guidata
+
+1. Prevedi se `localhost` è un nome o un indirizzo.
+2. Esegui l'esempio e annota il testo restituito.
+3. Stampa `type(testo)` e `type(indirizzo)` per distinguere rappresentazione e oggetto.
+4. Verifica che la versione sia 4 e che `indirizzo.is_loopback` sia vero.
+5. Simula un errore passando a `ip_address` un testo non valido e leggi il messaggio senza nasconderlo.
+
+## Esercizio base
+
+Risolvi `localhost` e verifica che produca un IPv4 di loopback.
+
+## Esercizio intermedio
+
+Confronta `127.0.0.1` e il risultato della risoluzione spiegando perché rappresentano lo stesso percorso locale.
+
+## Mini-sfida
+
+Scrivi una funzione `descrivi(indirizzo)` che restituisce `locale` oppure `non locale` usando `is_loopback`.
+
+## Consegna valutata
 
 Risolvi localhost, valida l'indirizzo e stampa IP OK.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Confondere il nome `localhost` con il suo indirizzo numerico.
+- Controllare soltanto che il testo contenga punti invece di validarlo.
+- Usare l'indirizzo locale pensando di raggiungere il Raspberry Pi remoto.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So descrivere il passaggio nome → indirizzo?
+- So distinguere stringa e oggetto `IPv4Address`?
+- So verificare che un indirizzo sia loopback?
+
+## Accessibilità
+
+Leggi gli indirizzi anche cifra per cifra; non affidarti alla sola posizione in un diagramma e lascia il risultato testuale copiabile.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `indirizzo IP` | identificatore numerico di un'interfaccia di rete |
+| `DNS` | sistema che risolve nomi in indirizzi |
+| `IPv4` | formato di indirizzo composto da quattro numeri |

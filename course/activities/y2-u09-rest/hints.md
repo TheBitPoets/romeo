@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica risorsa, endpoint, response e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Esegui il client sul servizio fornito.
+2. Controlla status, Content-Type e campi JSON.
+3. Richiedi una risorsa inesistente e confronta il risultato.
+
+## Se qualcosa non funziona
+
+- Chiamare REST qualsiasi risposta JSON.
+- Inserire verbi come `getStatus` nel path senza ragionare sulla risorsa.
+- Fidarsi del JSON senza controllare lo status.

@@ -1,9 +1,17 @@
 # Traccia di rete — Integra controllo e stato
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So distinguere i due canali?
+- Verifico sia ack sia stato?
+- La perdita del control porta a motori zero?

@@ -2,10 +2,16 @@
 
 Durata prevista: 50 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper costruire una breve sequenza temporizzata e terminarla con `stop()`.
+
+Lo stop scritto nel programma è la regola principale. Il watchdog è una seconda rete di sicurezza: se per troppo tempo non arrivano comandi validi, ordina lo stop. Non sostituisce il nostro `stop()`; protegge da un programma o collegamento interrotto.
+
 ## Evidenze osservabili
 
-Lo studente sa garantire l'arresto anche al termine di una sequenza, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Invia almeno un comando motore e lascia Romeo fermo.
+Lo studente sa garantire l'arresto anche al termine di una sequenza. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Invia almeno un comando motore e lascia Romeo fermo.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Credere che la fine del file equivalga sempre a uno stop immediato.
+- Usare il watchdog come scusa per omettere `stop()`.
+- Provare un caso di errore direttamente sull'hardware prima del simulatore.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare stop, watchdog, fail-safe alla prossima unità, evitando dettagli interni del backend.
+La checklist di sicurezza deve essere disponibile in testo ad alta leggibilità e letta ad alta voce prima della prova fisica.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

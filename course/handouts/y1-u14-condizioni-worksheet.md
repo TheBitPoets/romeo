@@ -1,9 +1,17 @@
 # Scheda operativa — Decidi con if
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So dire quale blocco viene eseguito con `True` e con `False`?
+- So spiegare perché lo stop comune può stare dopo i due rami?
+- Ho verificato entrambe le strade cambiando un solo valore?

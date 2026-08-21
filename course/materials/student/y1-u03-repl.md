@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a provare una chiamata alla volta e leggere gli errori. Le parole chiave sono: REPL, import, chiamata.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a provare una chiamata alla volta e leggere gli errori.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Aver completato U02 e saper eseguire un file con Run.
 
-## Consegna
+## Modello mentale
+
+Il REPL è un banco prova: mostra `>>>`, riceve una sola istruzione e risponde subito. Un file conserva invece una sequenza da rieseguire. Prima proviamo un comando nel REPL, poi trasferiamo la sequenza riuscita in `main.py`.
+
+## Esempio minimo commentato
+
+```text
+>>> from romeo.easy import stop
+>>> stop()
+>>> fermati()
+NameError: name 'fermati' is not defined
+```
+
+L'ultima risposta non è un giudizio: indica che Python non conosce il nome `fermati`.
+
+## Prova guidata
+
+1. Apri il REPL e trova il prompt `>>>`.
+2. Digita l'import dell'esempio e premi Invio una sola volta.
+3. Digita `stop()` e osserva la risposta e lo stato dei motori.
+4. Prova volontariamente `Stop()` e leggi l'ultima riga dell'errore.
+5. Chiudi la prova e trasferisci in `main.py` la sequenza LED rosso, movimento, stop.
+
+## Esercizio base
+
+Prova `led("red")` nel REPL dopo l'import fornito e verifica il nome testuale del colore.
+
+## Esercizio intermedio
+
+Causa un `NameError`, correggi soltanto il nome e ripeti la chiamata.
+
+## Mini-sfida
+
+Prevedi la differenza tra eseguire tre righe nel REPL e salvarle nello stesso ordine in `main.py`.
+
+## Consegna valutata
 
 Trasferisci in main.py la sequenza provata nel REPL: LED rosso, movimento, stop.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Copiare anche i caratteri `>>>`: sono il prompt, non parte del codice.
+- Dimenticare l'import prima della chiamata e ricevere `NameError`.
+- Leggere tutto il traceback insieme invece di partire dall'ultima riga.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So distinguere il prompt da ciò che devo digitare?
+- So trovare il nome sconosciuto in un `NameError`?
+- So spiegare quando usare il REPL e quando usare `main.py`?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+La trascrizione testuale accompagna ogni cambiamento visivo; chi usa uno screen reader può seguire prompt, comando e risposta in ordine lineare.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `REPL` | ambiente che legge ed esegue una istruzione alla volta |
+| `prompt` | i caratteri `>>>` che indicano che Python è pronto |
+| `NameError` | errore che segnala un nome non conosciuto |

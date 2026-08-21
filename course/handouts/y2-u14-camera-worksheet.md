@@ -1,9 +1,17 @@
 # Traccia di rete — Camera come servizio
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- Il mio codice funziona con un mock?
+- La camera viene sempre chiusa?
+- So spiegare perché l'hardware è isolato?

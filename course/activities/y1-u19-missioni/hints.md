@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Rileggi l'obiettivo: scomporre un percorso in segmenti verificabili.
-2. Controlla import, parentesi, indentazione e valori.
-3. Parti da questa idea senza copiarla interamente: `stop()`
+1. Implementa soltanto il primo segmento e verifica la traiettoria.
+2. Aggiungi un checkpoint alla volta, conservando una versione funzionante.
+3. Esegui la missione completa e controlla ordine, parcheggio finale, collisioni e stop.
+
+## Se qualcosa non funziona
+
+- Saltare direttamente al target finale senza attraversare i checkpoint in ordine.
+- Aggiungere tutti i segmenti prima di aver verificato il primo.
+- Contare checkpoint diversi da quelli realmente dichiarati nello scenario.

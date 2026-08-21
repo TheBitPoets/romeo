@@ -1,33 +1,74 @@
 # Secondo anno 18. Programmazione a eventi
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a reagire a eventi senza polling fragile. Userai queue, evento, handler. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a reagire a eventi senza polling fragile.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai definire funzioni, usare condizioni, liste e cicli brevi.
+
+## Modello mentale
+
+Un evento descrive qualcosa che è accaduto; un handler è una funzione che decide come reagire. Il dispatcher consegna ogni evento all'handler. Lo scaffold contiene il ciclo della coda: oggi scriviamo reazioni semplici, non callback, async o event loop complessi. Questa unità va studiata prima dei controller interattivi.
+
+## Esempio minimo commentato
+
+```python
+def handle_event(evento):
+    if evento["type"] == "key":
+        return evento["value"]
+    return None
+
+risultato = handle_event({"type": "key", "value": "w"})
+```
+
+La funzione è testabile senza tastiera, browser o gamepad.
+
+## Prova guidata
+
+1. Separa evento, dispatcher e handler nel diagramma.
+2. Prevedi il risultato di due eventi.
+3. Completa l'handler con un solo tipo.
+4. Usa la coda scaffolded per consegnare gli eventi in ordine.
+5. Aggiungi un evento sconosciuto che non deve causare movimento.
+
+## Esercizio base
+
+Gestisci due eventi di tasto mantenendo l'ordine.
+
+## Esercizio intermedio
+
+Mappa eventi press/release in comando e STOP con una funzione pura.
+
+## Mini-sfida
+
+Gestisci tre tipi di evento mantenendo handler piccoli e un comportamento sicuro per tipi ignoti.
+
+## Consegna valutata
 
 Inserisci due eventi in una coda e gestiscili nell'ordine.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Mettere tutta la logica nel ciclo invece che nell'handler testabile.
+- Eseguire movimento per eventi sconosciuti.
+- Confondere ordine della coda e priorità degli eventi.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So definire evento, handler e dispatcher?
+- Posso testare l'handler senza dispositivo?
+- Un evento ignoto lascia Romeo fermo?
+
+## Accessibilità
+
+Gli eventi possono provenire da pulsante, tastiera o dati simulati; mostra sempre una traccia testuale ordinata.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `evento` | dato che descrive qualcosa accaduto |
+| `handler` | funzione che reagisce a un evento |
+| `coda` | struttura che conserva l'ordine degli eventi |

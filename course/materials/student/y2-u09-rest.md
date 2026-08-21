@@ -1,33 +1,73 @@
 # Secondo anno 9. REST: leggere lo stato
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a consumare una risorsa JSON. Userai risorsa, endpoint, response. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a consumare una risorsa JSON.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai leggere request e response HTTP e decodificare JSON.
+
+## Modello mentale
+
+REST tratta gli elementi del sistema come risorse con indirizzi stabili. `GET /api/status` chiede una rappresentazione dello stato; non significa 'esegui una funzione chiamata status'. TestClient sostituisce la rete esterna ma conserva metodo, path, status e body. FastAPI è nascosto nello scaffold fino alla prossima unità.
+
+## Esempio minimo commentato
+
+```python
+with TestClient(create_app()) as client:  # app già fornita
+    response = client.get("/api/status")
+    assert response.status_code == 200
+    stato = response.json()
+    print(stato["status"])
+```
+
+Il client consuma la risorsa; non ha bisogno di conoscere come il server la costruisce.
+
+## Prova guidata
+
+1. Individua la risorsa nel path `/api/status`.
+2. Prevedi quali parti della response vanno validate.
+3. Esegui il client sul servizio fornito.
+4. Controlla status, Content-Type e campi JSON.
+5. Richiedi una risorsa inesistente e confronta il risultato.
+
+## Esercizio base
+
+Leggi `/api/status` e verifica il contratto minimo.
+
+## Esercizio intermedio
+
+Scrivi una funzione client che restituisce `moving` soltanto per una response valida.
+
+## Mini-sfida
+
+Progetta path e rappresentazione JSON per una risorsa `info` senza implementare il server.
+
+## Consegna valutata
 
 Interroga /api/status con TestClient e verifica il contratto.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Chiamare REST qualsiasi risposta JSON.
+- Inserire verbi come `getStatus` nel path senza ragionare sulla risorsa.
+- Fidarsi del JSON senza controllare lo status.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So spiegare che cosa rappresenta una risorsa?
+- So distinguere HTTP da stile REST?
+- Il mio client rifiuta response incomplete?
+
+## Accessibilità
+
+Scrivi sempre metodo e path insieme (`GET /api/status`) e accompagna ogni icona con un'etichetta testuale.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `REST` | stile per organizzare risorse e operazioni HTTP |
+| `risorsa` | elemento identificato da un path |
+| `rappresentazione` | dati che descrivono una risorsa |

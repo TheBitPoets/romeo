@@ -2,10 +2,16 @@
 
 Durata prevista: 80 minuti. Difficoltà: C.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper leggere coordinate, pianificare segmenti e usare traiettoria ed eventi per correggerli.
+
+Una missione lunga diventa gestibile dividendola in checkpoint ordinati. Ogni checkpoint è una prova intermedia: prima raggiungiamo il primo, poi aggiungiamo il tratto successivo. Passare vicino ai punti nell'ordine conta più che indovinare subito l'intero programma.
+
 ## Evidenze osservabili
 
-Lo studente sa scomporre un percorso in segmenti verificabili, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Attraversa nell'ordine due checkpoint e fermati sul target finale.
+Lo studente sa scomporre un percorso in segmenti verificabili. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Attraversa nell'ordine due checkpoint e fermati sul target finale.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Saltare direttamente al target finale senza attraversare i checkpoint in ordine.
+- Aggiungere tutti i segmenti prima di aver verificato il primo.
+- Contare checkpoint diversi da quelli realmente dichiarati nello scenario.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare checkpoint, collisione, debug alla prossima unità, evitando dettagli interni del backend.
+Fornisci la sequenza dei checkpoint come elenco numerato con coordinate, non soltanto come marcatori sulla mappa.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

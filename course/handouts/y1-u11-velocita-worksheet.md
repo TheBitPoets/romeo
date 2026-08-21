@@ -1,9 +1,17 @@
 # Scheda operativa — Scegli la velocità
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So spiegare il significato di 0, 0.5 e 1?
+- So distinguere coordinata iniziale, distanza percorsa e coordinata finale?
+- So trovare due coppie velocità/durata che producono una distanza simile?

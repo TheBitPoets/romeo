@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a usare una condizione e assicurare la terminazione. Le parole chiave sono: while, contatore, terminazione.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a usare una condizione e assicurare la terminazione.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper leggere `if`, un confronto semplice e un blocco ripetuto con `for`.
 
-## Consegna
+## Modello mentale
+
+`while` ripete il corpo finché la sua domanda resta vera. Servono un contatore iniziale, un limite e un aggiornamento: senza aggiornamento la domanda non cambia e il ciclo può non finire. Prima del run simuliamo ogni giro in una tabella.
+
+## Esempio minimo commentato
+
+```python
+contatore = 0
+while contatore < 3:
+    # Il contatore deve cambiare a ogni giro.
+    contatore = contatore + 1
+```
+
+La tabella dei valori è 0 → 1 → 2 → 3; quando vale 3, `3 < 3` è falso e il ciclo termina.
+
+## Prova guidata
+
+1. Crea una tabella con colonne `contatore` e `contatore < 3`.
+2. Compila a mano le righe per 0, 1, 2 e 3.
+3. Individua nel codice l'istruzione che avvicina il ciclo alla fine.
+4. Aggiungi `forward(0.2)` nel corpo e prevedi tre eventi motore.
+5. Esegui nel simulatore, verifica tre eventi e lascia `stop()` fuori dal ciclo.
+
+## Esercizio base
+
+Usa `while` e un contatore per inviare tre comandi, poi fermati.
+
+## Esercizio intermedio
+
+Modifica il limite a 2 e poi a 4, compilando prima la tabella di previsione.
+
+## Mini-sfida
+
+Trova il difetto in una copia senza incremento, senza eseguirla; spiega come interrompere una prova che non termina.
+
+## Consegna valutata
 
 Invia tre comandi con while e termina con stop.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Dimenticare l'incremento e creare un ciclo che non termina.
+- Rientrare `stop()` nel corpo quando deve essere eseguito una volta sola.
+- Confondere `< 3` con `<= 3` e ottenere un giro in più.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So elencare i valori del contatore a ogni giro?
+- So indicare perché la condizione diventa falsa?
+- So riconoscere un ciclo potenzialmente infinito prima di eseguirlo?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+La tabella testuale rende espliciti i cambiamenti del contatore; fornisci una procedura scritta e raggiungibile da tastiera per interrompere l'esecuzione.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `while` | ciclo che continua mentre una condizione è vera |
+| `contatore` | numero aggiornato a ogni iterazione |
+| `terminazione` | momento in cui la condizione diventa falsa e il ciclo finisce |

@@ -1,33 +1,73 @@
 # Secondo anno 22. Integra controllo e stato
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a collegare comando realtime e telemetria. Userai WebSocket, stato, stop. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a collegare comando realtime e telemetria.
 
-## Laboratorio
+## Che cosa sai già
+
+Hai completato WebSocket control, telemetria versionata e safety con disconnect.
+
+## Modello mentale
+
+L'integrazione collega due flussi senza confonderli: `/ws/control` riceve intenzioni e restituisce ack; `/ws/state` pubblica telemetria. Entrambi usano la stessa API Robot e lo stesso safety boundary. Lo scaffold fornisce app e connessioni; lo studente completa la sequenza e le verifiche end-to-end.
+
+## Esempio minimo commentato
+
+```text
+controller → /ws/control → ack
+                         ↓
+                     Robot API
+                         ↓
+viewer     ← /ws/state ← state versionato
+```
+
+Il diagramma mostra dipendenze, non ordine temporale; la prova guidata aggiunge la timeline.
+
+## Prova guidata
+
+1. Etichetta control, ack, Robot API e state.
+2. Apri i due canali scaffolded e verifica i messaggi ready.
+3. Invia FORWARD e attendi ack.
+4. Leggi uno state e verifica movimento e versione.
+5. Chiudi il controller e verifica uno state successivo con motori a zero.
+
+## Esercizio base
+
+Collega un comando a un aggiornamento di stato osservabile.
+
+## Esercizio intermedio
+
+Verifica che payload invalido produca errore e non modifichi lo stato.
+
+## Mini-sfida
+
+Interrompi il canale control senza STOP esplicito e dimostra il fail-safe tramite il canale state.
+
+## Consegna valutata
 
 Invia un comando, leggi lo stato e chiudi lasciando Romeo fermo.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Usare REST polling e chiamarlo telemetria realtime.
+- Considerare l'ack prova sufficiente del movimento.
+- Chiudere il viewer ma lasciare vivo il controller senza timeout.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So distinguere i due canali?
+- Verifico sia ack sia stato?
+- La perdita del control porta a motori zero?
+
+## Accessibilità
+
+Ack e telemetria sono disponibili come log testuale; il controller include pulsanti oltre a tastiera e gamepad.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `integrazione` | verifica congiunta di componenti già testati separatamente |
+| `end-to-end` | prova dal comando fino allo stato osservato |
+| `canale` | connessione con una responsabilità definita |

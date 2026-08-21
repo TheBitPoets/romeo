@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a usare traiettoria, clock ed eventi per il debug. Le parole chiave sono: stato, evento, determinismo.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a usare traiettoria, clock ed eventi per il debug.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper prevedere una sequenza, eseguirla e leggere posizione, orientamento e tempo finali.
 
-## Consegna
+## Modello mentale
+
+Il simulatore è un quaderno di laboratorio ripetibile. Lo stato è una fotografia di un istante; la traiettoria unisce molte pose; l'event log elenca i comandi. Con lo stesso scenario e lo stesso programma otteniamo gli stessi numeri: questo rende il debug verificabile.
+
+## Esempio minimo commentato
+
+```python
+from time import sleep
+from romeo.easy import forward, stop
+
+forward(0.5)  # Nell'event log appare il cambio dei motori.
+sleep(1)      # La traiettoria registra pose nel tempo.
+stop()        # Lo stato finale mostra motori a zero.
+```
+
+## Prova guidata
+
+1. Prima del run scrivi una previsione per tempo, x, y, orientamento e stato motori.
+2. Esegui una volta e leggi prima lo stato finale, senza guardare l'animazione.
+3. Trova nell'event log il primo cambio motori e lo stop.
+4. Leggi tre punti della traiettoria: iniziale, intermedio e finale.
+5. Ripeti senza modifiche e verifica che gli stessi valori coincidano.
+
+## Esercizio base
+
+Avanza per due secondi, fermati e confronta previsione e traiettoria.
+
+## Esercizio intermedio
+
+Inserisci intenzionalmente una durata errata, usa le evidenze per individuarla e correggi una sola riga.
+
+## Mini-sfida
+
+Spiega con una frase quale evidenza useresti per distinguere velocità errata, durata errata e stop mancante.
+
+## Consegna valutata
 
 Avanza per due secondi, fermati e confronta la traiettoria con la previsione.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Guardare soltanto l'animazione e ignorare i valori numerici.
+- Cambiare più righe dopo un fallimento e perdere la causa dell'errore.
+- Confondere un evento di comando con una posa della traiettoria.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So distinguere stato, evento e punto di traiettoria?
+- So confrontare previsione e misura con numeri?
+- So mostrare che due run identici producono lo stesso risultato?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Ogni elemento visivo deve avere un equivalente testuale ordinato per tempo; traiettoria e colori non devono essere le sole fonti di feedback.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `stato` | valori del simulatore in un singolo istante |
+| `evento` | registrazione di un comando o fatto significativo |
+| `determinismo` | stesso input e stesso scenario producono lo stesso risultato |

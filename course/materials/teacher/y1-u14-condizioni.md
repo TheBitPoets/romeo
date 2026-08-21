@@ -2,10 +2,16 @@
 
 Durata prevista: 60 minuti. Difficoltà: B.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper chiamare una funzione e comprendere un nome che riceve un valore, come un parametro.
+
+Una condizione è una domanda con risposta `True` o `False`. `if` esegue il blocco rientrato soltanto quando la risposta è `True`; `else` descrive l'altra strada. Seguiamo una strada per volta con il dito prima di eseguire.
+
 ## Evidenze osservabili
 
-Lo studente sa scegliere un comportamento in base a un dato, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Se modalita_sicura è True usa velocità 0.3; raggiungi il target e fermati.
+Lo studente sa scegliere un comportamento in base a un dato. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Se modalita_sicura è True usa velocità 0.3; raggiungi il target e fermati.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Dimenticare i due punti dopo `if` o `else`.
+- Allineare il corpo con `if` invece di rientrarlo.
+- Provare soltanto il caso `True` e credere che anche l'altra strada funzioni.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare booleano, if, confronto alla prossima unità, evitando dettagli interni del backend.
+Rappresenta i due rami con le etichette testuali VERO/FALSO oltre alle frecce; leggi l'indentazione come «dentro if» o «dentro else».
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

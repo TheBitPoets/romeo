@@ -1,33 +1,77 @@
 # Secondo anno 4. Client e server
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a scambiare byte tra due endpoint. Userai client, server, send, recv. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a scambiare byte tra due endpoint.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai distinguere host e servizio, conosci gli endpoint e sai usare byte letterali come `b"PING"`.
+
+## Modello mentale
+
+Il client avvia una richiesta; il server attende e risponde. In questa prima prova `socketpair` crea due estremità locali già collegate: nasconde indirizzi, porte e apertura della connessione per farci osservare soltanto lo scambio di byte. Non è ancora un server TCP reale.
+
+## Esempio minimo commentato
+
+```python
+import socket
+
+client, server = socket.socketpair()  # coppia locale già collegata
+with client, server:
+    client.sendall(b"PING
+")
+    ricevuto = server.recv(16)
+    print(ricevuto)                    # b'PING
+'
+```
+
+`recv(16)` può ricevere fino a 16 byte; una rete reale non promette un messaggio intero per ogni `recv`.
+
+## Prova guidata
+
+1. Disegna due estremità e una freccia PING dal client al server.
+2. Esegui l'esempio e osserva la `b` davanti al dato stampato.
+3. Aggiungi la risposta `PONG` nella direzione opposta.
+4. Verifica entrambi i byte ricevuti con `assert`.
+5. Rimuovi temporaneamente l'invio di PONG e prevedi perché il client rimarrebbe in attesa.
+
+## Esercizio base
+
+Completa uno scambio PING/PONG sulla coppia locale.
+
+## Esercizio intermedio
+
+Invia due parole in un unico blocco e separale usando il carattere di fine riga.
+
+## Mini-sfida
+
+Disegna che cosa dovrà essere aggiunto per trasformare la coppia locale in client e server TCP su loopback.
+
+## Consegna valutata
 
 Invia PING su una coppia di socket e rispondi PONG.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Inviare una stringa invece di byte.
+- Leggere prima che l'altra estremità abbia inviato.
+- Credere che `recv(16)` restituisca sempre esattamente 16 byte.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So indicare chi avvia ogni messaggio?
+- So distinguere stringhe e byte?
+- So chiudere entrambe le estremità?
+
+## Accessibilità
+
+Affianca alle frecce parole `invia` e `riceve`; recita la sequenza in ordine per chi non usa il diagramma.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `client` | programma che avvia una richiesta |
+| `server` | programma che attende e risponde |
+| `byte` | unità di dati trasmessa dal socket |

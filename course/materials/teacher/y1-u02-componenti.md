@@ -2,10 +2,16 @@
 
 Durata prevista: 50 minuti. Difficoltà: A.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Aver eseguito U01 e saper riconoscere un'istruzione e lo stato finale fermo.
+
+Pensa a una catena di messaggi: il programma chiede un'azione, il Raspberry Pi la interpreta, la scheda CRICKIT fornisce energia ai motori e le ruote si muovono. Il LED è un'uscita separata: comunica uno stato senza muovere il robot.
+
 ## Evidenze osservabili
 
-Lo studente sa collegare API, motori, ruote e LED, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Usa il LED verde come segnale di pronto, aziona entrambi i motori e fermati.
+Lo studente sa collegare API, motori, ruote e LED. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Usa il LED verde come segnale di pronto, aziona entrambi i motori e fermati.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Confondere Raspberry Pi e CRICKIT: il primo esegue il programma, la seconda pilota i carichi elettrici.
+- Pensare che cambiare il LED fermi i motori: sono due uscite indipendenti.
+- Osservare solo l'animazione e non lo stato numerico delle ruote.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare Raspberry Pi, CRICKIT, backend alla prossima unità, evitando dettagli interni del backend.
+Affianca ai componenti reali etichette grandi e numerate; descrivi sempre a parole LED e velocità, senza affidarti soltanto a colori o animazioni.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

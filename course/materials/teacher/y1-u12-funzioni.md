@@ -2,10 +2,16 @@
 
 Durata prevista: 60 minuti. Difficoltà: B.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper scrivere e verificare una sequenza con movimento, durata e stop.
+
+Definire una funzione significa dare un nome a una piccola ricetta. Le righe rientrate sono il corpo della ricetta e non partono finché la funzione non viene chiamata. Un parametro è un posto vuoto che riceve un valore diverso a ogni chiamata.
+
 ## Evidenze osservabili
 
-Lo studente sa racchiudere una sequenza in una funzione con parametro, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Definisci avanza_per(secondi), chiamala con 2 e raggiungi il target.
+Lo studente sa racchiudere una sequenza in una funzione con parametro. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Definisci avanza_per(secondi), chiamala con 2 e raggiungi il target.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Dimenticare i due punti dopo la riga `def`.
+- Non rientrare il corpo di quattro spazi.
+- Definire la funzione ma non chiamarla.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare def, parametro, corpo alla prossima unità, evitando dettagli interni del backend.
+Evidenzia il rientro anche con una guida verticale e descrivilo come «quattro spazi»; non comunicarlo soltanto con il colore dell'editor.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

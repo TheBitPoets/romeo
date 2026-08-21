@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a confrontare valori normalizzati tra 0 e 1. Le parole chiave sono: float, intervallo, limite.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a confrontare valori normalizzati tra 0 e 1.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper usare `forward`, `sleep` e `stop` e leggere posizione e tempo finali.
 
-## Consegna
+## Modello mentale
+
+La velocità richiesta è un numero tra 0 e 1: zero significa fermo, uno è il limite configurato, e 0.5 è metà comando. A parità di scenario, distanza significa velocità per tempo. Cambiamo un solo valore alla volta per confrontare due prove.
+
+## Esempio minimo commentato
+
+```python
+from time import sleep
+from romeo.easy import forward, stop
+
+forward(0.25)  # Un quarto del comando massimo.
+sleep(2)       # Mantienilo per due secondi.
+stop()
+```
+
+## Prova guidata
+
+1. Annota posizione iniziale e durata prima del primo run.
+2. Esegui l'esempio con velocità 0.25 e annota la posizione finale.
+3. Ripeti con 0.5 senza cambiare la durata.
+4. Confronta le due distanze e formula una frase, senza pretendere precisione dell'hardware reale.
+5. Usa 0.5 per due secondi e verifica il target della consegna.
+
+## Esercizio base
+
+Raggiungi x=1.0 con velocità 0.5 per due secondi e fermati.
+
+## Esercizio intermedio
+
+Raggiungi la stessa posizione con una velocità più bassa e una durata adeguata.
+
+## Mini-sfida
+
+Prevedi una terza coppia velocità/durata equivalente e verifica la tolleranza finale.
+
+## Consegna valutata
 
 Raggiungi il target a x=1.0 usando velocità 0.5 per due secondi.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Usare un valore fuori dall'intervallo da 0 a 1.
+- Dimenticare che la partenza è x=0.5 e calcolare tutta la coordinata come distanza.
+- Cambiare contemporaneamente velocità e target senza poter confrontare i run.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So spiegare il significato di 0, 0.5 e 1?
+- So distinguere coordinata iniziale, distanza percorsa e coordinata finale?
+- So trovare due coppie velocità/durata che producono una distanza simile?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Mostra valori e distanze in una tabella testuale; accompagna la traiettoria con coordinate numeriche e unità di misura.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `float` | numero che può avere una parte decimale |
+| `normalizzato` | espresso nell'intervallo da 0 a 1 |
+| `limite` | massimo valore consentito dalla configurazione |

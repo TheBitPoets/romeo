@@ -1,9 +1,17 @@
 # Traccia di rete — Stream MJPEG
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So spiegare perché MJPEG contiene più JPEG?
+- So trovare il boundary?
+- Il mio lettore può terminare in modo pulito?

@@ -3,6 +3,12 @@
 Durata: 60 minuti. Difficoltà: B. Obiettivo osservabile: lo studente sa
 convertire assi in velocità ruote e giustifica protocollo, validazione e cleanup.
 
+## Prerequisiti e modello mentale
+
+Conosci eventi, velocità delle due ruote, funzioni e numeri fra -1 e 1.
+
+Lo stick produce due assi. Prima applichiamo una dead-zone per ignorare piccoli tremolii, poi mescoliamo avanti e sterzo nelle velocità sinistra/destra e infine limitiamo il risultato. pygame e il dispositivo sono nello scaffold: la funzione matematica resta testabile con numeri simulati.
+
 ## Conduzione
 
 - 0–10 min: mappa alla lavagna di client, server, request e response.
@@ -10,20 +16,19 @@ convertire assi in velocità ruote e giustifica protocollo, validazione e cleanu
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–60 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+- Dimenticare che l'asse Y può essere invertito.
+- Inviare il rumore vicino allo zero ai motori.
+- Mescolare lettura pygame e matematica rendendo impossibili i test senza gamepad.
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+Offri tastiera e pulsanti come input equivalenti; mostra numericamente assi e ruote e consenti rimappatura.
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.

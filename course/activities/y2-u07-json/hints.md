@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica oggetto, array, serializzazione e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Aggiungi il campo stringa `type`.
+2. Modifica il testo rendendolo invalido e osserva `JSONDecodeError`.
+3. Verifica campi e tipi prima di usare i valori.
+
+## Se qualcosa non funziona
+
+- Confondere un dizionario con il testo JSON che lo rappresenta.
+- Scrivere `True` a mano nel JSON, dove il valore è `true`.
+- Usare campi ricevuti senza verificarne presenza e tipo.

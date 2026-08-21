@@ -1,9 +1,17 @@
 # Traccia di rete — Client e server
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So indicare chi avvia ogni messaggio?
+- So distinguere stringhe e byte?
+- So chiudere entrambe le estremità?

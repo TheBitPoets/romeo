@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a ripetere un numero noto di azioni. Le parole chiave sono: for, range, iterazione.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a ripetere un numero noto di azioni.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper riconoscere un blocco rientrato e chiamare più volte la stessa funzione.
 
-## Consegna
+## Modello mentale
+
+Un ciclo `for` ripete un blocco un numero già noto di volte. `range(4)` fornisce quattro giri; a ogni giro il nome `passo` riceve il numero corrente. Le righe fuori dal rientro, come lo stop finale, vengono eseguite una sola volta.
+
+## Esempio minimo commentato
+
+```python
+from romeo.easy import forward, stop
+
+for passo in range(4):
+    forward(0.2)  # Questa riga viene chiamata quattro volte.
+
+stop()            # Questa riga viene chiamata una volta.
+```
+
+## Prova guidata
+
+1. Scrivi su carta i quattro valori prodotti da `range(4)`: 0, 1, 2, 3.
+2. Evidenzia la sola riga che appartiene al corpo del ciclo.
+3. Prevedi il numero di eventi motore prima del run.
+4. Esegui e conta gli eventi, non la distanza percorsa: senza `sleep` i comandi sono immediati.
+5. Cambia temporaneamente `range(2)`, verifica due eventi e ripristina quattro.
+
+## Esercizio base
+
+Usa `for` e `range(4)` per inviare quattro comandi, poi fermati.
+
+## Esercizio intermedio
+
+Aggiungi una breve durata nel corpo per rendere osservabile ogni ripetizione e prevedi il tempo totale.
+
+## Mini-sfida
+
+Definisci una funzione con parametro `ripetizioni` e usa `range(ripetizioni)`; provala con 2 e 4.
+
+## Consegna valutata
 
 Usa un ciclo for per inviare quattro comandi di movimento, poi stop.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Credere che `range(4)` produca cinque valori da 0 a 4.
+- Non rientrare il comando da ripetere.
+- Rientrare anche `stop()` e fermare Romeo a ogni giro senza averlo previsto.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So prevedere quanti giri produce `range(4)`?
+- So indicare quali righe sono dentro e fuori dal ciclo?
+- So verificare il numero di ripetizioni negli eventi?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Accompagna il blocco rientrato con una lista dei quattro giri; usa il nome esplicito `passo` invece di simboli convenzionali non spiegati.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `for` | ciclo che visita una sequenza di valori |
+| `range` | funzione che produce un numero stabilito di valori interi |
+| `iterazione` | un singolo giro del ciclo |

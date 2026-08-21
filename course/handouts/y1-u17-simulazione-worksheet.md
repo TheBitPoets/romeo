@@ -1,9 +1,17 @@
 # Scheda operativa — Osserva il simulatore
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So distinguere stato, evento e punto di traiettoria?
+- So confrontare previsione e misura con numeri?
+- So mostrare che due run identici producono lo stesso risultato?

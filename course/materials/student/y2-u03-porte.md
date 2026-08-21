@@ -1,33 +1,76 @@
 # Secondo anno 3. Porte e servizi
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a associare una porta libera a un socket. Userai porta, bind, endpoint. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a associare una porta libera a un socket.
 
-## Laboratorio
+## Che cosa sai già
+
+Sai cos'è un host e sai usare tuple e `with` in Python.
+
+## Modello mentale
+
+L'indirizzo porta il messaggio all'host; la porta lo consegna al servizio corretto. Un endpoint è quindi la coppia `(indirizzo, porta)`. La porta `0` non è la porta del servizio: durante `bind` chiede al sistema di scegliere temporaneamente una porta disponibile.
+
+## Esempio minimo commentato
+
+Lo scaffold crea e chiude il socket; osserviamo solo l'assegnazione della porta.
+
+```python
+import socket
+
+with socket.socket() as listener:
+    listener.bind(("127.0.0.1", 0))
+    endpoint = listener.getsockname()
+    print(endpoint)  # per esempio ('127.0.0.1', 53124)
+```
+
+Il socket è una risorsa del sistema: `with` lo chiude anche in caso di errore.
+
+## Prova guidata
+
+1. Cerchia separatamente indirizzo e porta nell'endpoint dell'esempio.
+2. Prevedi quale parte resta stabile e quale può cambiare fra due esecuzioni.
+3. Esegui due volte e registra le porte scelte.
+4. Estrai la porta con `listener.getsockname()[1]`.
+5. Verifica che sia compresa fra 1 e 65535 prima di stampare il marker.
+
+## Esercizio base
+
+Chiedi una porta effimera al sistema e verifica che sia positiva.
+
+## Esercizio intermedio
+
+Crea due listener contemporanei sulla porta `0` e verifica che abbiano endpoint diversi.
+
+## Mini-sfida
+
+Spiega perché salvare una porta trovata chiudendo subito il socket non garantisce che resti libera.
+
+## Consegna valutata
 
 Chiedi al sistema una porta effimera e verifica che sia positiva.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Usare soltanto la porta e dimenticare l'indirizzo.
+- Pensare che `0` sia la porta finale assegnata.
+- Dimenticare di chiudere il socket dopo l'esperimento.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So costruire un endpoint?
+- So spiegare che cosa fa `bind`?
+- So trovare la porta realmente assegnata?
+
+## Accessibilità
+
+Rappresenta l'endpoint sia come coppia scritta sia come diagramma. Pronuncia separatamente indirizzo e porta.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `porta` | numero che seleziona un servizio su un host |
+| `endpoint` | coppia indirizzo e porta |
+| `bind` | associazione di un socket a un endpoint locale |

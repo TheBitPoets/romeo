@@ -2,35 +2,71 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a distinguere curva e rotazione sul posto. Le parole chiave sono: differential drive, orientamento.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a distinguere curva e rotazione sul posto.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper usare una durata e conoscere l'effetto di velocità uguali o diverse.
 
-## Consegna
+## Modello mentale
+
+In una curva il centro di Romeo cambia posizione; in una rotazione sul posto le ruote vanno in versi opposti e il centro resta quasi fermo. L'angolo ottenuto dipende da velocità, durata e distanza tra le ruote: perciò si calibra una durata con prove piccole.
+
+## Esempio minimo commentato
+
+```python
+from time import sleep
+from romeo.easy import left, stop
+
+left(0.5)       # Le ruote girano in versi opposti.
+sleep(0.5)      # Una prima prova breve, non ancora "90 gradi".
+stop()
+```
+
+## Prova guidata
+
+1. Disegna la posa iniziale con una freccia orientata verso destra.
+2. Esegui una prova breve di 0.5 s e leggi l'orientamento finale.
+3. Confronta l'angolo osservato con 90 gradi e calcola soltanto se serve più o meno tempo.
+4. Modifica la durata di un piccolo passo e ripeti, senza cambiare anche la velocità.
+5. Quando sei nella tolleranza, termina con `stop()` e annota la durata calibrata.
+
+## Esercizio base
+
+Ruota a sinistra fino a circa 90 gradi e fermati.
+
+## Esercizio intermedio
+
+Confronta una curva ottenuta con ruote diverse e una rotazione sul posto, descrivendo posizione e orientamento.
+
+## Mini-sfida
+
+Trova una durata per circa 45 gradi mantenendo la stessa velocità e spiega la tua previsione.
+
+## Consegna valutata
 
 Ruota Romeo di circa 90 gradi a sinistra e fermalo.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Copiare una durata precisa senza verificarla nel proprio scenario.
+- Cambiare velocità e durata insieme, rendendo difficile capire quale modifica ha avuto effetto.
+- Confondere coordinate finali e orientamento finale.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So distinguere curva e rotazione usando il movimento del centro?
+- So leggere l'errore di orientamento in gradi?
+- So descrivere una calibrazione cambiando una variabile alla volta?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Fornisci orientamento iniziale/finale e errore in gradi come testo; non richiedere di stimare l'angolo soltanto dalla figura.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `orientamento` | direzione verso cui punta Romeo |
+| `grado` | unità usata per misurare un angolo |
+| `calibrazione` | serie di piccole prove per trovare un valore adatto |

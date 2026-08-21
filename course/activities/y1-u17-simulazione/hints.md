@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Rileggi l'obiettivo: usare traiettoria, clock ed eventi per il debug.
-2. Controlla import, parentesi, indentazione e valori.
-3. Parti da questa idea senza copiarla interamente: `stop()`
+1. Trova nell'event log il primo cambio motori e lo stop.
+2. Leggi tre punti della traiettoria: iniziale, intermedio e finale.
+3. Ripeti senza modifiche e verifica che gli stessi valori coincidano.
+
+## Se qualcosa non funziona
+
+- Guardare soltanto l'animazione e ignorare i valori numerici.
+- Cambiare più righe dopo un fallimento e perdere la causa dell'errore.
+- Confondere un evento di comando con una posa della traiettoria.

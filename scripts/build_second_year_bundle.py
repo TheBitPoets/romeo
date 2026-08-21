@@ -10,6 +10,8 @@ from textwrap import dedent
 
 from build_first_year_bundle import COURSE, UNITS, dump, write
 from build_first_year_bundle import build as build_first_year
+from lessons_year2 import LESSONS_Y2
+from pedagogy_content import bullets, glossary_table, numbered
 
 
 @dataclass(frozen=True)
@@ -546,8 +548,8 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
         "instructions": unit.task,
         "consegna": unit.task,
         "student_support_mode": "hint-progressivi",
-        "grading_policy": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
-        "correzione": {"compila": True, "test": True, "sandbox": True, "ai_feedback": False},
+        "grading_policy": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
+        "correzione": {"compila": True, "test": True, "sandbox": False, "ai_feedback": False},
         "metriche": {
             "tempo_stimato_minuti": unit.minutes,
             "traccia_tempo_dichiarato": True,
@@ -620,47 +622,75 @@ def activity(index: int, unit: NetworkUnit) -> dict[str, object]:
 
 
 def student_material(index: int, unit: NetworkUnit) -> str:
+    lesson = LESSONS_Y2[unit.slug]
     return f"""# Secondo anno {index}. {unit.title}
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a {unit.objective}. Userai {unit.concepts}. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a {unit.objective}.
 
-## Laboratorio
+## Che cosa sai già
+
+{lesson.prerequisites}
+
+## Modello mentale
+
+{lesson.mental_model}
+
+## Esempio minimo commentato
+
+{lesson.example}
+
+## Prova guidata
+
+{numbered(lesson.guided_practice)}
+
+## Esercizio base
+
+{lesson.base_exercise}
+
+## Esercizio intermedio
+
+{lesson.intermediate_exercise}
+
+## Mini-sfida
+
+{lesson.challenge}
+
+## Consegna valutata
 
 {unit.task}
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+{bullets(lesson.common_errors)}
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+{bullets(lesson.self_check)}
+
+## Accessibilità
+
+{lesson.accessibility}
+
+## Parole nuove
+
+{glossary_table(lesson.glossary)}
 """
 
 
 def teacher_material(index: int, unit: NetworkUnit) -> str:
+    lesson = LESSONS_Y2[unit.slug]
     return f"""# Guida docente — secondo anno {index}. {unit.title}
 
 Durata: {unit.minutes} minuti. Difficoltà: {unit.difficulty}. Obiettivo osservabile: lo studente sa
 {unit.objective} e giustifica protocollo, validazione e cleanup.
+
+## Prerequisiti e modello mentale
+
+{lesson.prerequisites}
+
+{lesson.mental_model}
 
 ## Conduzione
 
@@ -669,23 +699,20 @@ Durata: {unit.minutes} minuti. Difficoltà: {unit.difficulty}. Obiettivo osserva
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–{unit.minutes} min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+{bullets(lesson.common_errors)}
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+{lesson.accessibility}
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.
 """
 
 
@@ -694,6 +721,7 @@ def build() -> None:
     bundle = json.loads((COURSE / "bundle.json").read_text(encoding="utf-8"))
     curriculum = json.loads((COURSE / "curriculum.json").read_text(encoding="utf-8"))
     for index, unit in enumerate(UNITS_Y2, start=1):
+        lesson = LESSONS_Y2[unit.slug]
         unit_id = f"y2-u{index:02d}-{unit.slug}"
         base = COURSE / "activities" / unit_id
         dump(base / "activity.json", activity(index, unit))
@@ -717,7 +745,11 @@ def build() -> None:
         write(base / "solution.py", unit.solution)
         write(
             base / "hints.md",
-            f"# Hint progressivi\n\n1. Disegna prima gli endpoint e la direzione del messaggio.\n2. Verifica {unit.concepts} e chiudi ogni risorsa.\n3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.\n",
+            "# Hint progressivi\n\n"
+            + numbered(lesson.guided_practice[-3:])
+            + "\n\n## Se qualcosa non funziona\n\n"
+            + bullets(lesson.common_errors)
+            + "\n",
         )
         student = f"materials/student/{unit_id}.md"
         teacher = f"materials/teacher/{unit_id}.md"
@@ -730,7 +762,7 @@ def build() -> None:
         write(COURSE / teacher, teacher_material(index, unit))
         write(
             COURSE / worksheet,
-            f"# Traccia di rete — {unit.title}\n\nEndpoint A: __________ Endpoint B: __________\n\nMessaggio/request: __________\n\nRisposta attesa e validazione: __________\n\nErrore simulato: __________ Cleanup/STOP: __________\n",
+            f"# Traccia di rete — {unit.title}\n\nPrerequisito richiamato: __________\n\nAttori e confine: __________\n\nDato inviato: __________\n\nRisposta e controllo effettuato: __________\n\nErrore simulato: __________ Cleanup/STOP: __________\n\n## Mi controllo\n\n{bullets(lesson.self_check)}\n",
         )
         write(
             COURSE / assessment,

@@ -1,9 +1,17 @@
 # Scheda operativa — Completa una missione
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So elencare i checkpoint nell'ordine corretto?
+- So mostrare sulla traiettoria dove viene superato ciascun punto?
+- So indicare quale segmento correggere quando un checkpoint fallisce?

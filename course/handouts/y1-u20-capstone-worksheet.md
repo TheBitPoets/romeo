@@ -1,9 +1,17 @@
 # Scheda operativa — Capstone: consegna robotica
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- Ogni funzione ha un nome che descrive una fase della missione?
+- Posso mostrare un'evidenza per ogni criterio della rubrica?
+- Romeo resta fermo anche alla conclusione dell'ultima fase?

@@ -1,9 +1,17 @@
 # Scheda operativa — Raggiungi una coordinata
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So indicare il verso positivo degli assi x e y?
+- So calcolare la differenza tra partenza e target?
+- So spiegare quando serve una rotazione prima di avanzare?

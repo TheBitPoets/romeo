@@ -1,9 +1,17 @@
 # Traccia di rete — Una richiesta HTTP
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So scomporre una request?
+- So scomporre una response?
+- So verificare status e media type prima del body?

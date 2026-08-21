@@ -1,9 +1,17 @@
 # Traccia di rete — Telemetria versionata
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So spiegare perché lo schema è versionato?
+- Conosco unità e significato dei campi usati?
+- Il mio consumer funziona senza renderer?

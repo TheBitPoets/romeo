@@ -2,10 +2,16 @@
 
 Durata prevista: 65 minuti. Difficoltà: B.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper prevedere una sequenza, eseguirla e leggere posizione, orientamento e tempo finali.
+
+Il simulatore è un quaderno di laboratorio ripetibile. Lo stato è una fotografia di un istante; la traiettoria unisce molte pose; l'event log elenca i comandi. Con lo stesso scenario e lo stesso programma otteniamo gli stessi numeri: questo rende il debug verificabile.
+
 ## Evidenze osservabili
 
-Lo studente sa usare traiettoria, clock ed eventi per il debug, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Avanza per due secondi, fermati e confronta la traiettoria con la previsione.
+Lo studente sa usare traiettoria, clock ed eventi per il debug. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Avanza per due secondi, fermati e confronta la traiettoria con la previsione.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Guardare soltanto l'animazione e ignorare i valori numerici.
+- Cambiare più righe dopo un fallimento e perdere la causa dell'errore.
+- Confondere un evento di comando con una posa della traiettoria.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare stato, evento, determinismo alla prossima unità, evitando dettagli interni del backend.
+Ogni elemento visivo deve avere un equivalente testuale ordinato per tempo; traiettoria e colori non devono essere le sole fonti di feedback.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

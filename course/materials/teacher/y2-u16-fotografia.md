@@ -3,6 +3,12 @@
 Durata: 70 minuti. Difficoltà: B. Obiettivo osservabile: lo studente sa
 ricevere JPEG con media type corretto e giustifica protocollo, validazione e cleanup.
 
+## Prerequisiti e modello mentale
+
+Conosci REST, TestClient, JSON, byte JPEG e CameraService mock.
+
+Una foto REST è una risorsa binaria: la response contiene byte JPEG invece di JSON. Status e Content-Type dicono al client se e come interpretarla. `create_app(camera=mock)` passa alla app una camera prevedibile; questa iniezione evita hardware reale durante il test.
+
 ## Conduzione
 
 - 0–10 min: mappa alla lavagna di client, server, request e response.
@@ -10,20 +16,19 @@ ricevere JPEG con media type corretto e giustifica protocollo, validazione e cle
 - 25–50 min: pair programming; un ruolo cura il protocollo, l'altro failure e risorse.
 - 50–70 min: run TheBitLab, revisione dell'evidenza ed exit ticket.
 
-Il marker di output viene valutato soltanto se il programma arriva alla relativa stampa; chiedere
-agli studenti di mantenerlo dopo gli assert, mai prima. Per valutazioni sommative aggiungere test
-riservati nel sandbox TheBitLab: i check dichiarativi sono feedback trasparente, non una barriera
-anti-manomissione.
+Il marker di output offre soltanto feedback formativo ed è banalmente riproducibile. Non usarlo
+come prova sommativa. Finché il runtime non viene eseguito dentro il boundary ufficiale TheBitLab,
+anche gli assert e i check comportamentali presuppongono una submission collaborativa.
 
 ## Misconcezioni e safety
 
-`localhost` non è il Raspberry Pi remoto; una porta non identifica da sola un protocollo; JSON non
-è una connessione; REST e WebSocket non sono sinonimi. Una UI chiusa deve causare STOP, e il
-watchdog resta obbligatorio. Evitare rete pubblica e camera reale senza autorizzazioni e informativa.
+- Chiamare `.json()` su una foto.
+- Accettare qualsiasi contenuto con status 200.
+- Usare la camera reale nei test automatici.
 
 ## Inclusione ed evidenze
 
-Fornire diagrammi con colori per endpoint e frecce. Permettere prima una simulazione con coppie di
-socket o TestClient. Estensione: introdurre un payload non valido e progettare l'errore. Evidenze:
-sorgente, marker, gestione errori, chiusura risorse e spiegazione orale. Collegare il debrief alla
-prossima unità senza anticipare più di un nuovo livello di protocollo.
+L'esito della foto è descritto anche con testo, dimensione e status; nessuno deve essere ripreso per completare il laboratorio.
+
+Le evidenze sono sorgente, comportamento osservato, gestione degli errori, cleanup e spiegazione
+orale. Il marker, da solo, non dimostra la competenza.

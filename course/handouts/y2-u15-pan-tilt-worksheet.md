@@ -1,9 +1,17 @@
 # Traccia di rete — Pan e tilt
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So indicare i due assi?
+- Conosco unità e limiti?
+- Il test usa il mock prima dell'hardware?

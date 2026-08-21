@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica frame, multipart, MJPEG e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Leggi due frame dal generatore mock fornito.
+2. Verifica marker JPEG per entrambi.
+3. Ispeziona una response MJPEG scaffolded e controlla il parametro boundary.
+
+## Se qualcosa non funziona
+
+- Chiamare MJPEG un singolo byte array JPEG.
+- Confondere boundary e marker interni JPEG.
+- Creare un ciclo infinito senza condizione di arresto o cleanup.

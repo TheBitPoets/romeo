@@ -2,35 +2,70 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a comandare separatamente la ruota sinistra. Le parole chiave sono: Robot, drive, velocità con segno.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a comandare separatamente la ruota sinistra.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper chiamare funzioni con argomenti numerici e leggere lo stato di un'uscita.
 
-## Consegna
+## Modello mentale
+
+`robot` è il nome della plancia di comando di Romeo. Il punto in `robot.drive(...)` sceglie il comando `drive` di quella plancia. I due numeri indicano nell'ordine ruota sinistra e ruota destra; zero significa ruota ferma. Non occorre ancora studiare le classi.
+
+## Esempio minimo commentato
+
+```python
+from romeo import Robot
+
+robot = Robot()          # Prepariamo la plancia di comando.
+robot.drive(0.3, 0.0)    # Sinistra attiva, destra ferma.
+robot.stop()             # Entrambe ferme alla fine.
+```
+
+## Prova guidata
+
+1. Scrivi sopra i due argomenti le etichette «sinistra» e «destra».
+2. Prevedi la coppia di valori mostrata dopo `drive(0.3, 0.0)`.
+3. Esegui e cerca l'evento con sinistra 0.3 e destra 0.0.
+4. Scambia i due valori e osserva quale ruota cambia, poi annulla la modifica.
+5. Completa la consegna e controlla l'evento di stop finale.
+
+## Esercizio base
+
+Attiva soltanto la ruota sinistra a 0.35 e poi ferma Romeo.
+
+## Esercizio intermedio
+
+Esegui due prove separate: solo sinistra e solo destra; confronta gli eventi.
+
+## Mini-sfida
+
+Prevedi il verso di rotazione del robot quando soltanto la ruota sinistra avanza.
+
+## Consegna valutata
 
 Con Robot.drive fai girare solo la ruota sinistra, poi ferma Romeo.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Errori tipici
 
-## Errori utili
+- Invertire l'ordine sinistra/destra degli argomenti.
+- Scrivere `Robot.drive(...)` invece di usare il nome `robot` preparato.
+- Dimenticare `robot.stop()` perché l'animazione sembra già terminata.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Autoverifica
 
-## Mini-sfida e autoverifica
+- So indicare quale argomento comanda ciascuna ruota?
+- So spiegare il significato di zero?
+- So verificare negli eventi che una sola ruota sia stata attivata?
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Accessibilità
+
+Affianca ai valori le parole sinistra/destra e usa lo stato numerico; non richiedere di dedurre la ruota attiva soltanto dall'animazione.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `robot` | il nome scelto per la plancia di comando |
+| `drive` | il comando che imposta insieme le due ruote |
+| `velocità con segno` | numero positivo per avanti, negativo per indietro |

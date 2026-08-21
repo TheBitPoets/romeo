@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica WASD, client, timeout, stop e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Verifica maiuscole, minuscole e tasto sconosciuto.
+2. Collega il mapping al client fornito.
+3. Simula un errore e osserva lo STOP nel blocco `finally`.
+
+## Se qualcosa non funziona
+
+- Inviare il tasto grezzo invece del comando di protocollo.
+- Dimenticare SPACE o lo STOP finale.
+- Dipendere da una API terminal-specific non presente sul computer dello studente.

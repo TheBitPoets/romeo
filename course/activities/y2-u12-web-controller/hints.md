@@ -1,5 +1,11 @@
 # Hint progressivi
 
-1. Disegna prima gli endpoint e la direzione del messaggio.
-2. Verifica evento, payload, feedback e chiudi ogni risorsa.
-3. Confronta la tua struttura con le API già importate negli esempi del corso, senza copiare il marker prima degli assert.
+1. Completa la funzione di traduzione nello scaffold.
+2. Verifica i payload senza rete.
+3. Collega la funzione al WebSocket fornito e osserva ack ed errore.
+
+## Se qualcosa non funziona
+
+- Mescolare selezione del comando e dettagli del WebSocket in ogni pulsante.
+- Inviare stringhe diverse dal protocollo documentato.
+- Mostrare stato soltanto tramite colore senza testo.

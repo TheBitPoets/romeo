@@ -2,10 +2,16 @@
 
 Durata prevista: 70 minuti. Difficoltà: C.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper leggere una posa del simulatore e costruire una sequenza di tratti e rotazioni.
+
+La posa di Romeo contiene posizione `(x, y)` e orientamento. `x` cresce andando verso destra nella mappa, `y` cresce andando verso l'alto; l'orientamento dice dove punta il robot. Per raggiungere un punto, confrontiamo partenza e target e pianifichiamo i segmenti.
+
 ## Evidenze osservabili
 
-Lo studente sa tradurre metri e orientamento in comandi, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Dalla posa iniziale raggiungi il target (1.0, 0.5) e fermati.
+Lo studente sa tradurre metri e orientamento in comandi. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Dalla posa iniziale raggiungi il target (1.0, 0.5) e fermati.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Confondere distanza da percorrere con coordinata finale.
+- Ignorare l'orientamento iniziale e avanzare nella direzione sbagliata.
+- Scambiare x e y leggendo la posa.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare x, y, angolo, tolleranza alla prossima unità, evitando dettagli interni del backend.
+Descrivi la mappa anche come coordinate e direzioni testuali; una griglia tattile o una tabella può sostituire la sola rappresentazione grafica.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

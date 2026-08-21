@@ -1,9 +1,17 @@
 # Traccia di rete — Controller analogico
 
-Endpoint A: __________ Endpoint B: __________
+Prerequisito richiamato: __________
 
-Messaggio/request: __________
+Attori e confine: __________
 
-Risposta attesa e validazione: __________
+Dato inviato: __________
+
+Risposta e controllo effettuato: __________
 
 Errore simulato: __________ Cleanup/STOP: __________
+
+## Mi controllo
+
+- So spiegare la dead-zone?
+- Le velocità rispettano sempre i limiti?
+- Posso testare tutto senza controller fisico?

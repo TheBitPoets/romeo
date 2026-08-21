@@ -2,35 +2,70 @@
 
 ## Obiettivo
 
-In questo laboratorio imparerai a confrontare velocità delle due ruote. Le parole chiave sono: coppia di velocità, direzione.
-Lavora prima nel simulatore: puoi ripetere la prova senza rischiare il robot fisico e il clock
-simulato rende ogni esecuzione confrontabile con la precedente.
+In questo laboratorio imparerai a confrontare velocità delle due ruote.
 
-## Procedura
+## Che cosa sai già
 
-1. Apri `starter.py` e individua import, istruzioni già presenti e commenti.
-2. Prevedi su carta cosa dovrebbe accadere, compreso lo stato finale dei motori.
-3. Modifica poche righe alla volta e premi Run in TheBitLab.
-4. Leggi il feedback di ogni controllo; usa traiettoria ed event log se il risultato sorprende.
-5. Termina sempre esplicitamente con `stop()` quando hai mosso Romeo.
+Saper leggere i due argomenti di `robot.drive(sinistra, destra)`.
 
-## Consegna
+## Modello mentale
+
+Romeo usa una guida differenziale: decide il movimento confrontando le due ruote. Due valori positivi uguali lo fanno avanzare diritto; un valore zero fa perno su una ruota; valori diversi producono una curva.
+
+## Esempio minimo commentato
+
+```python
+from romeo import Robot
+
+robot = Robot()
+robot.drive(0.3, 0.3)  # Stessa velocità: direzione diritta.
+robot.stop()
+```
+
+## Prova guidata
+
+1. Disegna due ruote e scrivi 0.3 accanto a entrambe.
+2. Prevedi se il robot va diritto o gira.
+3. Esegui l'esempio e controlla che lo stesso evento contenga entrambi i valori 0.3.
+4. Prova temporaneamente `drive(0.2, 0.4)` e descrivi la curva senza misurarla.
+5. Ripristina due valori 0.3 e termina con lo stop richiesto.
+
+## Esercizio base
 
 Imposta entrambe le ruote a 0.3 e termina in sicurezza.
 
-Le velocità sono numeri normalizzati: `0` significa fermo e `1` è il massimo consentito.
-Valori negativi in `Robot.drive(sinistra, destra)` fanno girare una ruota all'indietro.
-`sleep(secondi)` fa avanzare il tempo simulato; sul robot reale rappresenta tempo reale.
+## Esercizio intermedio
 
-## Errori utili
+Compila una tabella di previsione per `(0.3, 0.3)`, `(0.0, 0.3)` e `(0.2, 0.4)`.
 
-- `NameError`: controlla di avere importato e scritto correttamente il nome.
-- `TypeError`: verifica parentesi e tipo dell'argomento.
-- Romeo non si ferma: aggiungi `stop()` e controlla il flusso del programma.
-- La missione fallisce di poco: non cambiare tutto; osserva posa finale, tempo e tolleranza.
+## Mini-sfida
 
-## Mini-sfida e autoverifica
+Trova due coppie diverse che facciano curvare Romeo in direzioni opposte.
 
-Prima di eseguire, cambia un solo valore e annota la tua previsione. Poi ripristina la soluzione
-della consegna. Sai spiegare quale backend riceve il comando? Sai indicare lo stato finale delle
-ruote? Sapresti raccontare a un compagno perché la stessa API funziona nel simulatore e sul robot?
+## Consegna valutata
+
+Imposta entrambe le ruote a 0.3 e termina in sicurezza.
+
+## Errori tipici
+
+- Credere che due numeri uguali facciano girare il robot.
+- Confondere la coppia di velocità con due comandi eseguiti in tempi diversi.
+- Controllare soltanto una ruota nel feedback.
+
+## Autoverifica
+
+- So prevedere l'effetto di due valori uguali?
+- So distinguere una curva da un movimento diritto usando i numeri?
+- So verificare che entrambe le ruote siano state comandate nello stesso evento?
+
+## Accessibilità
+
+Rappresenta ogni coppia sia con frecce sia con una tabella testuale sinistra/destra; le frecce da sole non sono necessarie per capire.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `guida differenziale` | movimento ottenuto confrontando le velocità delle due ruote |
+| `coppia` | i due valori sinistra e destra considerati insieme |
+| `curva` | movimento con velocità delle ruote diverse |

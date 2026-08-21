@@ -1,9 +1,17 @@
 # Scheda operativa — Dai componenti ai comandi
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So descrivere il ruolo di Raspberry Pi, CRICKIT e motori con una frase ciascuno?
+- So dire quale istruzione cambia il LED?
+- So verificare che entrambe le ruote siano ferme alla fine?

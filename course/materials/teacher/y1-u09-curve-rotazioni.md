@@ -2,10 +2,16 @@
 
 Durata prevista: 60 minuti. Difficoltà: B.
 
+## Punto di partenza e modello mentale
+
+Prerequisiti: Saper usare una durata e conoscere l'effetto di velocità uguali o diverse.
+
+In una curva il centro di Romeo cambia posizione; in una rotazione sul posto le ruote vanno in versi opposti e il centro resta quasi fermo. L'angolo ottenuto dipende da velocità, durata e distanza tra le ruote: perciò si calibra una durata con prove piccole.
+
 ## Evidenze osservabili
 
-Lo studente sa distinguere curva e rotazione sul posto, anticipa l'effetto delle istruzioni e interpreta almeno un
-risultato del grader. La consegna è: Ruota Romeo di circa 90 gradi a sinistra e fermalo.
+Lo studente sa distinguere curva e rotazione sul posto. Raccogliere il sorgente, la previsione, il risultato dei check e
+le risposte di autoverifica. La consegna valutata è: Ruota Romeo di circa 90 gradi a sinistra e fermalo.
 
 ## Sequenza proposta
 
@@ -18,15 +24,15 @@ Non fornire subito la soluzione. Chiedere prima: “quale riga cambia lo stato?�
 dimostra?” e “Romeo è fermo alla fine?”. Usare gli hint in ordine e mostrare l'event log solo dopo
 che lo studente ha scritto una previsione.
 
-## Idee errate frequenti
+## Idee errate frequenti e diagnosi
 
-Le chiamate non sono descrizioni ma azioni; `sleep` non ferma i motori; una velocità doppia non
-garantisce precisione doppia; superare un target non equivale a raggiungerlo. Sul robot fisico il
-watchdog è una rete di sicurezza, non sostituisce `stop()`.
+- Copiare una durata precisa senza verificarla nel proprio scenario.
+- Cambiare velocità e durata insieme, rendendo difficile capire quale modifica ha avuto effetto.
+- Confondere coordinate finali e orientamento finale.
 
 ## Inclusione e valutazione formativa
 
-Fornire una scheda con i nomi delle funzioni e consentire di descrivere prima l'algoritmo con
-frecce. Per chi procede rapidamente, richiedere una variante con una funzione nominata bene.
-Raccogliere come evidenze: previsione, sorgente, esito dei check e una frase di spiegazione. Nel
-debrief collegare differential drive, orientamento alla prossima unità, evitando dettagli interni del backend.
+Fornisci orientamento iniziale/finale e errore in gradi come testo; non richiedere di stimare l'angolo soltanto dalla figura.
+
+Usare l'esercizio base come pratica comune, l'intermedio per consolidare e la mini-sfida soltanto
+dopo una spiegazione corretta. Nel debrief introdurre solo il lessico elencato nella lezione.

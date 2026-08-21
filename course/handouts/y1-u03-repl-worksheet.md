@@ -1,9 +1,17 @@
 # Scheda operativa — Esplora con il REPL
 
-Previsione: ____________________
+Prerequisito che ricordo: __________
 
-Comandi in ordine: ____________________
+Previsione prima del Run: __________
 
-Stato finale atteso: ____________________
+Prova guidata completata: __________
 
-Esito dei check e correzione effettuata: ____________________
+Evidenza osservata: __________
+
+Errore trovato e correzione: __________
+
+## Mi controllo
+
+- So distinguere il prompt da ciò che devo digitare?
+- So trovare il nome sconosciuto in un `NameError`?
+- So spiegare quando usare il REPL e quando usare `main.py`?

@@ -1,33 +1,78 @@
 # Secondo anno 11. WebSocket bidirezionale
 
-## Obiettivo e modello mentale
+## Obiettivo
 
-In questa unità imparerai a mantenere una connessione per comandi realtime. Userai upgrade, frame, ack. Separa sempre tre domande:
-chi comunica, quale messaggio attraversa il confine e quale risposta prova che l'operazione è
-riuscita. Il robot non deve conoscere i dettagli del trasporto: socket, REST e WebSocket arrivano
-alla stessa API Romeo attraverso adapter distinti.
+In questa unità imparerai a mantenere una connessione per comandi realtime.
 
-## Laboratorio
+## Che cosa sai già
+
+Conosci HTTP, JSON e FastAPI; sai usare un context manager.
+
+## Modello mentale
+
+HTTP normale apre uno scambio request/response; WebSocket mantiene un canale aperto in cui entrambe le parti possono inviare messaggi. Lo scaffold fornisce server e gestione asincrona: il client didattico usa TestClient sincrono, così il nuovo concetto è soltanto la conversazione persistente.
+
+## Esempio minimo commentato
+
+```python
+with client.websocket_connect("/ws/control") as ws:
+    pronto = ws.receive_json()
+    ws.send_json({"command": "STOP"})
+    risposta = ws.receive_json()
+```
+
+```text
+server → ready
+client → STOP
+server → ack
+```
+
+L'ordine fa parte del protocollo; la chiusura del `with` termina la connessione.
+
+## Prova guidata
+
+1. Confronta una timeline HTTP con quella WebSocket.
+2. Numera ready, comando e ack.
+3. Collegati al server fornito e verifica `ready`.
+4. Invia STOP e valida l'ack completo.
+5. Chiudi senza inviare altri dati e verifica che il robot resti fermo.
+
+## Esercizio base
+
+Completa la conversazione ready→STOP→ack.
+
+## Esercizio intermedio
+
+Invia un comando invalido e verifica una risposta error senza perdere la connessione.
+
+## Mini-sfida
+
+Disegna come heartbeat o timeout rileverebbero un client scomparso, senza implementarli qui.
+
+## Consegna valutata
 
 Collegati a /ws/control, invia STOP e verifica l'ack.
 
-1. Disegna endpoint e direzione dei messaggi.
-2. Completa `starter.py` con la minima operazione osservabile.
-3. Verifica dati e status prima di stampare il marker richiesto dal grader.
-4. Chiudi socket, camera o sessioni anche in caso di errore.
-5. Esegui due volte: un risultato deterministico deve essere ripetibile.
+## Errori tipici
 
-## Debug guidato
-
-Un timeout suggerisce spesso che un endpoint attende dati o una chiusura. Una risposta ricevuta non
-è automaticamente valida: controlla tipo, schema, status e valori. Per JSON distingui testo e
-oggetto Python; per HTTP distingui trasporto, metodo e risorsa; per WebSocket considera la durata
-della connessione e lo STOP alla disconnessione. Non esporre il server della classe su Internet.
-Usa loopback durante gli esperimenti e non inserire segreti nel sorgente.
+- Inviare prima di leggere il messaggio ready previsto.
+- Confondere WebSocket con una serie di GET HTTP.
+- Uscire senza verificare lo STOP alla disconnessione.
 
 ## Autoverifica
 
-Sai spiegare perché questa tecnologia è adatta al compito? Quale failure hai gestito? Dove avviene
-la validazione? Quale istruzione libera la risorsa? Mostra un'evidenza concreta: risposta, marker,
-stato motori o test. Poi descrivi come cambierebbe solo l'adapter passando dal simulatore al Romeo
-fisico.
+- So spiegare perché la connessione resta aperta?
+- So indicare chi invia ogni messaggio?
+- So descrivere cosa deve accadere alla chiusura?
+
+## Accessibilità
+
+La sequenza dei messaggi è disponibile come elenco testuale oltre alle frecce; gli ack sono leggibili e non dipendono da animazioni.
+
+## Parole nuove
+
+| Termine | Significato in questa lezione |
+| --- | --- |
+| `WebSocket` | canale persistente e bidirezionale |
+| `frame` | unità trasmessa sul WebSocket |
+| `ack` | risposta che conferma la gestione del messaggio |
