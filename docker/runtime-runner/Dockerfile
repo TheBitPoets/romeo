@@ -8,7 +8,8 @@ LABEL org.opencontainers.image.title="Romeo untrusted submission runner" \
 COPY docker/runtime-runner/requirements.lock /tmp/requirements.lock
 COPY pyproject.toml README.md /opt/romeo/
 COPY src /opt/romeo/src
-RUN python -m pip install --no-cache-dir -r /tmp/requirements.lock /opt/romeo \
+RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock \
+    && python -m pip install --no-cache-dir --no-deps --no-build-isolation /opt/romeo \
     && useradd --uid 65532 --create-home --shell /usr/sbin/nologin runner \
     && rm -f /tmp/requirements.lock
 ENV PYTHONUTF8=1
