@@ -32,6 +32,14 @@ class RuntimeContext:
     submission_path: Path
     timeout_seconds: int
     max_simulation_seconds: float
+    stdout_checks: tuple[StdoutCheck, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class StdoutCheck:
+    name: str
+    contains: str
+    points: float
 
 
 class RomeoRuntimePlugin:
@@ -196,10 +204,9 @@ class RomeoRuntimePlugin:
             if result.get("schema_version") != "romeo.worker_result.v1":
                 raise ValueError("worker returned an unsupported result schema")
             artifacts = self._write_artifacts(context, run_directory, result)
-            checks = self._test_results(result)
+            checks, score, checks_passed = self._test_results(result, context.stdout_checks)
             student_error = result.get("student_error")
-            grade_result = result["grade"]
-            passed = not student_error and bool(grade_result["passed"])
+            passed = not student_error and checks_passed
             stderr = str(result.get("stderr", ""))
             if student_error:
                 stderr = f"{stderr}\n{student_error}".strip()
@@ -212,7 +219,7 @@ class RomeoRuntimePlugin:
                 stderr=stderr[:MAX_CAPTURE_CHARS],
                 detail="mission completed" if passed else "mission requirements not met",
                 tests=checks,
-                metadata={"score": float(grade_result["score"]), "artifacts": artifacts},
+                metadata={"score": score, "artifacts": artifacts},
             )
         except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as error:
             return self._execution_result(
@@ -280,6 +287,7 @@ class RomeoRuntimePlugin:
             or maximum <= 0
         ):
             raise ValueError("max_simulation_seconds must be a positive number")
+        stdout_checks = self._stdout_checks(config.get("stdout_checks", []))
         return RuntimeContext(
             activity,
             workspace,
@@ -288,6 +296,7 @@ class RomeoRuntimePlugin:
             submission_path,
             timeout,
             float(maximum),
+            stdout_checks,
         )
 
     def _write_artifacts(
@@ -337,15 +346,34 @@ class RomeoRuntimePlugin:
         return artifacts
 
     @staticmethod
-    def _test_results(result: dict[str, Any]) -> list[dict[str, Any]]:
+    def _test_results(
+        result: dict[str, Any], stdout_checks: tuple[StdoutCheck, ...]
+    ) -> tuple[list[dict[str, Any]], float, bool]:
+        grade_checks = result["grade"]["checks"]
         tests = [
             {
                 "name": str(check["name"]),
                 "passed": bool(check["passed"]),
                 "detail": str(check.get("detail", "")),
             }
-            for check in result["grade"]["checks"]
+            for check in grade_checks
         ]
+        stdout = str(result.get("stdout", ""))
+        output_results: list[tuple[bool, float]] = []
+        for check in stdout_checks:
+            check_passed = check.contains in stdout
+            output_results.append((check_passed, check.points))
+            tests.append(
+                {
+                    "name": check.name,
+                    "passed": check_passed,
+                    "detail": (
+                        f"output contains {check.contains!r}"
+                        if check_passed
+                        else f"expected output marker {check.contains!r}"
+                    ),
+                }
+            )
         if result.get("student_error"):
             tests.insert(
                 0,
@@ -355,7 +383,39 @@ class RomeoRuntimePlugin:
                     "detail": "the program raised an exception",
                 },
             )
-        return tests
+        available = sum(float(check["points"]) for check in grade_checks) + sum(
+            points for _, points in output_results
+        )
+        awarded = sum(float(check["awarded"]) for check in grade_checks) + sum(
+            points for passed, points in output_results if passed
+        )
+        score = round(10.0 * awarded / available, 4) if available else 10.0
+        return tests, score, all(test["passed"] for test in tests)
+
+    @staticmethod
+    def _stdout_checks(value: object) -> tuple[StdoutCheck, ...]:
+        if not isinstance(value, list):
+            raise TypeError("stdout_checks must be an array")
+        checks: list[StdoutCheck] = []
+        for index, raw in enumerate(value):
+            if not isinstance(raw, dict):
+                raise TypeError(f"stdout_checks[{index}] must be an object")
+            name = raw.get("name")
+            contains = raw.get("contains")
+            points = raw.get("points", 1.0)
+            if not isinstance(name, str) or not name.strip():
+                raise ValueError(f"stdout_checks[{index}].name must be non-empty")
+            if not isinstance(contains, str) or not contains:
+                raise ValueError(f"stdout_checks[{index}].contains must be non-empty")
+            if (
+                isinstance(points, bool)
+                or not isinstance(points, (int, float))
+                or not math.isfinite(points)
+                or points <= 0
+            ):
+                raise ValueError(f"stdout_checks[{index}].points must be positive")
+            checks.append(StdoutCheck(name.strip(), contains, float(points)))
+        return tuple(checks)
 
     @staticmethod
     def _safe_relative(value: object, label: str) -> PurePosixPath:

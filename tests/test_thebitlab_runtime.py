@@ -154,6 +154,36 @@ def test_student_exception_is_a_stable_failed_execution(tmp_path: Path) -> None:
     assert "RuntimeError: boom" in result["stderr"]
 
 
+def test_declarative_stdout_checks_grade_network_labs(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "print('HTTP 200 JSON OK')\n")
+    config_path = Path(request["paths"]["config"])
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["stdout_checks"] = [
+        {"name": "Risposta HTTP", "contains": "HTTP 200", "points": 2},
+        {"name": "Payload JSON", "contains": "JSON OK", "points": 1},
+    ]
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "failed"  # Geometry fails, output checks pass.
+    assert [test["passed"] for test in result["tests"][-2:]] == [True, True]
+    assert result["metadata"]["score"] == 5.0
+
+
+def test_invalid_stdout_check_configuration_is_rejected(tmp_path: Path) -> None:
+    request, _ = runtime_request(tmp_path, "print('anything')\n")
+    config_path = Path(request["paths"]["config"])
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    config["stdout_checks"] = [{"name": "", "contains": "OK"}]
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    result = create_plugin().run(request)
+
+    assert result["status"] == "invalid_payload"
+    assert "name must be non-empty" in result["detail"]
+
+
 def test_wall_clock_timeout_terminates_busy_submission(tmp_path: Path) -> None:
     request, _ = runtime_request(tmp_path, "while True:\n    pass\n", timeout_seconds=1)
 

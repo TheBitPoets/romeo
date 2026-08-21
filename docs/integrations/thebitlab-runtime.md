@@ -40,6 +40,12 @@ Il file indicato da `extensions.thebitlab.runtime.config` usa:
 Scenario e submission sono risolti con containment check. La submission è
 limitata a 1 MB; timeout wall-clock e limite di tempo simulato sono indipendenti.
 
+I laboratori di rete possono dichiarare `stdout_checks`, una lista di controlli
+con `name`, `contains` e `points`. Il runtime li combina con i check spaziali:
+sono utili per verificare marcatori emessi dopo una risposta socket, JSON o HTTP.
+Non sostituiscono il sandbox né eventuali test segreti per valutazioni ad alto
+impatto.
+
 ## Esecuzione
 
 Il worker viene avviato con `python -I`, collega un singolo
@@ -67,4 +73,3 @@ Il 21 agosto 2026 discovery, inventory e probe sono stati provati contro
 `5472eef86568a4e7ce59ad34ba937220df27efd7`. La suite mirata upstream ha prodotto
 32 test passati. Il package usa Hatchling affinché un editable install esponga un
 solo entry point, come richiesto dal registry.
-
