@@ -128,3 +128,32 @@ roadmap 2D o modificare hardware/licenza/distribuzione.
   materiali) e corso proprietario (maggiore controllo, minore collaborazione).
 - **Conseguenze:** issue #1 resta aperta; manifest, avvisi e inventario devono
   impedire che assenza di evidenza venga scambiata per originalità.
+
+## ADR-013 — Broker sandbox TheBitLab e grading trusted separato
+
+- **Stato:** accettata dal product owner, 2026-08-21.
+- **Problema:** subprocess, `python -I` e timeout non confinano codice studente
+  non affidabile e il worker locale condivide interprete con simulatore/grader.
+- **Decisione:** estendere l'ABI v1 con `prepare_sandbox()` e
+  `finalize_sandbox()`. TheBitLab esegue il piano nel proprio profilo Docker;
+  il container riceve solo gli artifact dichiarati e produce una command trace
+  non fidata. Scenario, replay, grading e artifact finali restano sull'host.
+- **Motivazione:** riusa un unico boundary ufficiale e una trace falsificata può
+  al massimo esprimere comandi che lo studente avrebbe potuto impartire.
+- **Alternative:** sandbox autonoma per plugin; runtime solo formativo locale.
+- **Conseguenze:** immagini OCI solo per digest; `run()` resta fallback
+  formativo non autorevole; senza Docker o digest configurato si fallisce chiuso.
+
+## ADR-014 — Contratti funzionali nominati per il secondo anno
+
+- **Stato:** accettata dal product owner, 2026-08-21.
+- **Problema:** codice top-level e marker stdout non offrono un punto osservabile
+  per testare socket, HTTP, WebSocket, camera, controller e safety.
+- **Decisione:** ogni unità Y2 espone una piccola funzione nominata, importabile
+  senza side effect. Starter, soluzione, consegna e behavioural test condividono
+  la stessa firma; rete, camera e controller sono iniettati quando possibile.
+- **Motivazione:** mantiene il codice leggibile e permette test di valori,
+  ordine, cleanup ed errori senza affidarsi a stringhe stampate.
+- **Alternative:** harness black-box di processi/porte; sola rubrica docente.
+- **Conseguenze:** i marker restano feedback; il voto deriva dai behavioural
+  test eseguiti nel sandbox e validati dal finalize trusted.

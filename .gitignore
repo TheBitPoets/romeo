@@ -34,3 +34,4 @@ Thumbs.db
 # Runtime output and generated artifacts
 *.log
 artifacts/
+.worktrees/

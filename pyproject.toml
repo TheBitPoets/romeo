@@ -55,7 +55,7 @@ testpaths = ["tests"]
 [tool.ruff]
 target-version = "py310"
 line-length = 100
-extend-exclude = ["course/activities"]
+extend-exclude = ["course/activities", ".worktrees"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

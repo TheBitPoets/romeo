@@ -4,12 +4,10 @@ Audit finale eseguito il 21 agosto 2026 sul branch `feat/platform-foundation`.
 
 ## Stato pre-merge
 
-La baseline tecnica è verificata, ma la PR non è ancora pronta al merge. Due
-decisioni di progetto restano aperte: boundary sandbox per runtime plugin e
-contratto didattico osservabile degli esercizi di secondo anno. I marker stdout
-sono stati declassati a feedback formativo (`test: false`); starter e solution Y2
-devono essere riallineati dopo la scelta. Anche i grader Y1 che misurano soltanto
-il risultato geometrico vanno distinti dalle evidenze sui costrutti Python.
+Le due decisioni pre-merge sono state applicate: broker sandbox ufficiale
+TheBitLab e funzioni nominate con behavioural test per Y2. La PR resta draft
+finché la modifica coordinata `2cornot2c`, l'immagine Romeo firmata per digest e
+la review finale non sono disponibili. I marker stdout sono solo feedback.
 
 ## Evidenze automatiche
 
@@ -23,8 +21,8 @@ il risultato geometrico vanno distinti dalle evidenze sui costrutti Python.
 - runtime `romeo-sim` scoperto dall'entry point ufficiale e conforme alla suite
   mirata `2cornot2c` (33 test upstream);
 - Course Bundle 1.0.0 e 43 Activity validati anche con i validator upstream;
-- tutte le 43 soluzioni docente eseguite; i 23 lab di rete passano attraverso il
-  plugin completo e i relativi check di output;
+- tutte le 43 soluzioni docente eseguite; i 23 lab Y2 hanno starter importabili,
+  soluzioni coerenti e hidden behavioural test senza marker valutativi;
 - lint Ruff, typing mypy strict e suite pytest eseguiti su Python locale; la CI
   replica i gate su Python 3.10 e 3.12.
 

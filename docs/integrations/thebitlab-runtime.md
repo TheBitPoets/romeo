@@ -19,7 +19,9 @@ Il runtime dichiara le capability:
 - `deterministic-grade`: sostituisce `time.sleep` nel worker con avanzamento del
   clock simulato;
 - `artifact-collect`: salva manifest, risultato, traiettoria, eventi e stato
-  finale sotto il workspace.
+  finale sotto il workspace;
+- `sandbox-plan.v1`: delega l'esecuzione non fidata al broker ufficiale
+  TheBitLab tramite `prepare_sandbox()` e `finalize_sandbox()`.
 
 `probe()` resta disponibile per il percorso headless anche se l'extra `web` non è
 installato; `metadata.interactive_available` segnala separatamente il viewer.
@@ -40,11 +42,11 @@ Il file indicato da `extensions.thebitlab.runtime.config` usa:
 Scenario e submission sono risolti con containment check. La submission è
 limitata a 1 MB; timeout wall-clock e limite di tempo simulato sono indipendenti.
 
-I laboratori di rete possono dichiarare `stdout_checks`, una lista di controlli
+I laboratori possono dichiarare `stdout_checks`, una lista di controlli
 con `name`, `contains` e `points`. Il runtime li combina con i check spaziali:
 sono utili per verificare marcatori emessi dopo una risposta socket, JSON o HTTP.
-Non sostituiscono il sandbox né eventuali test segreti per valutazioni ad alto
-impatto.
+Non sostituiscono il sandbox né test comportamentali. Y2 usa invece
+`behavioral_tests` con path ed entrypoint nominati.
 
 ## Esecuzione
 
@@ -60,11 +62,11 @@ prodotti dal runtime. Non viene aggiunto alcun campo top-level fuori ABI.
 
 ## Sicurezza
 
-`-I`, containment e subprocess limitano accoppiamento e failure, ma non sono una
-sandbox di sistema: una submission Python rimane codice non fidato. In produzione
-il processo runtime deve essere eseguito nel sandbox imposto dall'host TheBitLab
-con limiti di filesystem, rete, memoria e CPU. Questa responsabilità non viene
-nascosta dietro una falsa garanzia del plugin.
+`run()` con `-I`, containment e subprocess non è una sandbox e restituisce
+`authoritative=false`. Il percorso autorevole richiede il broker TheBitLab e
+un'immagine configurata per digest. Nel caso geometrico la submission produce
+una trace e scenario/grader restano sull'host; nel caso Y2 il container esegue
+la fixture e il finalizzatore la confronta con il manifest docente.
 
 ## Conformance verificata
 
