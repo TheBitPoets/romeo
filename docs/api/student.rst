@@ -1,6 +1,10 @@
 API studente e robot
 =====================
 
+Questa sezione contiene l'interfaccia pubblica usata nei programmi didattici.
+I meccanismi di protezione e watchdog sono documentati separatamente nella
+reference :doc:`safety`.
+
 ``romeo.easy``
 --------------
 
@@ -13,14 +17,6 @@ API studente e robot
 ---------------
 
 .. automodule:: romeo.robot
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-``romeo.safety``
-----------------
-
-.. automodule:: romeo.safety
    :members:
    :undoc-members:
    :show-inheritance:
