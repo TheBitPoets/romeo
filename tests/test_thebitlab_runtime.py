@@ -9,6 +9,7 @@ from typing import Any
 import pytest
 
 from romeo.integrations.thebitlab import create_plugin
+from romeo.integrations.thebitlab.worker import execute_submission
 
 
 def runtime_request(
@@ -170,6 +171,24 @@ def test_invalid_request_is_reported_without_throwing(tmp_path: Path) -> None:
 
     assert result["status"] == "invalid_payload"
     assert "runtime_id" in result["detail"]
+
+
+def test_in_process_worker_runs_do_not_reuse_easy_api_backend(tmp_path: Path) -> None:
+    request, workspace = runtime_request(
+        tmp_path,
+        "from romeo.easy import forward, stop\n"
+        "from time import sleep\n"
+        "forward(0.5)\n"
+        "sleep(2)\n"
+        "stop()\n",
+    )
+    scenario = Path(request["paths"]["config"]).parent / "scenario.json"
+
+    first = execute_submission(workspace / "main.py", scenario, max_simulation_seconds=10)
+    second = execute_submission(workspace / "main.py", scenario, max_simulation_seconds=10)
+
+    assert first["grade"]["passed"] is True
+    assert second["grade"]["passed"] is True
 
 
 @pytest.mark.parametrize("unsafe_path", ["../scenario.json", "runtime//scenario.json", "C:/x.json"])

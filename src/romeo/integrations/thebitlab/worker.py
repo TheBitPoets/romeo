@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from romeo.backends.factory import backend_override
+from romeo.easy import close as close_easy_api
 from romeo.simulation.engine import SimulationEngine
 from romeo.simulation.grading import grade
 from romeo.simulation.scenario import Scenario
@@ -35,6 +36,7 @@ def execute_submission(
     standard_error = io.StringIO()
     student_error: str | None = None
     original_sleep = time.sleep
+    close_easy_api()
 
     def simulated_sleep(seconds: float) -> None:
         if isinstance(seconds, bool) or not isinstance(seconds, (int, float)):
@@ -60,6 +62,7 @@ def execute_submission(
         student_error = traceback.format_exc(limit=20)
     finally:
         time.sleep = original_sleep
+        close_easy_api()
 
     try:
         grade_result = grade(engine).to_mapping()
