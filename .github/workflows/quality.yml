@@ -35,5 +35,8 @@ jobs:
       - name: Type check
         run: python -m mypy src
 
+      - name: Validate Course Bundle and Activities
+        run: python scripts/validate_course.py
+
       - name: Test
         run: python -m pytest
