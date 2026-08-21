@@ -122,7 +122,8 @@ servo al centro sicuro.
 Il test fisico è separato con marker `hardware` e opt-in esplicito.
 
 La wheel candidata `thebitlab-romeo 0.2.0` è stata inoltre installata nella
-stessa venv TheBitLab. Hash SHA-256 dell'artefatto di verifica:
+stessa venv TheBitLab ed è stata ricostruita dal commit sorgente noto
+`0c99ce67b31c482bb777b3a6acb4b08f37bd2158`. Hash SHA-256 dell'artefatto di verifica:
 `f9325a2699defcdfcf3cd604f24ac99f1778e4020717ea7842ddc994f8d4c873`.
 Il probe ha osservato plugin/runtime `0.2.0`, capability `sandbox-plan.v1` e
 broker disponibile. Le due Activity Y1/Y2 sono state ripetute con esito positivo
