@@ -81,7 +81,14 @@ def test_state_protocol_is_renderer_neutral() -> None:
 
     assert state["schema_version"] == "romeo.simulation.state.v1"
     assert state["camera"] == {"pan": 45.0, "tilt": 120.0}
-    assert state["world"] == {"width": 4.0, "height": 3.0, "obstacles": []}
+    assert state["world"] == {
+        "width": 4.0,
+        "height": 3.0,
+        "robot_radius": 0.1,
+        "obstacles": [],
+        "targets": [],
+        "checkpoints": [],
+    }
 
 
 def test_simulation_implements_the_same_robot_backend_contract() -> None:

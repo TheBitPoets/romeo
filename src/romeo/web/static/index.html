@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Simulatore Romeo</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/viewer.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">TheBitLab · Romeo</p>
+        <h1>Simulatore 2D</h1>
+      </div>
+      <div class="connection" aria-live="polite">
+        <span id="connection-dot" class="connection__dot" aria-hidden="true"></span>
+        <span id="connection-status">Connessione…</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="viewer-card" aria-labelledby="arena-title">
+        <div class="card-heading">
+          <div>
+            <p class="label">Scenario</p>
+            <h2 id="arena-title">Arena</h2>
+          </div>
+          <span id="scenario-id" class="scenario-id">—</span>
+        </div>
+        <div id="canvas-wrap" class="canvas-wrap">
+          <canvas
+            id="arena"
+            role="img"
+            aria-label="Vista dall'alto dell'arena di simulazione"
+          ></canvas>
+          <p id="empty-state" class="empty-state">In attesa dello stato del simulatore…</p>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="Controlli e telemetria">
+        <section class="panel controls" aria-labelledby="controls-title">
+          <p class="label">Comandi</p>
+          <h2 id="controls-title">Simulazione</h2>
+          <div class="button-grid">
+            <button id="start-button" class="button button--primary" type="button">Avvia</button>
+            <button id="stop-button" class="button button--danger" type="button">Ferma</button>
+            <button id="reset-button" class="button" type="button">Reimposta</button>
+          </div>
+          <p id="action-status" class="action-status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel" aria-labelledby="telemetry-title">
+          <p class="label">Tempo reale</p>
+          <h2 id="telemetry-title">Telemetria</h2>
+          <dl class="telemetry">
+            <div><dt>Stato</dt><dd id="running">—</dd></div>
+            <div><dt>Clock</dt><dd id="clock">0,00 s</dd></div>
+            <div><dt>Motore sinistro</dt><dd id="motor-left">0,00</dd></div>
+            <div><dt>Motore destro</dt><dd id="motor-right">0,00</dd></div>
+            <div><dt>Camera pan</dt><dd id="camera-pan">90°</dd></div>
+            <div><dt>Camera tilt</dt><dd id="camera-tilt">90°</dd></div>
+            <div><dt>Collisioni</dt><dd id="collisions">0</dd></div>
+          </dl>
+        </section>
+
+        <section class="panel legend" aria-labelledby="legend-title">
+          <p class="label">Legenda</p>
+          <h2 id="legend-title">Elementi</h2>
+          <ul>
+            <li><span class="swatch swatch--romeo"></span>Romeo</li>
+            <li><span class="swatch swatch--path"></span>Traiettoria</li>
+            <li><span class="swatch swatch--obstacle"></span>Ostacolo</li>
+            <li><span class="swatch swatch--target"></span>Target / checkpoint</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </body>
+</html>

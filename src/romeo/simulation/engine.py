@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
 from typing import Any
 
@@ -143,7 +144,9 @@ class SimulationEngine:
             "world": {
                 "width": self.scenario.world_width,
                 "height": self.scenario.world_height,
+                "robot_radius": self.scenario.robot_radius,
                 "obstacles": [asdict(obstacle) for obstacle in self.scenario.obstacles],
+                **self._scenario_markers(),
             },
         }
         if include_trajectory:
@@ -152,6 +155,30 @@ class SimulationEngine:
 
     def event_log(self) -> list[dict[str, Any]]:
         return [asdict(event) for event in self.events]
+
+    def _scenario_markers(self) -> dict[str, list[dict[str, Any]]]:
+        targets: list[dict[str, Any]] = []
+        checkpoints: list[dict[str, Any]] = []
+        for check in self.scenario.checks:
+            if check.type in {"reach_position", "stop_in_zone"}:
+                x = check.parameters.get("x")
+                y = check.parameters.get("y")
+                if isinstance(x, (int, float)) and isinstance(y, (int, float)):
+                    targets.append({"x": x, "y": y, "label": check.name})
+            elif check.type == "checkpoints":
+                raw_checkpoints = check.parameters.get("checkpoints")
+                if isinstance(raw_checkpoints, tuple):
+                    for index, item in enumerate(raw_checkpoints, start=1):
+                        if isinstance(item, Mapping):
+                            marker_x = item.get("x")
+                            marker_y = item.get("y")
+                            if isinstance(marker_x, (int, float)) and isinstance(
+                                marker_y, (int, float)
+                            ):
+                                checkpoints.append(
+                                    {"x": marker_x, "y": marker_y, "label": index}
+                                )
+        return {"targets": targets, "checkpoints": checkpoints}
 
     def _integrate(self, duration: float) -> None:
         left_velocity = self.left_speed * self.scenario.max_wheel_speed

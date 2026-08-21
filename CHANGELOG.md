@@ -6,6 +6,14 @@ Le modifiche rilevanti del progetto sono registrate qui.
 
 ### Added
 
+- API studente `romeo.easy` e classe `Robot`, con backend mock e adapter CRICKIT.
+- Safety backend con limite velocità, watchdog, timeout, controller esclusivo e
+  stop fail-safe.
+- Simulatore 2D deterministico headless con differential drive, collisioni,
+  scenari JSON, traiettoria, event log e grading data-driven.
+- Viewer Canvas 2D con protocollo stato WebSocket, telemetria e controlli di
+  avvio, stop e reset.
+- Test unitari, simulation/safety/protocol test, lint, typing e CI Python 3.10/3.12.
 - Audit iniziale dei repository Romeo, `marwano/robo`, `2cornot2c` e
   `thebitlab-hardware`, con riferimenti riproducibili e rischi aperti.
 - Architettura target basata su API studente unica, backend sostituibili,
