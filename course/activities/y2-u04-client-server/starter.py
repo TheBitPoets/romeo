@@ -1,4 +1,7 @@
-"""Invia PING su una coppia di socket e rispondi PONG.
+"""Invia PING su una coppia di socket e rispondi PONG."""
 
-TODO: completa il laboratorio e stampa il marker solo dopo le verifiche.
-"""
+import socket
+
+# 1. Prepara gli endpoint o i dati.
+# 2. Esegui l'operazione e valida la risposta con assert.
+# 3. Stampa il marker richiesto solo dopo le verifiche.

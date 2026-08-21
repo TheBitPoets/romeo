@@ -29,6 +29,23 @@ def code(value: str) -> str:
     return dedent(value).lstrip()
 
 
+def starter_code(unit: NetworkUnit) -> str:
+    """Keep lesson imports visible without revealing the behavioral solution."""
+
+    imports = [
+        line
+        for line in unit.solution.splitlines()
+        if line.startswith("import ") or line.startswith("from ")
+    ]
+    return (
+        f'"""{unit.task}"""\n\n'
+        + "\n".join(imports)
+        + "\n\n# 1. Prepara gli endpoint o i dati.\n"
+        + "# 2. Esegui l'operazione e valida la risposta con assert.\n"
+        + "# 3. Stampa il marker richiesto solo dopo le verifiche.\n"
+    )
+
+
 UNITS_Y2 = (
     NetworkUnit(
         "rete",
@@ -696,10 +713,7 @@ def build() -> None:
                 ],
             },
         )
-        write(
-            base / "starter.py",
-            f'"""{unit.task}\n\nTODO: completa il laboratorio e stampa il marker solo dopo le verifiche.\n"""\n',
-        )
+        write(base / "starter.py", starter_code(unit))
         write(base / "solution.py", unit.solution)
         write(
             base / "hints.md",
