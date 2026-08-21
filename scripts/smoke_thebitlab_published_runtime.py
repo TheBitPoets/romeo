@@ -9,8 +9,6 @@ import shutil
 import sys
 import tempfile
 from pathlib import Path
-from types import ModuleType
-from typing import Any
 
 
 BROKER_COMMIT = "dcb76f600fa951ba94fffbd355a6c13dfcbfb424"
@@ -20,7 +18,7 @@ ACTIVITIES = (
 )
 
 
-def _load_student_runtime(thebitlab_root: Path) -> ModuleType:
+def _load_student_runtime(thebitlab_root: Path):
     root = thebitlab_root.resolve(strict=True)
     sys.path.insert(0, str(root))
     from scripts import student_runtime
@@ -29,12 +27,12 @@ def _load_student_runtime(thebitlab_root: Path) -> ModuleType:
 
 
 def _run_activity(
-    student_runtime: ModuleType,
+    student_runtime,
     *,
     romeo_root: Path,
     temporary_root: Path,
     slug: str,
-) -> dict[str, Any]:
+):
     source = romeo_root / "course" / "activities" / slug
     activity_dir = temporary_root / "activities" / slug
     workspace = temporary_root / "workspaces" / slug
