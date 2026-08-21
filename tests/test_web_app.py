@@ -25,6 +25,8 @@ def test_viewer_and_state_endpoint() -> None:
     assert "Romeo" in viewer.text
     assert script.status_code == 200
     assert "WebSocket" in script.text
+    assert "state.led" in script.text
+    assert 'id="led-color"' in viewer.text
     assert state.json()["schema_version"] == "romeo.simulation.state.v1"
     assert not state.json()["session_running"]
 

@@ -16,6 +16,7 @@ const fields = {
   right: document.querySelector("#motor-right"),
   pan: document.querySelector("#camera-pan"),
   tilt: document.querySelector("#camera-tilt"),
+  led: document.querySelector("#led-color"),
   collisions: document.querySelector("#collisions"),
 };
 
@@ -142,6 +143,7 @@ function stopMovement() {
 function updateTelemetry(state) {
   const motors = state.motors || {};
   const camera = state.camera || {};
+  const led = state.led || {};
   fields.scenario.textContent = state.scenario_id || state.scenario?.id || "—";
   fields.running.textContent = state.running ? "In movimento" : "Fermo";
   fields.clock.textContent = `${formatNumber(state.time)} s`;
@@ -149,6 +151,7 @@ function updateTelemetry(state) {
   fields.right.textContent = formatNumber(motors.right);
   fields.pan.textContent = `${formatNumber(camera.pan, 0)}°`;
   fields.tilt.textContent = `${formatNumber(camera.tilt, 0)}°`;
+  fields.led.textContent = `${Math.round(finiteNumber(led.red))}, ${Math.round(finiteNumber(led.green))}, ${Math.round(finiteNumber(led.blue))}`;
   fields.collisions.textContent = String(Math.max(0, finiteNumber(state.collisions)));
 }
 
@@ -302,6 +305,10 @@ function drawRobot(state, projection) {
   const x = projection.x(pose.x);
   const y = projection.y(pose.y);
   const heading = finiteNumber(pose.heading);
+  const led = state.led || {};
+  const ledColor = [led.red, led.green, led.blue]
+    .map((value) => Math.max(0, Math.min(255, Math.round(finiteNumber(value)))))
+    .join(", ");
 
   context.save();
   context.shadowColor = "rgba(71, 224, 174, 0.3)";
@@ -323,6 +330,14 @@ function drawRobot(state, projection) {
   context.strokeStyle = "#06241b";
   context.lineWidth = Math.max(3, radius * 0.2);
   context.lineCap = "round";
+  context.stroke();
+
+  context.beginPath();
+  context.arc(x, y, Math.max(3, radius * 0.22), 0, Math.PI * 2);
+  context.fillStyle = `rgb(${ledColor})`;
+  context.fill();
+  context.strokeStyle = "#ffffff";
+  context.lineWidth = 1;
   context.stroke();
   context.restore();
 }
