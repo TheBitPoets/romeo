@@ -62,9 +62,9 @@ Distinguere sempre:
 
 - **commissioning**: collaudo completo del singolo esemplare, supervisionato, con movimenti attivi e misure;
 - **preflight**: controllo rapido prima di una sessione studente su un robot già commissionato, prevalentemente passivo;
-- **`romeo-doctor`**: strumento diagnostico previsto ma da considerare disponibile solo quando il coding agent lo avrà implementato e validato nello SHA installato.
+- **`romeo-doctor`**: capability diagnostica opzionale la cui disponibilità dipende dallo **SHA/versione realmente installato**. Se il comando è presente e validato in quella versione, può automatizzare i check passivi previsti dal preflight; se non è presente, le checklist hardware restano il fallback autorevole.
 
-Fino a quel momento l'autorità operativa resta la documentazione hardware corrente, non un comando immaginato.
+Il doctor non sostituisce il commissioning: verso meccanico delle ruote, movimento reale, calibrazione fisica e altre osservazioni che richiedono feedback umano restano supervisionate e documentate.
 
 ## Conduzione di una lezione
 
