@@ -20,6 +20,7 @@ Nel lavoro quotidiano si sviluppa e si prova prima nel simulatore. Il robot fisi
 :caption: Percorsi
 
 getting-started
+architecture/system-map
 student/index
 teacher/index
 operations/index
