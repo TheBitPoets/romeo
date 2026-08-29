@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from romeo.backends.mock import MockBackend
+from romeo.doctor import checks as doctor_checks
 from romeo.doctor.checks import run_preflight
 from romeo.doctor.config import save_config
 from romeo.doctor.identity import fingerprint_unit_identifier
@@ -35,6 +36,20 @@ class BrokenCloseBackend(SafetyBackend):
     def close(self) -> None:
         super().close()
         raise RuntimeError("stop confirmation failed")
+
+
+class FakeRouteSocket:
+    def __enter__(self) -> FakeRouteSocket:
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        return None
+
+    def connect(self, _target: object) -> None:
+        return None
+
+    def getsockname(self) -> tuple[str, int]:
+        return ("192.168.1.61", 49152)
 
 
 def commissioned_config(version: str = "0.1.0") -> DoctorConfig:
@@ -67,6 +82,33 @@ def run_ready(path: Path, **overrides: object):  # type: ignore[no-untyped-def]
     }
     arguments.update(overrides)
     return run_preflight(path, **arguments)  # type: ignore[arg-type]
+
+
+def test_network_probe_uses_route_when_hostname_resolves_only_to_loopback(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        doctor_checks.socket,
+        "getaddrinfo",
+        lambda *_args: [
+            (
+                doctor_checks.socket.AF_INET,
+                doctor_checks.socket.SOCK_STREAM,
+                6,
+                "",
+                ("127.0.1.1", 0),
+            )
+        ],
+    )
+
+    def socket_factory(family: int, _kind: int) -> FakeRouteSocket:
+        if family == doctor_checks.socket.AF_INET:
+            return FakeRouteSocket()
+        raise OSError("IPv6 route unavailable")
+
+    monkeypatch.setattr(doctor_checks.socket, "socket", socket_factory)
+
+    assert doctor_checks._network_addresses() == ["192.168.1.61"]
 
 
 def test_everything_ok_is_ready_and_server_is_skipped(tmp_path: Path) -> None:

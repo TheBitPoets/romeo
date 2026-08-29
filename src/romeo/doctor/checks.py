@@ -67,6 +67,28 @@ def _network_addresses() -> list[str]:
             continue
         if not parsed.is_loopback and not parsed.is_unspecified:
             addresses.add(address)
+
+    # Raspberry Pi OS commonly maps the local hostname to 127.0.1.1 in
+    # /etc/hosts.  A route lookup finds the address of the actual interface
+    # without sending a UDP packet or depending on an external service.
+    route_probes = (
+        (socket.AF_INET, ("192.0.2.1", 9)),
+        (socket.AF_INET6, ("2001:db8::1", 9, 0, 0)),
+    )
+    for family, target in route_probes:
+        try:
+            with socket.socket(family, socket.SOCK_DGRAM) as probe:
+                probe.connect(target)
+                raw_address = probe.getsockname()[0]
+        except OSError:
+            continue
+        address = raw_address.split("%", 1)[0]
+        try:
+            parsed = ipaddress.ip_address(address)
+        except ValueError:
+            continue
+        if not parsed.is_loopback and not parsed.is_unspecified:
+            addresses.add(address)
     return sorted(addresses)
 
 
