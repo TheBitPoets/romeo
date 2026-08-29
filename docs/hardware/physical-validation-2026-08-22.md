@@ -201,6 +201,57 @@ dell'USB-C tutti i LED si sono spenti, senza movimento o rumore. Stato:
 una diagnosi certa senza misura elettrica o identificazione firmware; nessun
 aggiornamento firmware è stato ancora eseguito.
 
+La diagnosi è proseguita con pacco CRICKIT scollegato e controller Seesaw
+alimentato dalla propria micro-USB dati collegata al Pi. Prima del bootloader il
+kernel ha rilevato il dispositivo full-speed ma non è riuscito a enumerarlo
+(`error -32`, `error -71`). Un doppio reset supervisionato, attuatori fermi, ha
+prodotto LED giallo pulsante e NeoPixel verde: il Pi ha quindi enumerato
+`239a:002d Adafruit crickit`, `ttyACM0` e volume `CRICKITBOOT`. Il file
+`INFO_UF2.TXT` identifica `UF2 Bootloader
+v2.0.0-adafruit.0-14-g39b76ca`, modello `crickit`, Board-ID
+`SAMD21G18A-crickit-v0`; il seriale non è riportato nell'evidenza. Le stringhe
+di `CURRENT.UF2` identificano `Crickit Hat` ma non una versione applicativa
+affidabile. Nessun file è stato scritto e nessun firmware è stato aggiornato.
+
+Dopo una singola pressione per uscire dal bootloader, il NeoPixel ha
+lampeggiato rosso con la sola alimentazione USB del controller e pacco
+principale assente. In questa condizione il preflight Romeo ha raggiunto `0x49`
+e marcato CRICKIT PASS, dimostrando che controller, firmware applicativo e
+percorso I2C attraverso l'HAT erano funzionali. È stato poi collegato il pacco
+CRICKIT mantenendo temporaneamente la micro-USB: operatore ha osservato OK
+verde, warning spento, NeoPixel verde, attuatori fermi e Pi senza low-voltage;
+Doctor CRICKIT PASS e `throttled=0x0`. Infine la micro-USB è stata rimossa,
+lasciando la configurazione normale Pi USB-C + pacco CRICKIT: nessun cambiamento
+fisico osservato, `throttled=0x0`, nessun evento voltage/brownout e CRICKIT PASS.
+Dodici campioni a circa cinque secondi hanno mantenuto `0x0`, temperatura
+57.4–58.9 °C; un ulteriore `romeo-doctor --json` ha riconfermato backend, I2C,
+CRICKIT e rete PASS. Esito aggiornato: **PASS PREFLIGHT HARDWARE PASSIVO DOPO
+RIPRISTINO SEESAW**, mentre commissioning, watchdog e speed limit restano
+correttamente non eseguiti/saltati. La causa radice del mancato avvio Seesaw
+iniziale non è provata e resta follow-up; non è stato necessario scrivere
+firmware.
+
+Dopo una successiva perdita totale di alimentazione e riavvio completo, il
+CRICKIT è tornato non raggiungibile a `0x49`, pur con LED OK verde, warning
+spento, NeoPixel verde, attuatori fermi e Pi `throttled=0x0`. Questo dimostra
+che il ripristino Seesaw non sopravvive in modo affidabile al power-cycle e
+invalida il precedente PASS come condizione persistente. Stato aggiornato:
+**FAIL INTERMITTENTE/RIPRODUCIBILE ALL'AVVIO SEESAW**; commissioning ancora
+bloccato.
+
+È stato preparato, ma non installato, il firmware ufficiale Adafruit seesaw
+release 1.1.6 per HAT: `seesaw-crickitHat.uf2`, 53760 byte, SHA-256
+`52AC44CF1E7E7FE5DC12DB3A97831C80D3B55C755446D39BF987FDA42EDB7DC8`.
+Con pacco CRICKIT scollegato, il bootloader era nuovamente entrato nello stato
+atteso (giallo pulsante, NeoPixel verde), ma durante la sola verifica read-only
+del volume la Pi e tutti i LED si sono spenti. L'operatore ritiene scarico il
+powerbank. Il trasferimento del file non era iniziato: **NESSUN FIRMWARE
+SCRITTO**. Micro-USB Seesaw, USB-C Pi e pacco CRICKIT sono stati scollegati;
+operatore ha confermato tutto spento. Non verrà usata una porta USB-A del PC per
+alimentare il Pi durante l'aggiornamento, a causa del rischio di corrente
+insufficiente/undervoltage. Ripresa bloccata fino a sorgente Pi ricaricata e
+stabile.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
