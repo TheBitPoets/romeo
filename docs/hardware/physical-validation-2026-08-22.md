@@ -159,6 +159,48 @@ risolve `romeo` soltanto in `127.0.1.1`, che il Doctor scarta correttamente come
 loopback senza però enumerare l'indirizzo dell'interfaccia. Stato controllo
 rete: **FAIL SOFTWARE RIPRODOTTO**, non FAIL della connettività e non PASS.
 
+La correzione minima è stata applicata sul branch dedicato nel commit
+`faf9eda88a83fe5955c88bf2b00e75ff0605b531`: oltre alla risoluzione del nome,
+il Doctor usa una route lookup UDP senza invio di pacchetti per ricavare
+l'indirizzo dell'interfaccia. Il test di regressione riproduce hostname risolto
+solo in `127.0.1.1` e route locale `192.168.1.61`. Verifiche locali: 21 test del
+modulo Doctor PASS; suite completa 426 PASS e 3 skip attesi; Ruff PASS. Il
+checkout editable della Pi è stato portato allo stesso commit e il probe ha
+restituito `['192.168.1.61']`. La ripetizione di `romeo-doctor --json` ha quindi
+riportato rete `passed`, `address_count: 1`; lo stato complessivo è rimasto
+correttamente `preflight_failed` per calibrazione, identità e backend ancora
+mancanti.
+
+Il preflight è stato quindi ripetuto passivamente con backend selezionato per
+la sola invocazione (`ROMEO_BACKEND=crickit`). Backend CRICKIT e `/dev/i2c-1`
+sono stati riconosciuti, ma il check CRICKIT è fallito con `ValueError`. Una
+riproduzione tramite la factory Romeo, senza accesso applicativo diretto ad
+`adafruit_crickit`, ha mostrato due timeout I2C e l'errore finale
+`No I2C device at address: 0x49` durante il probe del controller Seesaw.
+Configurazione Pi verificata passivamente: I2C abilitato (`raspi-config nonint
+get_i2c` = 0), `dtparam=i2c_arm=on`, moduli `i2c_dev`, `i2c_bcm2835` e relativi
+driver caricati. `i2cdetect` non è installato e non è stata eseguita alcuna
+scansione del bus. Esito: **FAIL CRICKIT/I2C A 0x49**; commissioning motori
+bloccato in attesa di ispezione fisica ad alimentazioni scollegate.
+
+L'ispezione fotografica attuale ha identificato un CRICKIT HAT per Raspberry
+Pi, con header GPIO apparentemente parallelo e senza offset o pin piegati
+visibili; il selettore fisico è stato confermato dall'operatore su `On`. Dopo
+shutdown completo è stata ripetuta la sequenza Pi USB-C prima, pacco CRICKIT
+dopo: Pi `throttled=0x0`, LED OK CRICKIT verde, warning inizialmente spento,
+NeoPixel verde, nessun movimento, rumore, warning Pi, odore o calore. Il probe
+Romeo ha tuttavia confermato il FAIL a `0x49`.
+
+Seguendo il troubleshooting ufficiale Adafruit è stata quindi eseguita una
+sola pressione breve di `Seesaw Reset`. L'operatore ha osservato LED OK verde,
+un LED giallo lampeggiante e NeoPixel rosso; ruote e servo fermi e nessun
+rumore. Il rosso è rimasto presente anche dopo aver scollegato il pacco CRICKIT,
+finché il Pi è rimasto alimentato via GPIO; dopo shutdown pulito e rimozione
+dell'USB-C tutti i LED si sono spenti, senza movimento o rumore. Stato:
+**FAIL CRICKIT/SEESAW NON RISOLTO**. La sequenza LED non viene interpretata come
+una diagnosi certa senza misura elettrica o identificazione firmware; nessun
+aggiornamento firmware è stato ancora eseguito.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
