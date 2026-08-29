@@ -1,7 +1,7 @@
 # Validazione fisica Romeo — 2026-08-22
 
-Stato: **in corso; inventario passivo ripreso il 2026-08-25, prove attive
-bloccate da nuovi eventi di undervoltage**.
+Stato: **in corso; alimentazioni separate stabili a riposo, prove attive
+bloccate dal mancato avvio autonomo del controller Seesaw dopo power-cycle**.
 
 Questo documento registra esclusivamente valori misurati e osservazioni riferite
 dall'operatore presente davanti al robot. Il documento del 2026-08-21 è evidenza
@@ -252,6 +252,64 @@ alimentare il Pi durante l'aggiornamento, a causa del rischio di corrente
 insufficiente/undervoltage. Ripresa bloccata fino a sorgente Pi ricaricata e
 stabile.
 
+#### Aggiornamento firmware e nuovo test a freddo — 2026-08-29 pomeriggio
+
+Dopo la ricarica completa del powerbank, il Pi è stato avviato da solo con
+pacco CRICKIT e micro-USB Seesaw scollegati. L'operatore ha osservato soltanto
+i LED Pi, attuatori fermi e nessun rumore, odore o calore; il probe passivo ha
+restituito `throttled=0x0`, boot time `2026-08-29 17:11:58` e nessun evento
+kernel voltage/brownout.
+
+Con pacco CRICKIT ancora scollegato è stata collegata la micro-USB Seesaw.
+L'operatore ha osservato NeoPixel verde fisso, ruote e servo fermi e nessuna
+anomalia. Il doppio reset supervisionato ha prodotto lo stato bootloader
+atteso: LED giallo pulsante lento, NeoPixel verde, attuatori fermi. Il Pi ha
+enumerato `239a:002d Adafruit crickit`, `/dev/ttyACM0` e il volume
+`/media/acari/CRICKITBOOT`.
+
+Il firmware ufficiale Adafruit `seesaw-crickitHat.uf2` della release 1.1.6 è
+stato trasferito nella directory temporanea del Pi e ricontrollato prima della
+scrittura: 53760 byte, SHA-256
+`52AC44CF1E7E7FE5DC12DB3A97831C80D3B55C755446D39BF987FDA42EDB7DC8`.
+Un primo comando di copia non è arrivato alla scrittura a causa di quoting
+PowerShell ed è terminato con exit code 1. Il secondo comando ha verificato
+l'hash (`OK`), copiato il file sul volume e completato `sync` con exit code 0.
+L'operatore ha osservato spegnimento del LED giallo, NeoPixel rosso
+lampeggiante, un riavvio, attuatori fermi e nessuna anomalia. Il bootloader è
+scomparso e il dispositivo applicativo è stato enumerato come
+`239a:002e Adafruit Crickit Hat`. Con micro-USB presente Romeo Doctor ha
+raggiunto il CRICKIT e la Pi è rimasta `throttled=0x0`.
+
+Il pacco CRICKIT è stato quindi collegato sotto supervisione: LED principale
+verde fisso, giallo spento, NeoPixel verde fisso, ruote e servo fermi, nessun
+low-voltage o altra anomalia. Otto campioni hanno restituito `throttled=0x0`,
+senza eventi kernel voltage/brownout/I2C. Rimuovendo la micro-USB non è cambiato
+nulla fisicamente e Romeo Doctor ha continuato a raggiungere il CRICKIT via
+HAT/I2C. Questo è un **PASS TRANSITORIO DEL PREFLIGHT PASSIVO**, non un PASS di
+commissioning o degli attuatori.
+
+È stato poi eseguito un vero ciclo a freddo: CRICKIT portato su `OFF`, shutdown
+ordinato Pi, rimozione USB-C e conferma di tutti i LED spenti e attuatori fermi.
+Il Pi è ripartito con CRICKIT `OFF` alle `2026-08-29 17:35:56`, con
+`throttled=0x0` e nessun evento kernel pertinente. Portando poi CRICKIT su `ON`,
+l'operatore ha osservato LED principale verde, giallo spento, NeoPixel verde,
+attuatori fermi e nessuna anomalia. Tuttavia `romeo-doctor`,
+`romeo-doctor --student` e `romeo-doctor --json`, tutti con
+`ROMEO_BACKEND=crickit`, hanno riprodotto `CRICKIT non raggiungibile`
+(`ValueError`) in tre invocazioni consecutive. Otto campioni di alimentazione
+erano tutti `throttled=0x0` e i log non contenevano undervoltage, brownout o
+timeout I2C.
+
+La singola pressione di `Seesaw Reset` prescritta dal troubleshooting Adafruit
+non ha risolto il problema: LED rimasti nello stato apparentemente corretto,
+attuatori fermi, ma Doctor ancora in FAIL. Collegando poi la sola micro-USB
+Seesaw, senza Reset, non è cambiato nulla visivamente; il Pi ha però enumerato
+subito `239a:002e Adafruit Crickit Hat` e Romeo Doctor ha nuovamente raggiunto
+il CRICKIT, con `throttled=0x0`. Esito: **FAIL RIPRODUCIBILE DELL'AVVIO
+AUTONOMO/ALIMENTAZIONE-COMUNE DEL SEESAW**. La micro-USB è un'evidenza
+diagnostica e non viene accettata come soluzione o come autorizzazione al
+commissioning. Nessun motore, servo o fotogramma camera è stato comandato.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
@@ -259,23 +317,23 @@ stabile.
 | Raspberry Pi modello/revisione | Raspberry Pi 4 Model B Rev 1.5 | `tr -d '\0' </sys/firmware/devicetree/base/model; echo`, output riferito dall'operatore | VERIFICATO VIA DEVICE TREE |
 | Raspberry Pi OS | Raspberry Pi reference `2025-12-04`, generato con `pi-gen` commit `4997bf4e4e49bc3305eb182a4a08bd023529da04`, stage4; userspace Debian GNU/Linux 13.2 (trixie) | `cat /etc/rpi-issue`; `cat /etc/os-release`, output riferito dall'operatore | VERIFICATO |
 | Kernel | Linux `6.12.47+rpt-rpi-v8`, build `Debian 1:6.12.47-1+rpt1 (2025-09-16)`, aarch64 | `uname -a`, output riferito dall'operatore | VERIFICATO |
-| CRICKIT HAT modello/revisione | Da determinare | Ispezione etichetta/scheda | NON VERIFICATO |
-| Firmware CRICKIT | Da determinare se rilevabile | Probe passivo supportato | NON VERIFICATO |
+| CRICKIT HAT modello/revisione | Adafruit CRICKIT HAT per Raspberry Pi; bootloader Board-ID `SAMD21G18A-crickit-v0` | Ispezione fotografica, `INFO_UF2.TXT`, enumerazione USB | MODELLO VERIFICATO; revisione PCB non leggibile |
+| Firmware CRICKIT | Immagine ufficiale Adafruit seesaw 1.1.6 per Crickit HAT, hash documentato | Artefatto verificato e copia UF2 completata; enumerazione applicativa `239a:002e` | INSTALLATO; versione runtime non esposta da un probe affidabile |
 | Motore sinistro | Da determinare | Ispezione etichetta | NON VERIFICATO |
 | Motore destro | Da determinare | Ispezione etichetta | NON VERIFICATO |
-| Collegamento motori | Atteso da documentazione: sinistro Motor 2, destro Motor 1 | Da confermare con ispezione cablaggio | NON VERIFICATO; il valore atteso non è evidenza fisica |
+| Collegamento motori | Sinistro Motor 2, destro Motor 1 | Ispezione fisica riferita dall'operatore | VERIFICATO CABLAGGIO; verso non ancora provato |
 | Servo pan | Da determinare | Ispezione etichetta e cablaggio | NON VERIFICATO |
-| Canale pan | Atteso dal backend: servo 1 | Da confermare con ispezione cablaggio | NON VERIFICATO |
+| Canale pan | Servo 1 | Connettori scambiati ad alimentazioni rimosse e ricontrollati dall'operatore | VERIFICATO CABLAGGIO; movimento non provato |
 | Servo tilt | Da determinare | Ispezione etichetta e cablaggio | NON VERIFICATO |
-| Canale tilt | Atteso dal backend: servo 4 | Da confermare con ispezione cablaggio | NON VERIFICATO |
-| Camera | Da determinare | Probe passivo + ispezione | NON VERIFICATO |
-| Alimentazione Raspberry Pi | Unica sorgente dichiarata: powerbank SBS PD 20 W, 10000 mAh; non collegato all'ingresso USB-C del Pi; percorso elettrico esatto ancora da confermare | Dichiarazione e osservazione dell'operatore | FAIL/BLOCCANTE: il Raspberry Pi mostra `low voltage warning, please check your power supply` |
-| Alimentazione CRICKIT/motori | Stessa unica sorgente, collegata al connettore di alimentazione cilindrico riferito dall'operatore; cavo/adattatore e scheda destinataria da confermare | Dichiarazione e osservazione dell'operatore | PARZIALE; valori d'uscita effettivi non ancora letti |
+| Canale tilt | Servo 4 | Connettori scambiati ad alimentazioni rimosse e ricontrollati dall'operatore | VERIFICATO CABLAGGIO; movimento non provato |
+| Camera | Raspberry Pi Camera Module con sensore `imx708`, 4608×2592 enumerato | `rpicam-hello --list-cameras`, senza acquisizione | SENSORE VERIFICATO; immagine non acquisita |
+| Alimentazione Raspberry Pi | Powerbank SBS 10000 mAh / 37 Wh, uscita USB-C 5 V 3 A nominali, collegata direttamente all'ingresso USB-C Pi | Etichetta fotografata, osservazione operatore, `vcgencmd` e log | PASS A RIPOSO nei boot controllati; carico combinato non ancora provato |
+| Alimentazione CRICKIT/motori | Pacco separato 4× AA Panasonic/eneloop NiMH, 1.2 V e min 2500 mAh per cella, jack DC | Etichetta celle e ispezione operatore; polarità riferita come verificata dal tecnico | MODELLO/CABLAGGIO VERIFICATI; tensione reale non misurata per assenza multimetro |
 | Tensioni nominali | SBS: USB 1/2 output `5 V 3 A / 9 V 2 A / 10 V 2.25 A / 12 V 1.5 A`; USB-C output `5 V 3 A / 9 V 2.22 A / 12 V 1.67 A`; total output `22.5 W max`; batteria `10000 mAh (3.7 V, 37 Wh)` | Fotografie odierne della confezione fornite dall'operatore | VERIFICATO DA ETICHETTA; SKU coperto/non leggibile |
 | Python sul Pi | 3.13.5 nella shell corrente | `python3 --version` | VERIFICATO PER L'INTERPRETE DI SISTEMA |
 | `thebitlab-romeo` installato | 0.2.0 in `/home/acari/romeo-venv`, editable da `/home/acari/romeo-src`; `romeo-doctor` presente | `pip show`; `romeo-doctor --help` | PASS INSTALLAZIONE; nessun PASS hardware |
 | Source/commit installato | `45e5f7e131802fccc89358a23a25dbed1884bbfa` | Clone pulito di `refs/heads/main`; `git rev-parse HEAD`, `git status` | VERIFICATO |
-| I2C | Device presenti: `/dev/i2c-0`, `1`, `10`, `20`, `21`, `22`; CRICKIT spento e non sondato | `ls -l /dev/i2c-*` | PARZIALE; presenza bus, non raggiungibilità periferica |
+| I2C | `/dev/i2c-1` disponibile; CRICKIT `0x49` raggiungibile solo dopo alimentazione micro-USB Seesaw, non dopo avvio normale a freddo | Romeo Doctor tramite backend/safety; nessun bypass diretto | FAIL RIPRODUCIBILE ALL'AVVIO NORMALE |
 | Picamera2 | 0.3.33 da `/usr/lib/python3/dist-packages`, visibile nel venv dedicato | `pip show picamera2` con `/home/acari/romeo-venv/bin/python` | PASS DISPONIBILITÀ MODULO; camera non aperta/acquisita |
 
 Account operativo osservato: `acari`, uid/gid 1000, appartenente tra gli altri
@@ -310,15 +368,15 @@ l'installazione `vcgencmd get_throttled` era ancora `0x0`.
 
 | Comando | Exit code | Risultato | Evidenza |
 |---|---:|---|---|
-| `romeo-doctor` | — | NON ESEGUITO | In attesa di accesso al vero ambiente Python del Pi |
-| `romeo-doctor --student` | — | NON ESEGUITO | In attesa di accesso al vero ambiente Python del Pi |
-| `romeo-doctor --json` | — | NON ESEGUITO | In attesa di accesso al vero ambiente Python del Pi |
+| `ROMEO_BACKEND=crickit romeo-doctor` | 1 nelle invocazioni senza wrapper | FAIL-CLOSED | Dopo avvio normale a freddo: Python/package/backend/I2C/rete disponibili, CRICKIT non raggiungibile; calibrazione e identità assenti |
+| `ROMEO_BACKEND=crickit romeo-doctor --student` | 1 nelle invocazioni senza wrapper | FAIL-CLOSED | Stesso FAIL CRICKIT a freddo; nessuna autorizzazione studente |
+| `ROMEO_BACKEND=crickit romeo-doctor --json` | 1 nelle invocazioni senza wrapper | `preflight_failed`, `ready=false` | `crickit: failed`, `measured: ValueError`; con micro-USB Seesaw collegata lo stesso check passa, ma il workaround non è accettato come stato normale |
 
 ## Commissioning e safety reale
 
 | Test | Risultato | Comando | Misura | Osservazione fisica operatore | Note |
 |---|---|---|---|---|---|
-| Avvio/shutdown con ruote sollevate | NON ESEGUITO | — | — | — | — |
+| Avvio/shutdown con ruote sollevate | ESEGUITO, NESSUN MOVIMENTO INVOLONTARIO | `sudo shutdown -h now`, rimozione/riapplicazione supervisionata delle due alimentazioni | Power-cycle completo; `throttled=0x0` dopo riavvio | Tutti i LED spenti a sorgenti rimosse; ruote e servo sempre fermi; nessuna anomalia | Il power-cycle riproduce il FAIL Seesaw/I2C e quindi non autorizza commissioning |
 | Motore sinistro, verso/polarità | NON ESEGUITO | — | — | — | — |
 | Motore destro, verso/polarità | NON ESEGUITO | — | — | — | — |
 | STOP | NON ESEGUITO | — | — | — | — |
