@@ -310,6 +310,47 @@ AUTONOMO/ALIMENTAZIONE-COMUNE DEL SEESAW**. La micro-USB è un'evidenza
 diagnostica e non viene accettata come soluzione o come autorizzazione al
 commissioning. Nessun motore, servo o fotogramma camera è stato comandato.
 
+La HAT è stata successivamente rimossa e reinserita dall'operatore con tutte
+le sorgenti scollegate e selettore `OFF`; non erano presenti distanziali.
+L'operatore ha poi confermato HAT allineata e nessuna anomalia fisica. Dopo un
+nuovo avvio Pi-only stabile (`throttled=0x0`, boot
+`2026-08-29 18:04:24`) e la riapplicazione supervisionata del pacco CRICKIT,
+LED e attuatori apparivano normali ma Romeo Doctor ha ancora restituito
+`CRICKIT non raggiungibile`. Esito: **RESEAT HAT INEFFICACE**; l'ispezione
+dettagliata dei singoli pin non è stata registrata separatamente perché
+l'operatore ha rimosso e reinserito la HAT nella stessa operazione.
+
+Un test diagnostico con la micro-USB Seesaw alimentata da una porta USB-A del
+powerbank, quindi senza host USB, non ha ripristinato I2C; il risultato non
+prova tuttavia la tensione effettiva su quella porta, non misurata. Collegando
+la micro-USB alla Pi, il kernel ha invece rilevato ripetutamente il dispositivo
+ma fallito l'enumerazione con `error -32`, `error -71` e
+`unable to enumerate USB device`. Una singola pressione Reset con USB
+collegata ha ripristinato l'enumerazione applicativa `239a:002e`, ma Doctor ha
+continuato a fallire su I2C. Soltanto il doppio reset in bootloader
+(`239a:002d`, `CRICKITBOOT`) seguito da un singolo reset di uscita, senza
+scrivere file, ha ripristinato contemporaneamente USB applicativa e il check
+CRICKIT tramite SafetyBackend. Questo restringe il problema al boot/reset/stato
+applicativo del controller Seesaw; non costituisce una soluzione affidabile per
+la classe.
+
+Con il CRICKIT temporaneamente raggiungibile, robot sollevato, entrambe le
+ruote libere, area sgombra e arresto fisico disponibile, è stato avviato
+`romeo-doctor --commission`. Il primo impulso sul motore sinistro/Motor 2
+(`throttle 0.15` per `0.40 s`) non ha prodotto movimento osservabile;
+l'operatore ha sentito un beep. Il Doctor ha applicato stop prima del prompt di
+osservazione. La sessione è stata annullata prima del motore destro e nessuna
+configurazione è stata salvata. Dopo controllo passivo (`throttled=0x0`,
+CRICKIT ancora raggiungibile), lo stesso impulso sinistro è stato ripetuto una
+sola volta senza aumentare throttle o durata: nuovamente nessun movimento e
+beep, con ruota destra e servo fermi e nessuna anomalia LED/odore/calore
+osservata. Il Doctor è stato nuovamente annullato prima del motore destro.
+Esito: **FAIL MOTORE SINISTRO RIPRODOTTO 2/2**; causa non determinata tra
+soglia di avvio/attrito, cablaggio Motor 2, alimentazione sotto carico, motore o
+driver. Motore destro, watchdog, servo e camera non provati. Stato finale:
+shutdown ordinato, USB-C Pi, micro-USB Seesaw e jack batterie scollegati,
+CRICKIT `OFF`; operatore ha confermato tutti i LED spenti e tutto fermo.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
@@ -377,7 +418,7 @@ l'installazione `vcgencmd get_throttled` era ancora `0x0`.
 | Test | Risultato | Comando | Misura | Osservazione fisica operatore | Note |
 |---|---|---|---|---|---|
 | Avvio/shutdown con ruote sollevate | ESEGUITO, NESSUN MOVIMENTO INVOLONTARIO | `sudo shutdown -h now`, rimozione/riapplicazione supervisionata delle due alimentazioni | Power-cycle completo; `throttled=0x0` dopo riavvio | Tutti i LED spenti a sorgenti rimosse; ruote e servo sempre fermi; nessuna anomalia | Il power-cycle riproduce il FAIL Seesaw/I2C e quindi non autorizza commissioning |
-| Motore sinistro, verso/polarità | NON ESEGUITO | — | — | — | — |
+| Motore sinistro, verso/polarità | FAIL — NESSUN MOVIMENTO 2/2 | `romeo-doctor --commission` | `0.15` per `0.40 s`, due tentativi separati | Nessun movimento osservabile; beep in entrambi; stop e altri attuatori fermi | Verso non determinabile; nessun aumento dei limiti; nessuna calibrazione salvata |
 | Motore destro, verso/polarità | NON ESEGUITO | — | — | — | — |
 | STOP | NON ESEGUITO | — | — | — | — |
 | Watchdog | NON ESEGUITO | — | min/max/media: — | — | Configurazione: — |
