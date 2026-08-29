@@ -351,6 +351,36 @@ driver. Motore destro, watchdog, servo e camera non provati. Stato finale:
 shutdown ordinato, USB-C Pi, micro-USB Seesaw e jack batterie scollegati,
 CRICKIT `OFF`; operatore ha confermato tutti i LED spenti e tutto fermo.
 
+#### Ripresa dopo il FAIL motore sinistro
+
+Con tutte le sorgenti scollegate, l'operatore ha ruotato lentamente entrambe le
+ruote a mano: sinistra e destra libere, non dure, senza impedimenti o differenze
+percepite. L'ispezione visiva e il leggero controllo dei collegamenti hanno
+mostrato i due fili sinistri apparentemente corretti e saldi su Motor 2, senza
+anomalie visibili lungo fili e connessioni del motore. Le quattro celle NiMH
+erano state dichiarate completamente caricate dal BQ-CC55 prima della ripresa.
+Questi controlli riducono la probabilità di un blocco meccanico o collegamento
+evidentemente allentato, ma non misurano continuità, tensione o corrente.
+
+Per tentare il confronto con il motore destro allo stesso limite conservativo,
+è stato effettuato un nuovo cold boot con micro-USB Seesaw già collegata alla
+Pi e CRICKIT `OFF`. La Pi è rimasta `throttled=0x0`, ma il Seesaw non si è
+enumerato e il kernel ha riprodotto errori USB `-32` e `-71`; dopo CRICKIT `ON`,
+Doctor ha ancora riportato `CRICKIT non raggiungibile`. Un ingresso/uscita dal
+bootloader con pacco collegato ha ripristinato USB applicativa ma non I2C.
+
+È stata quindi tentata la sequenza che in precedenza aveva funzionato: CRICKIT
+`OFF`, pacco fisicamente rimosso, sola micro-USB Seesaw. Un singolo Reset non
+ha ripristinato USB/I2C. Due successivi tentativi di doppio Reset non sono stati
+riconosciuti come bootloader: l'operatore ha osservato NeoPixel rosso e LED
+giallo fisso anziché pulsante; la Pi non ha enumerato `239a:002d` e ha
+continuato a registrare `-32/-71`. Nessun impulso motore è stato inviato in
+questa ripresa e il destro resta **NON ESEGUITO**. La sessione è stata fermata
+fail-closed; dopo shutdown ordinato sono state scollegate micro-USB, USB-C Pi e
+batterie. Stato finale nuovamente confermato: tutti i LED spenti, nessun
+movimento e nessuna anomalia. Stato blocker aggiornato: **FAIL INTERMITTENTE
+SEESAW/USB/I2C, RECUPERO BOOTLOADER NON PIÙ RIPRODUCIBILE**.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
