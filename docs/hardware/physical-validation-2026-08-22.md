@@ -381,6 +381,70 @@ batterie. Stato finale nuovamente confermato: tutti i LED spenti, nessun
 movimento e nessuna anomalia. Stato blocker aggiornato: **FAIL INTERMITTENTE
 SEESAW/USB/I2C, RECUPERO BOOTLOADER NON PIÙ RIPRODUCIBILE**.
 
+#### Nuovo CRICKIT HAT e firmware 1.1.6 — 2026-10-11
+
+Il collaudo è ripreso con un **nuovo Adafruit CRICKIT HAT Product ID 3957** e
+un nuovo riser 2×20 Product ID 4079. Tutti i motori e i servo sono rimasti
+scollegati durante le prove iniziali della nuova scheda. L'alimentazione del Pi
+tramite il solo jack CRICKIT ha prodotto un avviso low-voltage e non è stata
+accettata; con Pi alimentato separatamente via USB-C, i controlli riportati
+sotto hanno restituito `throttled=0x0`.
+
+Con alimentazione CRICKIT da pacco 4×AA NiMH, dopo ogni passaggio `OFF` → `ON`
+il controller SeeSaw non è comparso automaticamente all'indirizzo I2C `0x49`.
+Una pressione singola di Reset lo ha inizialmente fatto comparire, ma il
+comportamento è risultato intermittente: in alcune occasioni Romeo ha creato
+il `SafetyBackend` e applicato lo stop (`STOP_OK`), in altre l'inizializzazione
+Adafruit ha fallito con `OSError: [Errno 5] Input/output error` durante la
+lettura dell'hardware ID SeeSaw. Il preflight `romeo-doctor --json` ha quindi
+alternato `CRICKIT raggiungibile con protezioni attive` e `CRICKIT non
+raggiungibile`; calibrazione e identità dell'unità sono rimaste assenti e
+`ready` è sempre rimasto `false`.
+
+Con il CRICKIT temporaneamente raggiungibile e il robot realmente sollevato,
+sono stati eseguiti impulsi conservativi tramite Romeo, mai tramite accesso
+diretto ad `adafruit_crickit`. Il motore sinistro non si è mosso su Motor 2 né
+a `0.15` per `0.40 s`, né al limite software `0.20` per `0.50 s`; l'operatore
+ha udito un beep e non ha osservato warning, odore o calore. Spostando lo stesso
+motore su Motor 1, l'impulso `0.20` per `0.50 s` non ha prodotto movimento. Il
+confronto con il motore destro non è stato completato perché il successivo probe
+Romeo ha riprodotto l'errore I2C. Un tentativo precedente eseguito quando il
+robot non era sollevato è esplicitamente **INVALIDO** e non viene contato come
+evidenza.
+
+Il firmware ufficiale Adafruit SeeSaw 1.1.6, file
+`seesaw-crickitHat.uf2` di 53760 byte e SHA-256
+`52AC44CF1E7E7FE5DC12DB3A97831C80D3B55C755446D39BF987FDA42EDB7DC8`,
+è stato scritto usando il Raspberry Pi come host USB. Prima della scrittura il
+bootloader era enumerato come `239a:002d Adafruit crickit`, volume
+`CRICKITBOOT`; dopo la copia il volume è scomparso e l'applicazione si è
+enumerata come `239a:002e Adafruit Crickit Hat`. Con solo USB, jack e attuatori
+scollegati, `0x49` è comparso senza Reset e il probe Romeo ha restituito
+`BACKEND= SafetyBackend` e `STOP_OK`. Esito: **PASS AGGIORNAMENTO FIRMWARE E
+PROBE USB-ONLY**, non un PASS del funzionamento autonomo o degli attuatori.
+
+Il successivo cold start reale da jack, con Pi ancora alimentato separatamente
+e tutti gli attuatori scollegati, ha nuovamente lasciato `0x49` assente. Dopo
+una singola pressione Reset post-firmware, l'operatore ha osservato un breve
+lampeggio seguito da LED giallo spento, LED alimentazione verde fisso,
+NeoPixel verde e nessuna anomalia; il probe mirato
+`i2cdetect -y 1 0x49 0x49` ha tuttavia mostrato ancora `--`, mentre
+`vcgencmd get_throttled` valeva `0x0`. Esito corrente: **FAIL AVVIO SEESAW DA
+JACK ANCHE DOPO FIRMWARE 1.1.6 E RESET**. Nessun ulteriore impulso motore è
+autorizzato. La causa non è determinata: servono una misura di tensione/rampa
+sul CRICKIT oppure una prova con sorgente 5 V regolata nota e idonea; non viene
+attribuito il guasto al pacco, alla HAT o al cablaggio senza tale evidenza.
+
+La sessione è terminata fail-closed. Con attuatori scollegati il CRICKIT è
+stato portato su `OFF`: LED verde, giallo e NeoPixel spenti, con il solo
+triangolo rosso acceso. Rimosso il jack, tutti i LED CRICKIT si sono spenti e
+il LED rosso del Pi è rimasto acceso. Dopo `sudo shutdown -h now`, con USB-C
+ancora presente, l'operatore ha osservato LED rosso Pi acceso e LED giallo
+CRICKIT lampeggiante, evidenza che la HAT restava parzialmente alimentata dal
+Pi. Scollegata infine l'USB-C, l'operatore ha confermato tutti i LED di Pi e
+CRICKIT spenti e nessun movimento. Stato finale: tutte le alimentazioni
+scollegate, CRICKIT `OFF`, attuatori scollegati.
+
 ## Inventario hardware e software
 
 | Elemento | Modello / valore | Metodo | Stato / note |
