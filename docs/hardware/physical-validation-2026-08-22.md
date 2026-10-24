@@ -811,3 +811,29 @@ L'operatore ha confermato che durante lo scatto motori e servo sono rimasti
 fermi e non si sono verificate anomalie. L'immagine è leggibile ma mostra una
 scena senza riferimento univoco e parzialmente ostruita: orientamento,
 inquadratura utile, streaming/MJPEG, FPS e latenza restano **NON VERIFICATI**.
+
+### Preflight passivo post-calibrazione (2026-10-24)
+
+Con il robot già acceso e senza comandare attuatori sono stati eseguiti i tre
+profili del Doctor installato:
+
+```text
+ROMEO_BACKEND=crickit /home/acari/romeo-venv/bin/romeo-doctor
+ROMEO_BACKEND=crickit /home/acari/romeo-venv/bin/romeo-doctor --student
+ROMEO_BACKEND=crickit /home/acari/romeo-venv/bin/romeo-doctor --json
+```
+
+Tutti e tre hanno riportato calibrazione e identità valide, backend CRICKIT,
+bus I2C e CRICKIT raggiungibili, limite effettivo `0.4`, watchdog effettivo
+`0.5 s`, Picamera2 inizializzato e rete disponibile. Il JSON ha restituito
+`"ready": true` e `"status": "ready"`; il probe server è stato saltato perché
+nessun server Romeo è configurato. Questo è **PASS del preflight software
+passivo nello stato corrente**, non equivale alla dichiarazione che il robot
+sia pronto per la classe e non verifica un avvio a freddo.
+
+`vcgencmd get_throttled` ha restituito `throttled=0x0`. Il primo comando
+`i2cdetect -y 1` della sessione SSH non interattiva non è stato trovato perché
+`/usr/sbin` non era nel `PATH`; ripetuto come `/usr/sbin/i2cdetect -y 1` ha
+mostrato Seesaw a `0x49`. Nessun reset CRICKIT è stato eseguito durante questo
+preflight. L'intermittenza osservata in precedenza resta aperta finché non viene
+provato separatamente un nuovo avvio a freddo.
