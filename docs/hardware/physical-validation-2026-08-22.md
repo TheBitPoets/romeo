@@ -714,3 +714,19 @@ corretto per chiedere conferma prima di ciascun campione e consentire
 l'annullamento sicuro tra campioni. Le misure watchdog reali restano NON
 ESEGUITE fino alla ripetizione con questa correzione installata. Dopo la
 correzione la suite locale riporta `427 passed, 3 skipped`.
+
+Il Doctor corretto, commit `f3d357c`, è stato installato e ripetuto. I motori
+sinistro e destro hanno nuovamente girato separatamente in avanti a throttle
+`0.40` per `0.40 s`, fermandosi senza anomalie riferite dall'operatore. Le tre
+prove watchdog, ciascuna autorizzata separatamente, hanno prodotto `556.5 ms`,
+`587.5 ms` e `588.0 ms`: minimo `556.5 ms`, massimo `588.0 ms`, media `577.3
+ms`, configurazione `0.5 s`, comando `0.10`. In tutte e tre l'operatore ha
+osservato ruote ferme, un beep terminato e nessuna anomalia; l'assenza di
+movimento è coerente con la soglia di spunto osservata e non sostituisce la
+misura software dello STOP.
+
+Il successivo prompt servo centrale `pan=90`, `tilt=90` è stato avviato dopo
+che l'operatore aveva inizialmente riferito i servo come collegati. Subito dopo
+l'operatore ha corretto l'informazione: nessun servo era collegato. La prova è
+quindi **NON ESEGUITA/INVALIDA**, non PASS e non FAIL. È stata risposta `n`; il
+Doctor ha interrotto il commissioning senza salvare alcuna calibrazione.
