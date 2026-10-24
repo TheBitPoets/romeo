@@ -67,7 +67,7 @@ def test_commissioning_records_polarity_trim_limits_and_camera(tmp_path: Path) -
             "s",
             "0.1",
             "-0.1",
-            "0.2",
+            "",
             "50",
             "130",
             "55",
@@ -108,6 +108,7 @@ def test_commissioning_records_polarity_trim_limits_and_camera(tmp_path: Path) -
     assert not saved.unit_calibration.right_inverted
     assert saved.unit_calibration.left_trim == 0.1
     assert saved.unit_calibration.right_trim == -0.1
+    assert saved.unit_calibration.speed_limit == 0.4
     assert saved.unit_calibration.pan_min == 50.0
     assert saved.unit_calibration.tilt_max == 125.0
     assert saved.commissioning.status == "commissioned"

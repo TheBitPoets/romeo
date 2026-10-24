@@ -72,7 +72,7 @@ def run_commissioning(
 
     config = load_config(config_path)
     base = config.unit_calibration or CalibrationValues(
-        speed_limit=0.2,
+        speed_limit=0.4,
         pan_min=45.0,
         pan_max=135.0,
         tilt_min=45.0,

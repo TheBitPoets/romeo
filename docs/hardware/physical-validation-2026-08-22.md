@@ -651,3 +651,54 @@ conoscenza implicita.
 
 Issue aperta. Nessuna casella hardware è completata e nessuna dichiarazione
 «Romeo fisico pronto per la classe» è autorizzata.
+
+## Ripresa del collaudo con CRICKIT sostitutivo (2026-10-24)
+
+Questa sezione integra e, dove indicato, supera lo stato storico riportato
+sopra. Il CRICKIT originale è stato sostituito con un Adafruit CRICKIT HAT
+Product ID 3957 nuovo; il portabatterie 4×AA è stato sostituito. Raspberry Pi e
+CRICKIT sono alimentati separatamente. Le prove sono state eseguite con il robot
+sollevato, ruote libere, area sgombra e jack raggiungibile.
+
+Il bus I2C ha mostrato un comportamento intermittente all'avvio: l'indirizzo
+Seesaw `0x49` non sempre compare prima di un reset singolo del CRICKIT e, in
+alcuni casi, un primo probe Romeo ha restituito `OSError: [Errno 5] Input/output
+error` prima che una ripetizione riuscisse. Dopo il reset, Romeo Doctor ha
+riportato `CRICKIT raggiungibile con protezioni attive`. Questo resta un finding
+aperto e non viene marcato PASS per l'avvio a freddo.
+
+Cablaggio fisico osservato e confermato dall'operatore:
+
+- motore destro su `Motor 1`;
+- motore sinistro su `Motor 2`;
+- morsetto centrale `GND` lasciato vuoto;
+- i due fili del motore destro sono stati scambiati dopo la prova di polarità.
+
+Con impulsi Romeo supervisionati, entrambi i motori sono rimasti fermi a
+throttle `0.20` per `0.50 s`, producendo in più prove un beep. Ogni singolo
+motore ha invece iniziato a girare a throttle `0.40` per `0.20 s`. Dopo lo
+scambio dei fili del motore destro, un impulso combinato a `0.40` per `0.50 s`
+ha fatto girare entrambe le ruote nel verso che l'operatore ha identificato come
+avanti. L'operatore ha confermato arresto immediato al termine, nessuna
+differenza evidente tra le ruote, nessun LED triangolo, odore o calore;
+`vcgencmd get_throttled` è rimasto `0x0`. Questa è evidenza fisica di movimento
+con ruote sollevate, non ancora un commissioning completo né una prova a terra.
+
+Su richiesta esplicita dell'operatore è stato eseguito anche un singolo
+confronto diagnostico tramite la libreria `adafruit_crickit`, fuori dalla
+procedura autorevole: a `0.20` non ha prodotto movimento. Non viene usato come
+PASS e non sostituisce Romeo Doctor.
+
+È stato quindi riprodotto un bug/blocco di commissioning: Romeo Doctor usava
+un impulso predefinito `0.15` e rifiutava valori oltre `0.20`, mentre questo
+esemplare richiede `0.40` per superare l'attrito di spunto. La modifica minima
+porta impulso e limite del Doctor a `0.40`, mantiene la durata predefinita a
+`0.40 s`, il limite massimo di durata a `0.50 s`, il timer indipendente e gli
+arresti in `finally`; la calibrazione proposta usa `speed_limit=0.40`. I test
+automatici locali risultano `426 passed, 3 skipped`. Il commissioning fisico
+con il Doctor aggiornato non è ancora stato eseguito e nessuna calibrazione è
+stata salvata.
+
+Issue #6 resta aperta: mancano almeno commissioning completo, misure reali
+STOP/watchdog/timeout, servo, camera, carico combinato, movimento a terra e
+percorso studente simulatore→robot.

@@ -12,7 +12,7 @@ from romeo.backends.base import Backend
 from romeo.camera.base import CameraService
 from romeo.safety import SafetyBackend
 
-MAX_MOTOR_THROTTLE = 0.2
+MAX_MOTOR_THROTTLE = 0.4
 MAX_MOTOR_DURATION = 0.5
 
 Input = Callable[[str], str]
@@ -105,7 +105,7 @@ class CommissionExecutor:
         self,
         side: MotorSide | str,
         *,
-        throttle: float = 0.15,
+        throttle: float = 0.4,
         duration: float = 0.4,
     ) -> MotorTestResult:
         """Test one motor after confirmation and ask its observed direction.

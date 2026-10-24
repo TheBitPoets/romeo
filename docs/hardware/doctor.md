@@ -49,8 +49,10 @@ Avvio:
 romeo-doctor --commission
 ```
 
-Il docente deve scrivere `SICURO`. Ogni motore riceve al massimo throttle `0.15`
-per `0.4 s`; il codice rifiuta valori superiori a `0.2` o `0.5 s`. Un timer
+Il docente deve scrivere `SICURO`. Ogni motore riceve throttle `0.40` per
+`0.40 s`; il codice rifiuta valori superiori a `0.40` o `0.50 s`. Questi valori
+sono stati scelti dopo aver osservato sul Romeo fisico che entrambi i motori non
+superano l'attrito di spunto a `0.20`, mentre partono a `0.40`. Un timer
 indipendente e un blocco `finally` chiamano `stop()` anche con eccezione,
 timeout o Ctrl-C. Il docente conferma la direzione osservata: il Doctor propone
 l'inversione ma non salva nulla fino alla conferma finale `SALVA`.

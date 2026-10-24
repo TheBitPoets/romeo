@@ -56,7 +56,7 @@ def test_right_motor_records_observed_reversed_polarity() -> None:
 
     assert result.observation is MotorObservation.REVERSED
     assert result.inversion_required is True
-    assert backend.history[0] == BackendCommand("set_motor_speeds", (0.0, 0.15))
+    assert backend.history[0] == BackendCommand("set_motor_speeds", (0.0, 0.4))
     assert backend.history[-1] == BackendCommand("stop", ())
 
 
@@ -146,7 +146,7 @@ def test_arbitrary_base_exception_always_stops() -> None:
 
 @pytest.mark.parametrize(
     ("throttle", "duration"),
-    [(0.201, 0.4), (0.15, 0.501), (0.0, 0.4), (0.15, 0.0)],
+    [(0.401, 0.4), (0.15, 0.501), (0.0, 0.4), (0.15, 0.0)],
 )
 def test_safety_limits_are_hard_and_invalid_test_still_stops(
     throttle: float, duration: float
