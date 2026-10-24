@@ -730,3 +730,84 @@ che l'operatore aveva inizialmente riferito i servo come collegati. Subito dopo
 l'operatore ha corretto l'informazione: nessun servo era collegato. La prova è
 quindi **NON ESEGUITA/INVALIDA**, non PASS e non FAIL. È stata risposta `n`; il
 Doctor ha interrotto il commissioning senza salvare alcuna calibrazione.
+
+Dopo aver collegato fisicamente pan a Servo 1 e tilt a Servo 4, con filo scuro
+verso il centro della scheda, il primo preflight Romeo ha restituito nuovamente
+`OSError` sul CRICKIT nonostante `i2cdetect` avesse mostrato `0x49`; una
+ripetizione passiva dopo 10 secondi ha raggiunto correttamente il CRICKIT. La
+tensione Pi è rimasta `throttled=0x0`. L'intermittenza I2C resta aperta.
+
+Il commissioning è stato ripetuto con i servo collegati. Entrambi i motori sono
+stati nuovamente osservati in avanti a `0.40` per `0.40 s`. Watchdog configurato
+a `0.5 s`: campioni `605.3 ms`, `580.7 ms`, `567.3 ms`; minimo `567.3 ms`,
+massimo `605.3 ms`, media `584.4 ms`. L'operatore ha confermato assenza di
+anomalie a ogni campione.
+
+Il comando centrale pan/tilt `90°/90°` non ha prodotto movimento né anomalie;
+poiché i servo potevano essere già centrati, il risultato è inconcludente. Il
+successivo comando conservativo `pan=45°`, `tilt=90°` non ha prodotto alcun
+movimento osservabile. L'operatore ha risposto `n`; il Doctor ha fermato il
+commissioning senza provare altri limiti e senza salvare. Risultato servo:
+**FAIL — NESSUN MOVIMENTO SU PAN 90→45°**. Il backend verificato comanda Servo 1
+per pan e Servo 4 per tilt; restano da diagnosticare alimentazione, inserimento
+e continuità fisica dei connettori e singoli servo. Nessuna battuta meccanica è
+stata cercata.
+
+### Correzione cablaggio servo e commissioning completato (2026-10-24)
+
+L'ispezione fisica successiva ha identificato entrambi i connettori servo
+inseriti al contrario: il filo scuro era sul lato errato della terna. A tutte
+le alimentazioni scollegate, l'operatore ha corretto l'orientamento mantenendo
+pan su Servo 1 e tilt su Servo 4: filo scuro verso la scritta `SERVO`/interno,
+rosso al centro e giallo/arancione verso i numeri/bordo. Non sono stati
+osservati danni visibili.
+
+Il commissioning Romeo Doctor è stato quindi ripetuto integralmente con robot
+sollevato. Risultati osservati dall'operatore:
+
+| Test | Risultato | Comando/valore | Osservazione fisica |
+|---|---|---|---|
+| Motore sinistro | PASS con ruota sollevata | throttle `0.40`, `0.40 s` | Avanti, arresto al termine, servo fermi |
+| Motore destro | PASS con ruota sollevata | throttle `0.40`, `0.40 s` | Avanti, arresto al termine, servo fermi |
+| Watchdog 1 | PASS misurato | timeout `0.5 s`, comando `0.10`; `547.7 ms` | Ruote ferme, beep terminato, nessuna anomalia |
+| Watchdog 2 | PASS misurato | timeout `0.5 s`, comando `0.10`; `516.1 ms` | Ruote ferme, beep terminato, nessuna anomalia |
+| Watchdog 3 | PASS misurato | timeout `0.5 s`, comando `0.10`; `594.8 ms` | Ruote ferme, beep terminato, nessuna anomalia |
+| Centro servo | PASS | pan `90°`, tilt `90°` | Entrambi fermi e stabili |
+| Pan minimo conservativo | PASS | pan `45°`, tilt `90°` | Movimento libero, nessuna anomalia |
+| Pan massimo conservativo | PASS | pan `135°`, tilt `90°` | Movimento libero; tilt fermo |
+| Tilt minimo conservativo | PASS | pan `90°`, tilt `45°` | Movimento libero, nessuna anomalia |
+| Tilt massimo conservativo | PASS | pan `90°`, tilt `135°` | Movimento libero, nessuna anomalia |
+| Centro finale | PASS | pan `90°`, tilt `90°` | Ritorno osservato, attuatori fermi |
+
+Le misure watchdog finali sono: minimo `516.1 ms`, massimo `594.8 ms`, media
+`552.9 ms`, timeout configurato `0.5 s`. Il centro fisico corrispondente al
+comando pan `90°` è stato descritto dall'operatore come quasi centrato ma non
+perfettamente centrato. Non sono state cercate battute meccaniche oltre i
+limiti conservativi `45°–135°`.
+
+Il Doctor ha salvato la calibrazione in
+`/home/acari/.config/romeo/hardware.json`, schema previsto
+`romeo.hardware_calibration.v1`, con inversioni false, trim sinistro/destra
+`0/0`, `speed_limit=0.40`, watchdog `0.5 s`, pan `45°–135°` e tilt
+`45°–135°`. Il trim zero è provvisorio fino alla prova rettilinea a terra.
+
+### Acquisizione camera reale (2026-10-24)
+
+Romeo Doctor ha acquisito in memoria un JPEG da `37.657 byte`, risoluzione
+`640×480`; l'operatore ha osservato attuatori fermi e nessuna anomalia. Poiché
+il Doctor non conservava quel payload, è stata eseguita, dopo briefing e
+autorizzazione separata, una seconda singola acquisizione tramite il servizio
+camera Romeo, preceduta e seguita da `backend.stop()`:
+
+```text
+ROMEO_BACKEND=crickit /home/acari/romeo-venv/bin/python /tmp/capture_validation_photo.py
+PHOTO=/tmp/romeo-camera-validation-2026-10-24.jpg BYTES=37534
+```
+
+Il JPEG `640×480` è stato copiato sul PC dell'operatore come
+`C:\Users\antonio\Downloads\romeo-camera-validation-2026-10-24.jpg`; SHA-256
+`65950B0F2AF75A5DB145EF93013A62D49D1B7F869152B2F0E30675D784667C8D`.
+L'operatore ha confermato che durante lo scatto motori e servo sono rimasti
+fermi e non si sono verificate anomalie. L'immagine è leggibile ma mostra una
+scena senza riferimento univoco e parzialmente ostruita: orientamento,
+inquadratura utile, streaming/MJPEG, FPS e latenza restano **NON VERIFICATI**.
