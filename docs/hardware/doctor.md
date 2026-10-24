@@ -57,10 +57,11 @@ indipendente e un blocco `finally` chiamano `stop()` anche con eccezione,
 timeout o Ctrl-C. Il docente conferma la direzione osservata: il Doctor propone
 l'inversione ma non salva nulla fino alla conferma finale `SALVA`.
 
-Il watchdog viene provato tre volte con throttle `0.10`. Il Doctor registra
-latenze minima, massima e media soltanto dopo che `SafetyBackend` ha completato
-lo stop. Un timer indipendente ferma comunque i motori se il watchdog non
-conferma l'intervento.
+Il watchdog viene provato tre volte con throttle `0.10`, chiedendo una conferma
+supervisionata prima di ogni singola prova. Il Doctor registra la latenza di
+ogni prova e poi minima, massima e media soltanto dopo che `SafetyBackend` ha
+completato lo stop. Un timer indipendente ferma comunque i motori se il watchdog
+non conferma l'intervento.
 
 I limiti pan/tilt vengono inseriti come valori conservativi e poi provati dal
 centro verso i limiti dichiarati. Il Doctor non cerca automaticamente la battuta.

@@ -75,6 +75,8 @@ def test_commissioning_records_polarity_trim_limits_and_camera(tmp_path: Path) -
             "0.5",
             "",
             "",
+            "",
+            "",
             "s",
             "",
             "s",

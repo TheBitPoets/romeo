@@ -196,17 +196,16 @@ class CommissionExecutor:
             raise ValueError("repeats must be between 1 and 10")
         if not 0.0 < throttle <= 0.1:
             raise ValueError("watchdog measurement throttle must be at most 0.1")
-        answer = self._input(
-            f"WATCHDOG: {repeats} prove a throttle {throttle:.2f}, ruote sollevate. "
-            "[INVIO] continua, [q] annulla: "
-        ).strip().lower()
-        if answer == "q":
-            raise RuntimeError("watchdog measurement cancelled")
-        if answer:
-            raise ValueError("premere INVIO per continuare oppure q per annullare")
-
         samples: list[float] = []
-        for _ in range(repeats):
+        for index in range(repeats):
+            answer = self._input(
+                f"WATCHDOG prova {index + 1}/{repeats}: throttle {throttle:.2f}, "
+                "ruote sollevate. [INVIO] continua, [q] annulla: "
+            ).strip().lower()
+            if answer == "q":
+                raise RuntimeError("watchdog measurement cancelled")
+            if answer:
+                raise ValueError("premere INVIO per continuare oppure q per annullare")
             previous = self._backend.last_watchdog_stop_at
             started = self._clock()
             fallback = Timer(self._backend.command_timeout + 0.25, self._backend.stop)
@@ -219,6 +218,10 @@ class CommissionExecutor:
                     observed = self._backend.last_watchdog_stop_at
                     if observed is not None and observed != previous:
                         samples.append(observed - started)
+                        self._output(
+                            f"WATCHDOG prova {index + 1}/{repeats} completata: "
+                            f"stop in {(observed - started) * 1000.0:.1f} ms."
+                        )
                         break
                     sleep(min(0.01, self._backend.command_timeout / 10.0))
                 else:

@@ -269,9 +269,15 @@ def test_servo_recenter_failure_is_not_hidden_and_still_stops() -> None:
 def test_watchdog_is_measured_repeatedly_and_stops() -> None:
     raw_backend = MockBackend()
     backend = SafetyBackend(raw_backend, command_timeout=0.05)
+    prompts: list[str] = []
+
+    def confirm(prompt: str) -> str:
+        prompts.append(prompt)
+        return ""
+
     executor = CommissionExecutor(
         backend,
-        input_fn=lambda _prompt: "",
+        input_fn=confirm,
         output_fn=lambda _message: None,
     )
 
@@ -280,6 +286,27 @@ def test_watchdog_is_measured_repeatedly_and_stops() -> None:
     assert len(measurement.samples_seconds) == 3
     assert 50 <= measurement.minimum_ms < 300
     assert measurement.minimum_ms <= measurement.mean_ms <= measurement.maximum_ms
+    assert len(prompts) == 3
+    assert "prova 1/3" in prompts[0]
+    assert "prova 2/3" in prompts[1]
+    assert "prova 3/3" in prompts[2]
+    assert raw_backend.left_speed == raw_backend.right_speed == 0.0
+    backend.close()
+
+
+def test_watchdog_can_be_cancelled_between_samples_and_stops() -> None:
+    raw_backend = MockBackend()
+    backend = SafetyBackend(raw_backend, command_timeout=0.05)
+    replies = iter(("", "q"))
+    executor = CommissionExecutor(
+        backend,
+        input_fn=lambda _prompt: next(replies),
+        output_fn=lambda _message: None,
+    )
+
+    with pytest.raises(RuntimeError, match="cancelled"):
+        executor.measure_watchdog(repeats=3)
+
     assert raw_backend.left_speed == raw_backend.right_speed == 0.0
     backend.close()
 

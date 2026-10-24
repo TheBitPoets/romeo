@@ -702,3 +702,15 @@ stata salvata.
 Issue #6 resta aperta: mancano almeno commissioning completo, misure reali
 STOP/watchdog/timeout, servo, camera, carico combinato, movimento a terra e
 percorso studente simulatore→robot.
+
+Il Doctor aggiornato è stato quindi installato sul Raspberry Pi dal commit
+`bdbe402`. Nella sessione supervisionata entrambi i test separati a throttle
+`0.40` per `0.40 s` sono stati osservati dall'operatore nel verso avanti, con
+arresto immediato e nessuna anomalia riferita. Trim sinistro e destro sono stati
+lasciati a zero perché non è ancora disponibile una prova rettilinea a terra.
+La sessione è stata annullata senza salvare prima del watchdog: il Doctor
+avrebbe concatenato tre prove attive dopo una sola conferma. Il software è stato
+corretto per chiedere conferma prima di ciascun campione e consentire
+l'annullamento sicuro tra campioni. Le misure watchdog reali restano NON
+ESEGUITE fino alla ripetizione con questa correzione installata. Dopo la
+correzione la suite locale riporta `427 passed, 3 skipped`.
